@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.player
+package com.github.musick.ui.screens.player
 
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
@@ -27,9 +27,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.ui.modifier.fadingEdge
-import com.github.soundpod.utils.DisposableListener
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.ui.modifier.fadingEdge
+import com.github.musick.utils.DisposableListener
 
 @Composable
 fun PlayerMediaItem(

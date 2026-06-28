@@ -1,5 +1,5 @@
 @file:Suppress("KotlinConstantConditions")
-package com.github.soundpod.viewmodels
+package com.github.musick.viewmodels
 
 import android.app.Application
 import android.content.ContentValues
@@ -13,18 +13,18 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.api.GitHub
-import com.github.soundpod.BuildConfig
-import com.github.soundpod.R
-import com.github.soundpod.github.checkForUpdates
-import com.github.soundpod.github.downloadAndInstall
-import com.github.soundpod.github.installApkInternal
-import com.github.soundpod.ui.common.UpdateStatus
-import com.github.soundpod.ui.common.includePrerelease
-import com.github.soundpod.ui.common.seamlessUpdateEnabled
-import com.github.soundpod.ui.common.setIncludePrerelease
-import com.github.soundpod.ui.common.setSeamlessUpdateEnabled
-import com.github.soundpod.ui.common.setShowUpdateAlert
-import com.github.soundpod.ui.common.showUpdateAlert
+import com.github.musick.BuildConfig
+import com.github.musick.R
+import com.github.musick.github.checkForUpdates
+import com.github.musick.github.downloadAndInstall
+import com.github.musick.github.installApkInternal
+import com.github.musick.ui.common.UpdateStatus
+import com.github.musick.ui.common.includePrerelease
+import com.github.musick.ui.common.seamlessUpdateEnabled
+import com.github.musick.ui.common.setIncludePrerelease
+import com.github.musick.ui.common.setSeamlessUpdateEnabled
+import com.github.musick.ui.common.setShowUpdateAlert
+import com.github.musick.ui.common.showUpdateAlert
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -185,7 +185,7 @@ class AboutViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 FileOutputStream(reportFile).use { output ->
                     val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
-                    output.write("SoundPod Bug Report\n".toByteArray())
+                    output.write("Musick Bug Report\n".toByteArray())
                     output.write("===================\n".toByteArray())
                     output.write("Report Generated: ${sdf.format(Date())}\n".toByteArray())
                     output.write("Session Started: ${sdf.format(Date(recordingStartTime))}\n".toByteArray())
@@ -224,7 +224,7 @@ class AboutViewModel(application: Application) : AndroidViewModel(application) {
                 val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", reportFile)
                 val intent = Intent(Intent.ACTION_SEND).apply {
                     type = "text/plain"
-                    putExtra(Intent.EXTRA_SUBJECT, "SoundPod Bug Report ${SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(Date())}")
+                    putExtra(Intent.EXTRA_SUBJECT, "Musick Bug Report ${SimpleDateFormat("yyyyMMdd_HHmm", Locale.US).format(Date())}")
                     putExtra(Intent.EXTRA_STREAM, uri)
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 }
@@ -247,10 +247,10 @@ class AboutViewModel(application: Application) : AndroidViewModel(application) {
         try {
             val resolver = context.contentResolver
             val contentValues = ContentValues().apply {
-                put(MediaStore.MediaColumns.DISPLAY_NAME, "SoundPod_BugReport_${System.currentTimeMillis()}.txt")
+                put(MediaStore.MediaColumns.DISPLAY_NAME, "Musick_BugReport_${System.currentTimeMillis()}.txt")
                 put(MediaStore.MediaColumns.MIME_TYPE, "text/plain")
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    put(MediaStore.MediaColumns.RELATIVE_PATH, "Download/SoundPod")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, "Download/Musick")
                 }
             }
 
@@ -268,7 +268,7 @@ class AboutViewModel(application: Application) : AndroidViewModel(application) {
                     }
                 }
                 viewModelScope.launch(Dispatchers.Main) {
-                    Toast.makeText(context, "Bug report saved to Downloads/SoundPod", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Bug report saved to Downloads/Musick", Toast.LENGTH_LONG).show()
                 }
             }
         } catch (e: Exception) {

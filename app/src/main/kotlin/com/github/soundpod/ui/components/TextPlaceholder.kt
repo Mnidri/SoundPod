@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.components
+package com.github.musick.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.github.soundpod.ui.styling.shimmer
+import com.github.musick.ui.styling.shimmer
 import kotlin.random.Random
 
 @Composable

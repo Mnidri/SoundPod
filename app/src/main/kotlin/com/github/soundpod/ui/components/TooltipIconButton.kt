@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.components
+package com.github.musick.ui.components
 
 import androidx.annotation.StringRes
 import androidx.compose.material3.ExperimentalMaterial3Api

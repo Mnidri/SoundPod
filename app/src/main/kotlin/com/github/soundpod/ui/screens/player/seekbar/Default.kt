@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.player.seekbar
+package com.github.musick.ui.screens.player.seekbar
 
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateDp

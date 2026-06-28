@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.components
+package com.github.musick.ui.components
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
@@ -33,8 +33,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.R
-import com.github.soundpod.ui.screens.player.CustomAnimatedVisibility
+import com.github.musick.R
+import com.github.musick.ui.screens.player.CustomAnimatedVisibility
 import kotlinx.coroutines.delay
 
 @Composable

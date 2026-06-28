@@ -1,4 +1,4 @@
-package com.github.soundpod.service
+package com.github.musick.service
 
 import android.content.Context
 import android.content.res.Configuration
@@ -14,7 +14,7 @@ import coil3.request.bitmapConfig
 import coil3.size.Precision
 import coil3.size.Scale
 import coil3.toBitmap
-import com.github.soundpod.utils.thumbnail
+import com.github.musick.utils.thumbnail
 
 class BitmapProvider(
     private val context: Context,

@@ -1,4 +1,4 @@
-package com.github.soundpod.utils
+package com.github.musick.utils
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay

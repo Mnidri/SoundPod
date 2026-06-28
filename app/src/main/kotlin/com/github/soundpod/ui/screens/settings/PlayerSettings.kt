@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.settings
+package com.github.musick.ui.screens.settings
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
@@ -13,21 +13,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.ui.common.IconSource
-import com.github.soundpod.ui.components.SliderSettingsItem
-import com.github.soundpod.ui.components.SwitchSetting
-import com.github.soundpod.utils.formatAsDuration
-import com.github.soundpod.utils.pauseOnAppCloseKey
-import com.github.soundpod.utils.persistentQueueKey
-import com.github.soundpod.utils.playbackPitchKey
-import com.github.soundpod.utils.playbackSpeedKey
-import com.github.soundpod.utils.rememberPreference
-import com.github.soundpod.utils.resumePlaybackWhenDeviceConnectedKey
-import com.github.soundpod.utils.skipSilenceKey
-import com.github.soundpod.utils.stopAfterCurrentKey
-import com.github.soundpod.utils.volumeNormalizationKey
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.ui.common.IconSource
+import com.github.musick.ui.components.SliderSettingsItem
+import com.github.musick.ui.components.SwitchSetting
+import com.github.musick.utils.formatAsDuration
+import com.github.musick.utils.pauseOnAppCloseKey
+import com.github.musick.utils.persistentQueueKey
+import com.github.musick.utils.playbackPitchKey
+import com.github.musick.utils.playbackSpeedKey
+import com.github.musick.utils.rememberPreference
+import com.github.musick.utils.resumePlaybackWhenDeviceConnectedKey
+import com.github.musick.utils.skipSilenceKey
+import com.github.musick.utils.stopAfterCurrentKey
+import com.github.musick.utils.volumeNormalizationKey
 import java.util.Locale
 
 @Composable

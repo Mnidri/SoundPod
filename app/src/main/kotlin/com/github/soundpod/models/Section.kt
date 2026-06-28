@@ -1,4 +1,4 @@
-package com.github.soundpod.models
+package com.github.musick.models
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

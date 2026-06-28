@@ -1,4 +1,4 @@
-package com.github.soundpod.utils
+package com.github.musick.utils
 
 sealed interface LyricsData {
     data class Unsynced(val text: String) : LyricsData

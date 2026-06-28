@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.components
+package com.github.musick.ui.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.WindowInsets
@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import com.github.soundpod.R
+import com.github.musick.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

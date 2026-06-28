@@ -1,4 +1,4 @@
-package com.github.soundpod.service
+package com.github.musick.service
 
 import android.content.Context
 import androidx.core.text.isDigitsOnly
@@ -6,10 +6,10 @@ import androidx.media3.database.StandaloneDatabaseProvider
 import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor
 import androidx.media3.datasource.cache.NoOpCacheEvictor
 import androidx.media3.datasource.cache.SimpleCache
-import com.github.soundpod.enums.ExoPlayerDiskCacheMaxSize
-import com.github.soundpod.utils.exoPlayerDiskCacheMaxSizeKey
-import com.github.soundpod.utils.getEnum
-import com.github.soundpod.utils.preferences
+import com.github.musick.enums.ExoPlayerDiskCacheMaxSize
+import com.github.musick.utils.exoPlayerDiskCacheMaxSizeKey
+import com.github.musick.utils.getEnum
+import com.github.musick.utils.preferences
 
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 class PlayerCacheManager(private val context: Context) {

@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.playlist
+package com.github.musick.ui.screens.playlist
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -14,19 +14,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.util.UnstableApi
 import com.github.innertube.Innertube
-import com.github.soundpod.LocalPlayerPadding
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.models.ActionInfo
-import com.github.soundpod.models.LocalMenuState
-import com.github.soundpod.ui.components.NonQueuedMediaItemMenu
-import com.github.soundpod.ui.components.ShimmerHost
-import com.github.soundpod.ui.components.SwipeToActionBox
-import com.github.soundpod.ui.items.ListItemPlaceholder
-import com.github.soundpod.ui.items.SongItem
-import com.github.soundpod.utils.asMediaItem
-import com.github.soundpod.utils.enqueue
-import com.github.soundpod.utils.forcePlayAtIndex
+import com.github.musick.LocalPlayerPadding
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.models.ActionInfo
+import com.github.musick.models.LocalMenuState
+import com.github.musick.ui.components.NonQueuedMediaItemMenu
+import com.github.musick.ui.components.ShimmerHost
+import com.github.musick.ui.components.SwipeToActionBox
+import com.github.musick.ui.items.ListItemPlaceholder
+import com.github.musick.ui.items.SongItem
+import com.github.musick.utils.asMediaItem
+import com.github.musick.utils.enqueue
+import com.github.musick.utils.forcePlayAtIndex
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi

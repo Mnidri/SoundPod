@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.artist
+package com.github.musick.ui.screens.artist
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.util.UnstableApi
 import com.github.innertube.Innertube
-import com.github.soundpod.ui.items.PlaylistItem
+import com.github.musick.ui.items.PlaylistItem
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @UnstableApi

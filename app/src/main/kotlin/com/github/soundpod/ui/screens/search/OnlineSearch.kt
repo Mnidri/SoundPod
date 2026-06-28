@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.search
+package com.github.musick.ui.screens.search
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -30,18 +30,18 @@ import androidx.compose.ui.unit.dp
 import androidx.media3.common.util.UnstableApi
 import com.github.core.ui.LocalAppearance
 import com.github.innertube.Innertube
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.models.LocalMenuState
-import com.github.soundpod.ui.appearance.LoadingAnimation
-import com.github.soundpod.ui.components.NonQueuedMediaItemMenu
-import com.github.soundpod.ui.components.SettingsCard
-import com.github.soundpod.ui.items.AlbumItem
-import com.github.soundpod.ui.items.ArtistItem
-import com.github.soundpod.ui.items.PlaylistItem
-import com.github.soundpod.ui.items.SongItem
-import com.github.soundpod.utils.asMediaItem
-import com.github.soundpod.utils.forcePlay
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.models.LocalMenuState
+import com.github.musick.ui.appearance.LoadingAnimation
+import com.github.musick.ui.components.NonQueuedMediaItemMenu
+import com.github.musick.ui.components.SettingsCard
+import com.github.musick.ui.items.AlbumItem
+import com.github.musick.ui.items.ArtistItem
+import com.github.musick.ui.items.PlaylistItem
+import com.github.musick.ui.items.SongItem
+import com.github.musick.utils.asMediaItem
+import com.github.musick.utils.forcePlay
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @UnstableApi

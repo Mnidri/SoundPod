@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.player
+package com.github.musick.ui.screens.player
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.Spring
@@ -40,9 +40,9 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.size.Size
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.utils.thumbnail
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.utils.thumbnail
 
 @Composable
 fun SharedThumbnail(

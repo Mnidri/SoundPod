@@ -1,4 +1,4 @@
-package com.github.soundpod.github
+package com.github.musick.github
 
 object VersionUtils {
     fun extractVersion(text: String): String {

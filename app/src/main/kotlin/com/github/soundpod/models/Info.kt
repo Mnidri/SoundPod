@@ -1,4 +1,4 @@
-package com.github.soundpod.models
+package com.github.musick.models
 
 data class Info(
     val id: String,

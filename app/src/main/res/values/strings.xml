@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">SoundPod</string>
+    <string name="app_name" translatable="false">Musick</string>
     <string name="home">Home</string>
     <string name="songs">Songs</string>
     <string name="playlists">Playlists</string>
@@ -52,7 +52,7 @@
     <string name="image_cache">Image cache</string>
     <string name="audio_cache">Audio cache</string>
     <string name="max_size">Max size</string>
-    <string name="cache_information">When the cache runs out of space, the resources that haven\'t been accessed for the longest time are cleared.</string>
+    <string name="cache_information">When the cache runs out of Musickace, the resources that haven\'t been accessed for the longest time are cleared.</string>
     <string name="backup">Backup</string>
     <string name="restore">Restore</string>
     <string name="reset_quick_picks">Reset quick picks</string>
@@ -104,7 +104,7 @@
     <string name="sign_in_description">Sign in to access your library</string>
     <string name="sign_out">Sign out</string>
     <string name="sign_out_description">Clear session and cookies</string>
-    <string name="account">Account</string>
+    <string name="youtube">YouTube</string>
     <string name="search_lyrics_online">Search lyrics online</string>
     <plurals name="number_of_songs">
         <item quantity="one">%d song</item>
@@ -252,7 +252,7 @@
     <string name="seamless_update">Seamless Update</string>
     <string name="seamless_update_description">Install updates directly from app</string>
     <string name="enable_seamless_update">Enable Seamless Updates?</string>
-    <string name="enable_seamless_update_description">To install updates internally, SoundPod needs permission to install unknown apps.\nOtherwise, updates will be saved to your Downloads folder.</string>
+    <string name="enable_seamless_update_description">To install updates internally, Musick needs permission to install unknown apps.\nOtherwise, updates will be saved to your Downloads folder.</string>
     <string name="permissions">Permissions</string>
     <string name="notifications">Notifications</string>
     <string name="update_now">Update Now</string>
@@ -267,10 +267,6 @@
     <string name="search_history">Recent Search</string>
     <string name="new_search_screen">New search screen</string>
     <string name="new_search_screen_description">Try the experimental search layout. Some features may be unstable.</string>
-    <string name="login_experimental" translatable="false">Login</string>
-    <string name="login_experimental_description" translatable="false">Enable login to access your YouTube account</string>
-    <string name="login_experimental_dialog_title" translatable="false">Experimental Login</string>
-    <string name="login_experimental_dialog_message" translatable="false">This app uses a WebView to get YouTube information. We won\'t collect your data; it only grabs and passes it to the app to work. This setting is experimental and may not be finished or work correctly.</string>
     <string name="_search_history">No recent searches</string>
     <string name="no_search_history">No recent searches</string>
     <string name="tracks">Tracks</string>
@@ -301,7 +297,7 @@
     <string name="updates_handled_by_fdroid">Updates for this version are handled through the F-Droid</string>
     <string name="distribution_info">Distribution</string>
     <string name="view_on_f_droid">View on F-Droid</string>
-    <string name="widget_description">SoundPod Music Player</string>
+    <string name="widget_description">Musick Music Player</string>
     <string name="background_style_discription">Choose your preferred background style</string>
     <string name="player_background">Player Background</string>
     <string name="style">Style</string>
@@ -323,7 +319,7 @@
     <string name="install_unknown_apps">Install Unknown Apps</string>
     <string name="storage">Storage</string>
     <string name="local_data">Local Data</string>
-    <string name="local_data_discription">SoundPod stores cache and database locally on your device.</string>
+    <string name="local_data_discription">Musick stores cache and database locally on your device.</string>
     <string name="f_droid_build">F-Droid Build</string>
     <string name="language_selector_not_found">Couldn\'t find app language settings, please configure them manually</string>
     <string name="play_back">Playback</string>
@@ -366,4 +362,9 @@
     <string name="favorite_artists">Favorite Artists</string>
     <string name="no_favorites">No favorites</string>
     <string name="no_favorites_description">Tap the heart icon on songs, albums, or artists to add them to your favorites.</string>
+
+    <string name="youtube_session">YouTube Session</string>
+    <string name="consent_granted">Consent: Granted</string>
+    <string name="consent_required">Consent: Required</string>
+    <string name="renew_consent">Renew Consent</string>
 </resources>

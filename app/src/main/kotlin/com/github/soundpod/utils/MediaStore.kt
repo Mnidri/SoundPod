@@ -1,4 +1,4 @@
-package com.github.soundpod.utils
+package com.github.musick.utils
 
 import android.Manifest
 import android.content.ContentUris
@@ -8,7 +8,7 @@ import android.os.Build
 import android.provider.MediaStore
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import com.github.soundpod.models.Song
+import com.github.musick.models.Song
 
 fun Context.queryMediaStoreSongs(): List<Song> {
     val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

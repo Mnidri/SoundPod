@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.player
+package com.github.musick.ui.screens.player
 
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.utils.DisposableListener
-import com.github.soundpod.utils.shouldBePlaying
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.utils.DisposableListener
+import com.github.musick.utils.shouldBePlaying
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlin.time.Duration.Companion.milliseconds
@@ -107,7 +107,7 @@ fun MiniPlayerContent(
             headlineContent = {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        text = nullableMediaItem?.mediaMetadata?.title?.toString() ?: "SoundPod",
+                        text = nullableMediaItem?.mediaMetadata?.title?.toString() ?: "Musick",
                         modifier = Modifier.basicMarquee(),
                         maxLines = 1,
                         overflow = TextOverflow.Clip,

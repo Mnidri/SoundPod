@@ -1,4 +1,4 @@
-package com.github.soundpod.utils
+package com.github.musick.utils
 
 class RingBuffer<T>(val size: Int, init: (index: Int) -> T) {
     private val list = MutableList(size, init)

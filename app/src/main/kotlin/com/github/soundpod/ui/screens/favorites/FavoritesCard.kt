@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.favorites
+package com.github.musick.ui.screens.favorites
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.utils.thumbnail
+import com.github.musick.utils.thumbnail
 
 @Composable
 fun FavoritesCard(

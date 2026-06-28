@@ -1,4 +1,4 @@
-package com.github.soundpod.utils
+package com.github.musick.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect

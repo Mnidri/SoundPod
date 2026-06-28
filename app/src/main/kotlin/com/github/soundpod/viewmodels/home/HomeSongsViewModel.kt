@@ -1,17 +1,17 @@
-package com.github.soundpod.viewmodels.home
+package com.github.musick.viewmodels.home
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.soundpod.appContext
-import com.github.soundpod.db
-import com.github.soundpod.enums.SongSortBy
-import com.github.soundpod.enums.SortOrder
-import com.github.soundpod.models.Song
-import com.github.soundpod.query
-import com.github.soundpod.utils.queryMediaStoreSongs
+import com.github.musick.appContext
+import com.github.musick.db
+import com.github.musick.enums.SongSortBy
+import com.github.musick.enums.SortOrder
+import com.github.musick.models.Song
+import com.github.musick.query
+import com.github.musick.utils.queryMediaStoreSongs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

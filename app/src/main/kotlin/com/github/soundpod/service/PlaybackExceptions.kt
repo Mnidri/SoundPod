@@ -1,4 +1,4 @@
-package com.github.soundpod.service
+package com.github.musick.service
 
 import java.io.IOException
 

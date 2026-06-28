@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.items
+package com.github.musick.ui.items
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -24,11 +24,11 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.github.core.ui.LocalAppearance
 import com.github.innertube.Innertube
-import com.github.soundpod.R
-import com.github.soundpod.db
-import com.github.soundpod.models.PlaylistPreview
-import com.github.soundpod.ui.styling.px
-import com.github.soundpod.utils.thumbnail
+import com.github.musick.R
+import com.github.musick.db
+import com.github.musick.models.PlaylistPreview
+import com.github.musick.ui.styling.px
+import com.github.musick.utils.thumbnail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map

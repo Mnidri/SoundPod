@@ -1,4 +1,4 @@
-package com.github.soundpod.github
+package com.github.musick.github
 
 import android.app.DownloadManager
 import android.content.ActivityNotFoundException
@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import com.github.api.GitHub
-import com.github.soundpod.ui.common.UpdateStatus
+import com.github.musick.ui.common.UpdateStatus
 import kotlinx.coroutines.delay
 import java.io.File
 import java.net.HttpURLConnection
@@ -19,11 +19,11 @@ import java.net.URL
 fun downloadApk(context: Context, url: String): Long {
     val request = DownloadManager.Request(url.toUri())
         .setTitle("Downloading Update")
-        .setDescription("Downloading latest SoundPod APK…")
+        .setDescription("Downloading latest Musick APK…")
         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         .setDestinationInExternalPublicDir(
             Environment.DIRECTORY_DOWNLOADS,
-            "SoundPod-latest.apk"
+            "Musick-latest.apk"
         )
 
     val manager = context.getSystemService(DownloadManager::class.java)
@@ -44,7 +44,7 @@ suspend fun checkForUpdates(
         if (latestVersion != null && apkAsset != null) {
             val isNew = VersionUtils.isNewerVersion(latestVersion, currentVersion)
             if (isNew) {
-                val fileName = "SoundPod_v$latestVersion.apk"
+                val fileName = "Musick_v$latestVersion.apk"
                 val existingFile = if (isSeamless) {
                     File(context.externalCacheDir, "update.apk") // Keep internal generic for simplicity
                 } else {
@@ -116,12 +116,12 @@ suspend fun downloadViaDownloadManager(
 ) {
     try {
         val request = DownloadManager.Request(urlString.toUri())
-            .setTitle("SoundPod Update")
+            .setTitle("Musick Update")
             .setDescription("Downloading latest version...")
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             .setDestinationInExternalPublicDir(
                 Environment.DIRECTORY_DOWNLOADS,
-                "SoundPod-Update.apk"
+                "Musick-Update.apk"
             )
             .setAllowedOverMetered(true)
             .setAllowedOverRoaming(true)
@@ -149,7 +149,7 @@ suspend fun downloadViaDownloadManager(
                     downloading = false
                     val publicFile = File(
                         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-                        "SoundPod-Update.apk"
+                        "Musick-Update.apk"
                     )
                     onFinished(publicFile)
                 } else if (status == DownloadManager.STATUS_FAILED) {
@@ -195,7 +195,7 @@ fun openPublicFile(context: Context, file: File) {
             }
             context.startActivity(intent)
         } catch (_: Exception) {
-            Toast.makeText(context, "Saved to Downloads: SoundPod-Update.apk", Toast.LENGTH_LONG)
+            Toast.makeText(context, "Saved to Downloads: Musick-Update.apk", Toast.LENGTH_LONG)
                 .show()
         }
     }

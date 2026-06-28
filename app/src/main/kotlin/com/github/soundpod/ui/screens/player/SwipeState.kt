@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.player
+package com.github.musick.ui.screens.player
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec

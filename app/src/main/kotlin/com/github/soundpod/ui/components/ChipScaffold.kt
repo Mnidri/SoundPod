@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.components
+package com.github.musick.ui.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -20,7 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.soundpod.models.Section
+import com.github.musick.models.Section
 
 @ExperimentalAnimationApi
 @Composable

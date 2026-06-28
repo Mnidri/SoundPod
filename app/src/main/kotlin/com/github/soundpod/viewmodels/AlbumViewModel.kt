@@ -1,17 +1,17 @@
-package com.github.soundpod.viewmodels
+package com.github.musick.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.innertube.Innertube
 import com.github.innertube.requests.albumPage
-import com.github.soundpod.db
-import com.github.soundpod.models.Album
-import com.github.soundpod.models.SongAlbumMap
-import com.github.soundpod.utils.ScreenCache
-import com.github.soundpod.utils.asMediaItem
-import com.github.soundpod.utils.completed
-import com.github.soundpod.utils.isScreenCacheEnabledKey
-import com.github.soundpod.utils.preferences
+import com.github.musick.db
+import com.github.musick.models.Album
+import com.github.musick.models.SongAlbumMap
+import com.github.musick.utils.ScreenCache
+import com.github.musick.utils.asMediaItem
+import com.github.musick.utils.completed
+import com.github.musick.utils.isScreenCacheEnabledKey
+import com.github.musick.utils.preferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,7 +37,7 @@ class AlbumViewModel : ViewModel() {
         if (currentBrowseId == browseId) return
         currentBrowseId = browseId
 
-        val isScreenCacheEnabled = com.github.soundpod.appContext.preferences.getBoolean(isScreenCacheEnabledKey, true)
+        val isScreenCacheEnabled = com.github.musick.appContext.preferences.getBoolean(isScreenCacheEnabledKey, true)
         if (isScreenCacheEnabled) {
             val cacheKey = "album_$browseId"
             ScreenCache.load<Innertube.PlaylistOrAlbumPage>(cacheKey)?.let { cachedPage ->
@@ -72,7 +72,7 @@ class AlbumViewModel : ViewModel() {
     }
 
     private fun fetchAlbumData(browseId: String) {
-        val isScreenCacheEnabled = com.github.soundpod.appContext.preferences.getBoolean(isScreenCacheEnabledKey, true)
+        val isScreenCacheEnabled = com.github.musick.appContext.preferences.getBoolean(isScreenCacheEnabledKey, true)
         viewModelScope.launch(Dispatchers.IO) {
             Innertube.albumPage(browseId = browseId)
                 ?.completed()

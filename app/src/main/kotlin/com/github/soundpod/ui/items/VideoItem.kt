@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.items
+package com.github.musick.ui.items
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -18,9 +18,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.github.innertube.Innertube
-import com.github.soundpod.R
-import com.github.soundpod.ui.styling.onOverlay
-import com.github.soundpod.ui.styling.overlay
+import com.github.musick.R
+import com.github.musick.ui.styling.onOverlay
+import com.github.musick.ui.styling.overlay
 
 @Composable
 fun VideoItem(

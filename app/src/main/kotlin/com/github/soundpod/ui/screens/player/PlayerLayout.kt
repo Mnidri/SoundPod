@@ -1,9 +1,9 @@
-package com.github.soundpod.ui.screens.player
+package com.github.musick.ui.screens.player
 
 import androidx.compose.runtime.Composable
-import com.github.soundpod.enums.PlayerLayout
-import com.github.soundpod.utils.playerlayout
-import com.github.soundpod.utils.rememberPreference
+import com.github.musick.enums.PlayerLayout
+import com.github.musick.utils.playerlayout
+import com.github.musick.utils.rememberPreference
 
 @Composable
 fun PlayerLayout(

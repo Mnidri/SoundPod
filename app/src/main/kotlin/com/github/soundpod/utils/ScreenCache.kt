@@ -1,9 +1,9 @@
-package com.github.soundpod.utils
+package com.github.musick.utils
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.github.soundpod.appContext
+import com.github.musick.appContext
 import kotlinx.serialization.json.Json
 
 object ScreenCache {

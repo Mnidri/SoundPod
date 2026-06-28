@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.settings
+package com.github.musick.ui.screens.settings
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BlurOn
@@ -7,22 +7,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.github.soundpod.R
-import com.github.soundpod.enums.AppThemeColor
-import com.github.soundpod.enums.PlayerLayout
-import com.github.soundpod.enums.ProgressBar
-import com.github.soundpod.ui.common.IconSource
-import com.github.soundpod.utils.appTheme
-import com.github.soundpod.utils.playerlayout
-import com.github.soundpod.utils.progressBarStyle
-import com.github.soundpod.utils.rememberPreference
+import com.github.musick.R
+import com.github.musick.enums.AppThemeColor
+import com.github.musick.enums.PlayerLayout
+import com.github.musick.enums.ProgressBar
+import com.github.musick.ui.common.IconSource
+import com.github.musick.utils.appTheme
+import com.github.musick.utils.playerlayout
+import com.github.musick.utils.progressBarStyle
+import com.github.musick.utils.rememberPreference
 
 @Composable
 fun AppearanceSettingsContent(
     onBackgroundClick: () -> Unit
 ) {
     var appThemeColor by rememberPreference(appTheme, AppThemeColor.System)
-    var progressBarStyle by rememberPreference(progressBarStyle, ProgressBar.Default )
+    var progressBarStyle by rememberPreference(progressBarStyle, ProgressBar.Wave )
     var playerlayout by rememberPreference(playerlayout, PlayerLayout.Default )
 
     SettingsGroup(

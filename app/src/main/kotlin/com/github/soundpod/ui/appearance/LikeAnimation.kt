@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.appearance
+package com.github.musick.ui.appearance
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

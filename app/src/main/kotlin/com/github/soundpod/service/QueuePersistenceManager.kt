@@ -1,13 +1,13 @@
-package com.github.soundpod.service
+package com.github.musick.service
 
 import androidx.annotation.OptIn
 import androidx.media3.common.C
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
-import com.github.soundpod.db
-import com.github.soundpod.models.QueuedMediaItem
-import com.github.soundpod.query
-import com.github.soundpod.utils.mediaItems
+import com.github.musick.db
+import com.github.musick.models.QueuedMediaItem
+import com.github.musick.query
+import com.github.musick.utils.mediaItems
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

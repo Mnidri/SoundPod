@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.player
+package com.github.musick.ui.screens.player
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.OptIn
@@ -36,16 +36,16 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.enums.PlayerLayout
-import com.github.soundpod.enums.ProgressBar
-import com.github.soundpod.ui.screens.player.lyrics.LyricsOverlay
-import com.github.soundpod.ui.styling.Dimensions
-import com.github.soundpod.utils.isLandscape
-import com.github.soundpod.utils.progressBarStyle
-import com.github.soundpod.utils.rememberPreference
-import com.github.soundpod.viewmodels.PlayerViewModel
-import com.github.soundpod.viewmodels.PlaylistViewModel
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.enums.PlayerLayout
+import com.github.musick.enums.ProgressBar
+import com.github.musick.ui.screens.player.lyrics.LyricsOverlay
+import com.github.musick.ui.styling.Dimensions
+import com.github.musick.utils.isLandscape
+import com.github.musick.utils.progressBarStyle
+import com.github.musick.utils.rememberPreference
+import com.github.musick.viewmodels.PlayerViewModel
+import com.github.musick.viewmodels.PlaylistViewModel
 
 @OptIn(UnstableApi::class)
 @kotlin.OptIn(
@@ -99,7 +99,7 @@ fun MainPlayerContent(
 
     var isDraggingSeekBar by remember { mutableStateOf(false) }
 
-    val progressBarStyleState = rememberPreference(progressBarStyle, ProgressBar.Default)
+    val progressBarStyleState = rememberPreference(progressBarStyle, ProgressBar.Wave)
     val currentProgressStyle = progressBarStyleState.value
 
     val playingScale by animateFloatAsState(

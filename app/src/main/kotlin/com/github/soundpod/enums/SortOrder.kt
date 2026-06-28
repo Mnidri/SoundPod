@@ -1,4 +1,4 @@
-package com.github.soundpod.enums
+package com.github.musick.enums
 
 enum class SortOrder {
     Ascending,

@@ -31,7 +31,7 @@
     <string name="persistent_queue">Coda persistente</string>
     <string name="persistent_queue_description">Salva e ripristina le canzoni in riproduzione</string>
     <string name="resume_playback">Riprendi la riproduzione</string>
-    <string name="resume_playback_description">Quando un dispositivo cablato o Bluetooth è connesso</string>
+    <string name="resume_playback_description">Quando un diMusickositivo cablato o Bluetooth è connesso</string>
     <string name="skip_silence">Salta il silenzio</string>
     <string name="skip_silence_description">Salta le parti silenziose durante la riproduzione</string>
     <string name="loudness_normalization">Normalizzazione del volume</string>
@@ -56,7 +56,7 @@
     <string name="restore">Ripristina</string>
     <string name="reset_quick_picks">Ripristina le scelte rapide</string>
     <string name="restore_information">L\'app si chiuderà automaticamente dopo il ripristino del database e i dati esistenti verranno sovrascritti.</string>
-    <string name="backup_description">Esporta il database nella memoria esterna</string>
+    <string name="backup_description">EMusickorta il database nella memoria esterna</string>
     <string name="restore_description">Importa il database dalla memoria esterna</string>
     <string name="service_lifetime">Durata del servizio</string>
     <string name="pause_search_history">Pausa cronologia ricerche</string>
@@ -73,8 +73,8 @@
     <string name="featured">In evidenza</string>
     <string name="confirm">Conferma</string>
     <string name="set">Imposta</string>
-    <string name="sleep_timer">Timer di spegnimento</string>
-    <string name="set_sleep_timer">Imposta timer di spegnimento</string>
+    <string name="sleep_timer">Timer di Musickegnimento</string>
+    <string name="set_sleep_timer">Imposta timer di Musickegnimento</string>
     <string name="minutes_30">30 minuti</string>
     <string name="hour_1">1 ora</string>
     <string name="hour_1_30">1 ora e 30 minuti</string>
@@ -100,7 +100,7 @@
     <string name="sign_in_description">Sign in to access your library</string>
     <string name="sign_out">Sign out</string>
     <string name="sign_out_description">Clear session and cookies</string>
-    <string name="account">Account</string>
+    <string name="youtube">YouTube</string>
     <string name="search_lyrics_online">Cerca il testo online</string>
     <plurals name="number_of_songs">
         <item quantity="one">%d canzone</item>
@@ -120,12 +120,12 @@
     </plurals>
     <string name="hide_from_quick_picks">Nascondi dalle scelte rapide</string>
     <string name="more_from">Altro da</string>
-    <string name="stop_sleep_timer_dialog">Fermare il timer di spegnimento?</string>
+    <string name="stop_sleep_timer_dialog">Fermare il timer di Musickegnimento?</string>
     <string name="hide_song_dialog">Nascondere questa canzone?</string>
     <string name="hide_song_dialog_description">Il suo tempo di riproduzione e la cache saranno eliminati. Questa azione è irreversibile.</string>
     <string name="delete_playlist_dialog">Eliminare questa playlist?</string>
     <string name="no_items_found">Nessun elemento trovato</string>
-    <string name="no_songs_found">Nessun brano disponibile sul dispositivo</string>
+    <string name="no_songs_found">Nessun brano diMusickonibile sul diMusickositivo</string>
     <string name="audio_permission_denied">È richiesta l\'autorizzazione musicale per riprodurre brani locali</string>
     <string name="grant_permission">Concedi i permessi</string>
     <string name="no_results_found">Nessun risultato trovato. Prova una query o una categoria diversa</string>
@@ -137,11 +137,11 @@
     <string name="playable_format_not_found_error">Formato audio riproducibile non trovato</string>
     <string name="video_source_deleted_error">La fonte video originale di questa canzone è stata eliminata</string>
     <string name="server_restrictions_error">Questa canzone non può essere riprodotta a causa di restrizioni del server</string>
-    <string name="id_mismatch_error">L\'id video restituito non corrisponde a quello richiesto</string>
+    <string name="id_mismatch_error">L\'id video restituito non corriMusickonde a quello richiesto</string>
     <string name="unknown_playback_error">Si è verificato un errore sconosciuto di riproduzione</string>
     <string name="no_alternative_versions">Questo album non ha versioni alternative</string>
     <string name="fetch_lyrics_again">Riprova a recuperare il testo</string>
-    <string name="lyrics_not_available">Il testo non è disponibile per questa canzone</string>
+    <string name="lyrics_not_available">Il testo non è diMusickonibile per questa canzone</string>
     <string name="error_fetching_lyrics">Si è verificato un errore durante il recupero del testo</string>
     <string name="delete_playback_events">Eliminare %d eventi di riproduzione</string>
     <string name="quick_picks_cleared">Le scelte rapide sono state cancellate</string>
@@ -174,7 +174,7 @@
     <string name="delete_playlist">Elimina playlist</string>
     <string name="random">Casuale</string>
     <string name="queue_loop">Coda in loop</string>
-    <string name="sleep_timer_ended">Il timer di spegnimento è terminato</string>
+    <string name="sleep_timer_ended">Il timer di Musickegnimento è terminato</string>
     <string name="now_playing">Ora in riproduzione</string>
     <string name="clear_queue">Svuota la coda</string>
     <string name="song_deleted_queue">Canzone eliminata dalla coda</string>
@@ -196,8 +196,8 @@
     <string name="hidden">Nascosto</string>
     <string name="check_for_updates">Controlla aggiornamenti</string>
     <string name="checking_for_updates">Controllo aggiornamenti</string>
-    <string name="new_version_available">È disponibile una nuova versione</string>
-    <string name="no_updates_available">Nessun aggiornamento disponibile</string>
+    <string name="new_version_available">È diMusickonibile una nuova versione</string>
+    <string name="no_updates_available">Nessun aggiornamento diMusickonibile</string>
     <string name="version">Versione %s</string>
     <string name="open_in_github">Apri su GitHub</string>
     <string name="gestures">Gesti</string>
@@ -246,7 +246,7 @@
     <string name="seamless_update">Seamless Update</string>
     <string name="seamless_update_description">Install updates directly from app</string>
     <string name="enable_seamless_update">Enable Seamless Updates?</string>
-    <string name="enable_seamless_update_description">To install updates internally, SoundPod needs permission to install unknown apps.\nOtherwise, updates will be saved to your Downloads folder.</string>
+    <string name="enable_seamless_update_description">To install updates internally, Musick needs permission to install unknown apps.\nOtherwise, updates will be saved to your Downloads folder.</string>
     <string name="permissions">Permissions</string>
     <string name="notifications">Notifications</string>
     <string name="update_now">Update Now</string>
@@ -291,7 +291,7 @@
     <string name="updates_handled_by_fdroid">Updates for this version are handled through the F-Droid</string>
     <string name="distribution_info">Distribution</string>
     <string name="view_on_f_droid">View on F-Droid</string>
-    <string name="widget_description">SoundPod Music Player</string>
+    <string name="widget_description">Musick Music Player</string>
     <string name="background_style_discription">Choose your preferred background style</string>
     <string name="player_background">Player Background</string>
     <string name="style">Style</string>
@@ -313,7 +313,7 @@
     <string name="install_unknown_apps">Install Unknown Apps</string>
     <string name="storage">Storage</string>
     <string name="local_data">Local Data</string>
-    <string name="local_data_discription">SoundPod stores cache and database locally on your device.</string>
+    <string name="local_data_discription">Musick stores cache and database locally on your device.</string>
     <string name="f_droid_build">F-Droid Build</string>
     <string name="language_selector_not_found">Couldn\'t find app language settings, please configure them manually</string>
     <string name="play_back">Playback</string>
@@ -356,4 +356,8 @@
     <string name="favorite_artists">Favorite Artists</string>
     <string name="no_favorites">No favorites</string>
     <string name="no_favorites_description">Tap the heart icon on songs, albums, or artists to add them to your favorites.</string>
+    <string name="youtube_session">YouTube Session</string>
+    <string name="consent_granted">Consent: Granted</string>
+    <string name="consent_required">Consent: Required</string>
+    <string name="renew_consent">Renew Consent</string>
 </resources>

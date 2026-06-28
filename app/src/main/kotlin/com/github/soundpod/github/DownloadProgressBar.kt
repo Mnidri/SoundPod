@@ -1,4 +1,4 @@
-package com.github.soundpod.github
+package com.github.musick.github
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -16,7 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.dp
-import com.github.soundpod.ui.common.UpdateStatus
+import com.github.musick.ui.common.UpdateStatus
 
 @Composable
 fun DownloadProgressBar(

@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.player.lyrics
+package com.github.musick.ui.screens.player.lyrics
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,10 +23,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.MediaMetadata
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.ui.appearance.LoadingAnimation
-import com.github.soundpod.ui.components.Overlay
-import com.github.soundpod.utils.LyricsData
-import com.github.soundpod.viewmodels.LyricsViewModel
+import com.github.musick.ui.appearance.LoadingAnimation
+import com.github.musick.ui.components.Overlay
+import com.github.musick.utils.LyricsData
+import com.github.musick.viewmodels.LyricsViewModel
 
 @Composable
 fun LyricsOverlay(

@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.favorites
+package com.github.musick.ui.screens.favorites
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,13 +26,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
-import com.github.soundpod.LocalPlayerPadding
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.ui.components.SettingsScreenLayout
-import com.github.soundpod.utils.asMediaItem
-import com.github.soundpod.utils.forcePlayFromBeginning
-import com.github.soundpod.viewmodels.favorites.FavoritesViewModel
+import com.github.musick.LocalPlayerPadding
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.ui.components.SettingsScreenLayout
+import com.github.musick.utils.asMediaItem
+import com.github.musick.utils.forcePlayFromBeginning
+import com.github.musick.viewmodels.favorites.FavoritesViewModel
 
 @Composable
 fun FavoritesScreen(

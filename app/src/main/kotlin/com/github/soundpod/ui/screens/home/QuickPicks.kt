@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.home
+package com.github.musick.ui.screens.home
 
   import android.annotation.SuppressLint
 import androidx.compose.animation.Crossfade
@@ -36,6 +36,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,30 +49,31 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.github.innertube.Innertube
 import com.github.innertube.models.NavigationEndpoint
-import com.github.soundpod.LocalPlayerPadding
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.enums.QuickPicksSource
-import com.github.soundpod.models.LocalMenuState
-import com.github.soundpod.query
-import com.github.soundpod.ui.components.NonQueuedMediaItemMenu
-import com.github.soundpod.ui.components.ShimmerHost
-import com.github.soundpod.ui.components.TextPlaceholder
-import com.github.soundpod.ui.items.AlbumItem
-import com.github.soundpod.ui.items.ArtistItem
-import com.github.soundpod.ui.items.ItemPlaceholder
-import com.github.soundpod.ui.items.ListItemPlaceholder
-import com.github.soundpod.ui.items.LocalSongItem
-import com.github.soundpod.ui.items.PlaylistItem
-import com.github.soundpod.ui.items.SongItem
-import com.github.soundpod.ui.styling.Dimensions
-import com.github.soundpod.utils.asMediaItem
-import com.github.soundpod.utils.forcePlay
-import com.github.soundpod.utils.isLandscape
-import com.github.soundpod.utils.quickPicksCustomGenreKey
-import com.github.soundpod.utils.quickPicksSourceKey
-import com.github.soundpod.utils.rememberPreference
-import com.github.soundpod.viewmodels.home.QuickPicksViewModel
+import com.github.musick.LocalPlayerPadding
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.enums.QuickPicksSource
+import com.github.musick.models.LocalMenuState
+import com.github.musick.query
+import com.github.musick.service.YouTubeSessionManager
+import com.github.musick.ui.components.NonQueuedMediaItemMenu
+import com.github.musick.ui.components.ShimmerHost
+import com.github.musick.ui.components.TextPlaceholder
+import com.github.musick.ui.items.AlbumItem
+import com.github.musick.ui.items.ArtistItem
+import com.github.musick.ui.items.ItemPlaceholder
+import com.github.musick.ui.items.ListItemPlaceholder
+import com.github.musick.ui.items.LocalSongItem
+import com.github.musick.ui.items.PlaylistItem
+import com.github.musick.ui.items.SongItem
+import com.github.musick.ui.styling.Dimensions
+import com.github.musick.utils.asMediaItem
+import com.github.musick.utils.forcePlay
+import com.github.musick.utils.isLandscape
+import com.github.musick.utils.quickPicksCustomGenreKey
+import com.github.musick.utils.quickPicksSourceKey
+import com.github.musick.utils.rememberPreference
+import com.github.musick.viewmodels.home.QuickPicksViewModel
 import java.io.IOException
 
 @SuppressLint("ConfigurationScreenWidthHeight")
@@ -90,7 +92,7 @@ fun QuickPicks(
     val playerPadding = LocalPlayerPadding.current
 
     val viewModel: QuickPicksViewModel = viewModel()
-    val quickPicksSource by rememberPreference(quickPicksSourceKey, QuickPicksSource.Trending)
+    val quickPicksSource by rememberPreference(quickPicksSourceKey, QuickPicksSource.LastPlayed)
     val quickPicksCustomGenre by rememberPreference(quickPicksCustomGenreKey, "Psaltic music")
 
     val songThumbnailSizeDp = Dimensions.thumbnails.song
@@ -241,6 +243,20 @@ fun QuickPicks(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                        val needsConsent by YouTubeSessionManager.needsConsent.collectAsState()
+                        if (needsConsent) {
+                            Button(
+                                onClick = { YouTubeSessionManager.setNeedsConsent(true) },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                            ) {
+                                Icon(imageVector = Icons.Outlined.DownloadForOffline, contentDescription = null) // Using a placeholder for YouTube icon
+                                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                                Text(text = "Grant YouTube Consent")
+                            }
+                        } else {
                             Button(
                                 onClick = {
                                     viewModel.relatedPageResult = null
@@ -251,6 +267,7 @@ fun QuickPicks(
                                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                                 Text(text = stringResource(id = R.string.retry))
                             }
+                        }
 
                             FilledTonalButton(onClick = onOfflinePlaylistClick) {
                                 Icon(imageVector = Icons.Outlined.DownloadForOffline, contentDescription = null)

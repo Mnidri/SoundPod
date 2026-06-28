@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.components
+package com.github.musick.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.github.soundpod.ui.styling.shimmer
-import com.github.soundpod.utils.thumbnail
+import com.github.musick.ui.styling.shimmer
+import com.github.musick.utils.thumbnail
 import com.valentinilk.shimmer.shimmer
 
 fun adaptiveThumbnailContent(

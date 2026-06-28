@@ -1,6 +1,6 @@
 @file:Suppress("AssignedValueIsNeverRead")
 
-package com.github.soundpod.ui.screens.settings
+package com.github.musick.ui.screens.settings
 
 import android.annotation.SuppressLint
 import android.text.format.Formatter
@@ -40,25 +40,25 @@ import androidx.core.content.edit
 import androidx.media3.common.util.UnstableApi
 import coil3.imageLoader
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.db
-import com.github.soundpod.enums.CoilDiskCacheMaxSize
-import com.github.soundpod.enums.ExoPlayerDiskCacheMaxSize
-import com.github.soundpod.enums.QuickPicksSource
-import com.github.soundpod.query
-import com.github.soundpod.ui.common.IconSource
-import com.github.soundpod.ui.components.SwitchSetting
-import com.github.soundpod.ui.navigation.SettingsDestinations
-import com.github.soundpod.utils.ScreenCache
-import com.github.soundpod.utils.coilDiskCacheMaxSizeKey
-import com.github.soundpod.utils.exoPlayerDiskCacheMaxSizeKey
-import com.github.soundpod.utils.isScreenCacheEnabledKey
-import com.github.soundpod.utils.pauseSearchHistoryKey
-import com.github.soundpod.utils.pauseSongCacheKey
-import com.github.soundpod.utils.quickPicksSourceKey
-import com.github.soundpod.utils.rememberPreference
-import com.github.soundpod.utils.showCachedSongsInOfflineKey
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.db
+import com.github.musick.enums.CoilDiskCacheMaxSize
+import com.github.musick.enums.ExoPlayerDiskCacheMaxSize
+import com.github.musick.enums.QuickPicksSource
+import com.github.musick.query
+import com.github.musick.ui.common.IconSource
+import com.github.musick.ui.components.SwitchSetting
+import com.github.musick.ui.navigation.SettingsDestinations
+import com.github.musick.utils.ScreenCache
+import com.github.musick.utils.coilDiskCacheMaxSizeKey
+import com.github.musick.utils.exoPlayerDiskCacheMaxSizeKey
+import com.github.musick.utils.isScreenCacheEnabledKey
+import com.github.musick.utils.pauseSearchHistoryKey
+import com.github.musick.utils.pauseSongCacheKey
+import com.github.musick.utils.quickPicksSourceKey
+import com.github.musick.utils.rememberPreference
+import com.github.musick.utils.showCachedSongsInOfflineKey
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 @SuppressLint("LocalContextGetResourceValueCall")
@@ -90,7 +90,7 @@ fun CacheSettingsContent(
         db.eventsCount().distinctUntilChanged()
     }.collectAsState(initial = 0)
 
-    var quickPicksSource by rememberPreference(quickPicksSourceKey, QuickPicksSource.Trending)
+    var quickPicksSource by rememberPreference(quickPicksSourceKey, QuickPicksSource.LastPlayed)
 
     var showClearQuickPicksDialog by remember { mutableStateOf(false) }
     var showClearScreenCacheDialog by remember { mutableStateOf(false) }

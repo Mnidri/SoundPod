@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.components
+package com.github.musick.ui.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas

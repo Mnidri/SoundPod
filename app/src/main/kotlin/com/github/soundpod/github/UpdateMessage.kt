@@ -1,6 +1,6 @@
 @file:Suppress("AssignedValueIsNeverRead")
 
-package com.github.soundpod.github
+package com.github.musick.github
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,9 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.api.formatFileSize
-import com.github.soundpod.R
-import com.github.soundpod.ui.common.UpdateStatus
-import com.github.soundpod.ui.appearance.LoadingAnimation
+import com.github.musick.R
+import com.github.musick.ui.common.UpdateStatus
+import com.github.musick.ui.appearance.LoadingAnimation
 import java.io.File
 
 @Composable

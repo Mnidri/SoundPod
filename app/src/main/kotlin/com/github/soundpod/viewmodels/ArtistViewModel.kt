@@ -1,4 +1,4 @@
-package com.github.soundpod.viewmodels
+package com.github.musick.viewmodels
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,11 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.innertube.Innertube
 import com.github.innertube.requests.artistPage
-import com.github.soundpod.db
-import com.github.soundpod.models.Artist
-import com.github.soundpod.utils.ScreenCache
-import com.github.soundpod.utils.isScreenCacheEnabledKey
-import com.github.soundpod.utils.preferences
+import com.github.musick.db
+import com.github.musick.models.Artist
+import com.github.musick.utils.ScreenCache
+import com.github.musick.utils.isScreenCacheEnabledKey
+import com.github.musick.utils.preferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -38,7 +38,7 @@ class ArtistViewModel : ViewModel() {
     }
 
     suspend fun loadArtist(browseId: String, tabIndex: Int) {
-        val context = com.github.soundpod.appContext
+        val context = com.github.musick.appContext
         val isScreenCacheEnabled = context.preferences.getBoolean(isScreenCacheEnabledKey, true)
         val cacheKey = "artist_$browseId"
 

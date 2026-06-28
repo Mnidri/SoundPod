@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.search
+package com.github.musick.ui.screens.search
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -28,7 +28,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.R
+import com.github.musick.R
 
 @Composable
 fun NewSearchInputField(

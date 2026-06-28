@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.settings
+package com.github.musick.ui.screens.settings
 
 import android.Manifest
 import android.content.Context
@@ -25,9 +25,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.github.soundpod.BuildConfig
-import com.github.soundpod.R
-import com.github.soundpod.ui.common.IconSource
+import com.github.musick.BuildConfig
+import com.github.musick.R
+import com.github.musick.ui.common.IconSource
 
 @Suppress("KotlinConstantConditions")
 @Composable

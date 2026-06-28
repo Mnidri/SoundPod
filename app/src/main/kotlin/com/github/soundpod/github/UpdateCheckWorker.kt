@@ -1,4 +1,4 @@
-package com.github.soundpod.github
+package com.github.musick.github
 
 import android.Manifest
 import android.app.NotificationChannel
@@ -14,10 +14,10 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.github.api.GitHub
-import com.github.soundpod.R
-import com.github.soundpod.SettingsActivity
-import com.github.soundpod.ui.common.showUpdateAlert
-import com.github.soundpod.ui.navigation.SettingsDestinations
+import com.github.musick.R
+import com.github.musick.SettingsActivity
+import com.github.musick.ui.common.showUpdateAlert
+import com.github.musick.ui.navigation.SettingsDestinations
 import kotlinx.coroutines.flow.first
 
 class UpdateCheckWorker(

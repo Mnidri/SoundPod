@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.player
+package com.github.musick.ui.screens.player
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -48,15 +48,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.models.LocalMenuState
-import com.github.soundpod.ui.components.CircleDragHandle
-import com.github.soundpod.ui.components.MusicBars
-import com.github.soundpod.ui.components.Overlay
-import com.github.soundpod.ui.components.PlaylistHeader
-import com.github.soundpod.ui.components.QueuedMediaItemMenu
-import com.github.soundpod.ui.items.MediaSongItem
-import com.github.soundpod.ui.styling.onOverlay
-import com.github.soundpod.viewmodels.PlaylistViewModel
+import com.github.musick.models.LocalMenuState
+import com.github.musick.ui.components.CircleDragHandle
+import com.github.musick.ui.components.MusicBars
+import com.github.musick.ui.components.Overlay
+import com.github.musick.ui.components.PlaylistHeader
+import com.github.musick.ui.components.QueuedMediaItemMenu
+import com.github.musick.ui.items.MediaSongItem
+import com.github.musick.ui.styling.onOverlay
+import com.github.musick.viewmodels.PlaylistViewModel
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 

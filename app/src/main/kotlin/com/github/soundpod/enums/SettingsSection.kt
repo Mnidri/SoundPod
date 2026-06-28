@@ -1,4 +1,4 @@
-package com.github.soundpod.enums
+package com.github.musick.enums
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -10,7 +10,7 @@ import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.github.soundpod.R
+import com.github.musick.R
 
 enum class SettingsSection(
     @StringRes val resourceId: Int,

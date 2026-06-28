@@ -1,19 +1,19 @@
-package com.github.soundpod.viewmodels.favorites
+package com.github.musick.viewmodels.favorites
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.soundpod.db
-import com.github.soundpod.models.Album
-import com.github.soundpod.models.Artist
-import com.github.soundpod.models.PlaylistPreview
-import com.github.soundpod.models.Song
-import com.github.soundpod.R
-import com.github.soundpod.enums.AlbumSortBy
-import com.github.soundpod.enums.ArtistSortBy
-import com.github.soundpod.enums.SortOrder
+import com.github.musick.db
+import com.github.musick.models.Album
+import com.github.musick.models.Artist
+import com.github.musick.models.PlaylistPreview
+import com.github.musick.models.Song
+import com.github.musick.R
+import com.github.musick.enums.AlbumSortBy
+import com.github.musick.enums.ArtistSortBy
+import com.github.musick.enums.SortOrder
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

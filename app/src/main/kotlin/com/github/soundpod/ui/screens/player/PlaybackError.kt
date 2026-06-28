@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.player
+package com.github.musick.ui.screens.player
 
 import android.content.ClipData
 import android.util.Log
@@ -43,11 +43,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.media3.common.PlaybackException
-import com.github.soundpod.R
-import com.github.soundpod.service.LoginRequiredException
-import com.github.soundpod.service.PlayableFormatNotFoundException
-import com.github.soundpod.service.UnplayableException
-import com.github.soundpod.service.VideoIdMismatchException
+import com.github.musick.R
+import com.github.musick.service.LoginRequiredException
+import com.github.musick.service.PlayableFormatNotFoundException
+import com.github.musick.service.UnplayableException
+import com.github.musick.service.VideoIdMismatchException
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 import java.nio.channels.UnresolvedAddressException

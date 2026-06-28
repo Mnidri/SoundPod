@@ -1,7 +1,6 @@
-package com.github.soundpod.enums
-
+package com.github.musick.enums
 import androidx.annotation.StringRes
-import com.github.soundpod.R
+import com.github.musick.R
 
 enum class QuickPicksSource(
     @StringRes val resourceId: Int

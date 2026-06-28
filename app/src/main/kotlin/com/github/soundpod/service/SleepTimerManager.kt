@@ -1,11 +1,11 @@
-package com.github.soundpod.service
+package com.github.musick.service
 
 import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
-import com.github.soundpod.R
-import com.github.soundpod.utils.TimerJob
-import com.github.soundpod.utils.timer
+import com.github.musick.R
+import com.github.musick.utils.TimerJob
+import com.github.musick.utils.timer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.player
+package com.github.musick.ui.screens.player
 
 import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
@@ -47,13 +47,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.navigation.NavController
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.LocalPlayerPadding
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.SettingsActivity
-import com.github.soundpod.ui.appearance.PlayerBackground
-import com.github.soundpod.ui.navigation.Routes
-import com.github.soundpod.ui.navigation.SettingsDestinations
-import com.github.soundpod.utils.isLandscape
+import com.github.musick.LocalPlayerPadding
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.SettingsActivity
+import com.github.musick.ui.appearance.PlayerBackground
+import com.github.musick.ui.navigation.Routes
+import com.github.musick.ui.navigation.SettingsDestinations
+import com.github.musick.utils.isLandscape
 import kotlinx.coroutines.launch
 import androidx.media3.common.Player
 import androidx.media3.common.MediaItem

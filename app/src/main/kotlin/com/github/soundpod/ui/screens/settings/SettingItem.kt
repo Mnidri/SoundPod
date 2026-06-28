@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.settings
+package com.github.musick.ui.screens.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,9 +34,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.ui.common.IconSource
-import com.github.soundpod.ui.components.SettingsCard
-import com.github.soundpod.ui.components.ThemeSelectorDialog
+import com.github.musick.ui.common.IconSource
+import com.github.musick.ui.components.SettingsCard
+import com.github.musick.ui.components.ThemeSelectorDialog
 
 @Composable
 inline fun <reified T : Enum<T>> EnumValueSelectorSettingsEntry(

@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.search
+package com.github.musick.ui.screens.search
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
@@ -60,18 +60,18 @@ import com.github.core.ui.ColorPalette
 import com.github.core.ui.LocalAppearance
 import com.github.innertube.Innertube
 import com.github.innertube.requests.searchSuggestions
-import com.github.soundpod.R
-import com.github.soundpod.db
-import com.github.soundpod.models.SearchQuery
-import com.github.soundpod.query
-import com.github.soundpod.ui.appearance.LoadingAnimation
-import com.github.soundpod.ui.components.SettingsCard
-import com.github.soundpod.ui.components.SettingsScreenLayout
-import com.github.soundpod.ui.navigation.Routes
-import com.github.soundpod.utils.pauseSearchHistoryKey
-import com.github.soundpod.utils.preferences
-import com.github.soundpod.utils.rememberVoiceSearchLauncher
-import com.github.soundpod.viewmodels.SearchViewModel
+import com.github.musick.R
+import com.github.musick.db
+import com.github.musick.models.SearchQuery
+import com.github.musick.query
+import com.github.musick.ui.appearance.LoadingAnimation
+import com.github.musick.ui.components.SettingsCard
+import com.github.musick.ui.components.SettingsScreenLayout
+import com.github.musick.ui.navigation.Routes
+import com.github.musick.utils.pauseSearchHistoryKey
+import com.github.musick.utils.preferences
+import com.github.musick.utils.rememberVoiceSearchLauncher
+import com.github.musick.viewmodels.SearchViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged

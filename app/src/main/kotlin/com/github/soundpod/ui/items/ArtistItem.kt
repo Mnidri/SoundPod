@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.items
+package com.github.musick.ui.items
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -19,10 +19,10 @@ import androidx.compose.ui.text.style.TextAlign
 import java.util.Locale
 import coil3.compose.AsyncImage
 import com.github.innertube.Innertube
-import com.github.soundpod.R
-import com.github.soundpod.models.Artist
-import com.github.soundpod.ui.styling.px
-import com.github.soundpod.utils.thumbnail
+import com.github.musick.R
+import com.github.musick.models.Artist
+import com.github.musick.ui.styling.px
+import com.github.musick.utils.thumbnail
 
 @Composable
 fun ArtistItem(

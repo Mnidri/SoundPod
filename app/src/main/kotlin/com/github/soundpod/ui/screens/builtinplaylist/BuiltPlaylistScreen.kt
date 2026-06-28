@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.builtinplaylist
+package com.github.musick.ui.screens.builtinplaylist
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -30,18 +30,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.R
-import com.github.soundpod.db
-import com.github.soundpod.enums.BuiltInPlaylist
-import com.github.soundpod.enums.SongSortBy
-import com.github.soundpod.enums.SortOrder
-import com.github.soundpod.models.Song
-import com.github.soundpod.query
-import com.github.soundpod.ui.components.SettingsCard
-import com.github.soundpod.ui.components.SettingsScreenLayout
-import com.github.soundpod.utils.rememberPreference
-import com.github.soundpod.utils.songSortByKey
-import com.github.soundpod.utils.songSortOrderKey
+import com.github.musick.R
+import com.github.musick.db
+import com.github.musick.enums.BuiltInPlaylist
+import com.github.musick.enums.SongSortBy
+import com.github.musick.enums.SortOrder
+import com.github.musick.models.Song
+import com.github.musick.query
+import com.github.musick.ui.components.SettingsCard
+import com.github.musick.ui.components.SettingsScreenLayout
+import com.github.musick.utils.rememberPreference
+import com.github.musick.utils.songSortByKey
+import com.github.musick.utils.songSortOrderKey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalFoundationApi

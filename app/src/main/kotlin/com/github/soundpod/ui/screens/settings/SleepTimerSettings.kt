@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.settings
+package com.github.musick.ui.screens.settings
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -52,14 +52,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.ui.common.IconSource
-import com.github.soundpod.ui.components.SettingsCard
-import com.github.soundpod.ui.components.SwitchSetting
-import com.github.soundpod.utils.rememberPreference
-import com.github.soundpod.utils.selectedSleepTimerPresetKey
-import com.github.soundpod.utils.stopAfterCurrentKey
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.ui.common.IconSource
+import com.github.musick.ui.components.SettingsCard
+import com.github.musick.ui.components.SwitchSetting
+import com.github.musick.utils.rememberPreference
+import com.github.musick.utils.selectedSleepTimerPresetKey
+import com.github.musick.utils.stopAfterCurrentKey
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale

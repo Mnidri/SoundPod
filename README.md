@@ -1,6 +1,6 @@
 <h1 align="center">
-  <img src="fastlane/metadata/android/en-US/images/icon_round.webp" width="80" alt="SoundPod Icon" style="vertical-align:middle"><br>
-  SoundPod
+  <img src="fastlane/metadata/android/en-US/images/icon_round.webp" width="80" alt="Musick Icon" style="vertical-align:middle"><br>
+  Musick
 </h1>
 
 <p align="center">
@@ -11,11 +11,11 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Platform-Android-brightgreen.svg" alt="Platform">
   <a title="GPL-3.0-only" target="_blank" href="https://spdx.org/licenses/GPL-3.0-only.html"><img src="https://img.shields.io/badge/License-GPL--3.0--only-blue.svg" alt="License"></a>
-  <a href="https://f-droid.org/packages/com.github.soundpod/"><img src="https://img.shields.io/badge/F--Droid-Available-brightgreen.svg?logo=f-droid" alt="F-Droid Status"></a>
-  <a title="Crowdin" target="_blank" href="https://crowdin.com/project/soundpod"><img src="https://badges.crowdin.net/soundpod/localized.svg" alt="Crowdin Status"></a>
-  <img src="https://img.shields.io/github/languages/top/arunnechully/SoundPod?logo=kotlin" alt="Top Language">
-  <a href="https://github.com/arunnechully/SoundPod/releases/latest"><img src="https://img.shields.io/github/downloads/arunnechully/SoundPod/total.svg?color=brightgreen" alt="GitHub Downloads"></a>
-  <img src="https://img.shields.io/github/last-commit/arunnechully/SoundPod.svg?color=brightgreen" alt="Last Commit">
+  <a href="https://f-droid.org/packages/com.github.musick/"><img src="https://img.shields.io/badge/F--Droid-Available-brightgreen.svg?logo=f-droid" alt="F-Droid Status"></a>
+  <a title="Crowdin" target="_blank" href="https://crowdin.com/project/musick"><img src="https://badges.crowdin.net/musick/localized.svg" alt="Crowdin Status"></a>
+  <img src="https://img.shields.io/github/languages/top/arunnechully/Musick?logo=kotlin" alt="Top Language">
+  <a href="https://github.com/arunnechully/Musick/releases/latest"><img src="https://img.shields.io/github/downloads/arunnechully/Musick/total.svg?color=brightgreen" alt="GitHub Downloads"></a>
+  <img src="https://img.shields.io/github/last-commit/arunnechully/Musick.svg?color=brightgreen" alt="Last Commit">
 </p>
 
 ---
@@ -50,15 +50,15 @@
 Download the latest stable APK directly from GitHub, or get it on F-Droid to receive automatic updates.
 
 <p align="center">
-  <a href="https://github.com/arunnechully/SoundPod/releases/latest" style="text-decoration:none;"><img src="https://github.com/machiav3lli/oandbackupx/blob/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png" alt="Get it on GitHub" height="60"></a>
-  <a href="https://f-droid.org/packages/com.github.soundpod/" style="text-decoration:none;"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="60"></a>
+  <a href="https://github.com/arunnechully/Musick/releases/latest" style="text-decoration:none;"><img src="https://github.com/machiav3lli/oandbackupx/blob/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png" alt="Get it on GitHub" height="60"></a>
+  <a href="https://f-droid.org/packages/com.github.musick/" style="text-decoration:none;"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="60"></a>
 </p>
 
 ---
 
 ## Translation
 
-Localization is managed using [Crowdin](https://crowdin.com/project/soundpod). If you wish to contribute and help translate SoundPod into your language, your help is greatly appreciated!
+Localization is managed using [Crowdin](https://crowdin.com/project/musick). If you wish to contribute and help translate Musick into your language, your help is greatly appreciated!
 
 A special thanks to our translators:
 * **French:** [Mickael81](https://github.com/Mickael81)
@@ -67,7 +67,7 @@ A special thanks to our translators:
 
 ## Credits & Inspiration
 
-SoundPod is built upon the foundation of incredible open-source projects and creative resources. A special thanks to the developers and communities behind:
+Musick is built upon the foundation of incredible open-source projects and creative resources. A special thanks to the developers and communities behind:
 
 **Open-Source Projects:**
 * [**NewPipe**](https://github.com/TeamNewPipe/NewPipe)

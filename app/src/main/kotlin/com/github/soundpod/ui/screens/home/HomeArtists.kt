@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.home
+package com.github.musick.ui.screens.home
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -16,17 +16,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.github.soundpod.LocalPlayerPadding
-import com.github.soundpod.R
-import com.github.soundpod.enums.ArtistSortBy
-import com.github.soundpod.enums.SortOrder
-import com.github.soundpod.models.Artist
-import com.github.soundpod.ui.components.SortingHeader
-import com.github.soundpod.ui.items.LocalArtistItem
-import com.github.soundpod.utils.artistSortByKey
-import com.github.soundpod.utils.artistSortOrderKey
-import com.github.soundpod.utils.rememberPreference
-import com.github.soundpod.viewmodels.home.HomeArtistsViewModel
+import com.github.musick.LocalPlayerPadding
+import com.github.musick.R
+import com.github.musick.enums.ArtistSortBy
+import com.github.musick.enums.SortOrder
+import com.github.musick.models.Artist
+import com.github.musick.ui.components.SortingHeader
+import com.github.musick.ui.items.LocalArtistItem
+import com.github.musick.utils.artistSortByKey
+import com.github.musick.utils.artistSortOrderKey
+import com.github.musick.utils.rememberPreference
+import com.github.musick.viewmodels.home.HomeArtistsViewModel
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi

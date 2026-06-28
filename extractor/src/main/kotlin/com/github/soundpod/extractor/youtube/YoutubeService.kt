@@ -1,4 +1,4 @@
-package com.github.soundpod.extractor.youtube
+package com.github.musick.extractor.youtube
 
 class YoutubeService {
     fun getStreamExtractor(url: String): YoutubeStreamExtractor {

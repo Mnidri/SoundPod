@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.album
+package com.github.musick.ui.screens.album
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,19 +23,19 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.LocalPlayerPadding
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.db
-import com.github.soundpod.enums.SongSortBy
-import com.github.soundpod.enums.SortOrder
-import com.github.soundpod.models.LocalMenuState
-import com.github.soundpod.models.Song
-import com.github.soundpod.ui.components.NonQueuedMediaItemMenu
-import com.github.soundpod.ui.components.SortingHeader // Added for SortingHeader
-import com.github.soundpod.ui.items.LocalSongItem
-import com.github.soundpod.ui.styling.Dimensions
-import com.github.soundpod.utils.asMediaItem
-import com.github.soundpod.utils.forcePlayAtIndex
+import com.github.musick.LocalPlayerPadding
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.db
+import com.github.musick.enums.SongSortBy
+import com.github.musick.enums.SortOrder
+import com.github.musick.models.LocalMenuState
+import com.github.musick.models.Song
+import com.github.musick.ui.components.NonQueuedMediaItemMenu
+import com.github.musick.ui.components.SortingHeader // Added for SortingHeader
+import com.github.musick.ui.items.LocalSongItem
+import com.github.musick.ui.styling.Dimensions
+import com.github.musick.utils.asMediaItem
+import com.github.musick.utils.forcePlayAtIndex
 
 @OptIn(ExperimentalAnimationApi::class)
 @UnstableApi

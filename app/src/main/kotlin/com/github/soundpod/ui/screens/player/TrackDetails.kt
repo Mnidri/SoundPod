@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.player
+package com.github.musick.ui.screens.player
 
 import android.content.ClipData
 import android.text.format.Formatter
@@ -43,13 +43,13 @@ import androidx.media3.common.Player
 import androidx.media3.datasource.cache.Cache
 import androidx.media3.datasource.cache.CacheSpan
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.db
-import com.github.soundpod.models.Info
-import com.github.soundpod.ui.components.AdaptiveThumbnail
-import com.github.soundpod.ui.components.SettingsCard
-import com.github.soundpod.utils.toast
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.db
+import com.github.musick.models.Info
+import com.github.musick.ui.components.AdaptiveThumbnail
+import com.github.musick.ui.components.SettingsCard
+import com.github.musick.utils.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch

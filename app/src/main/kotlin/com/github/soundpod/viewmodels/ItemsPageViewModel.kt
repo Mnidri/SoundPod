@@ -1,6 +1,6 @@
 @file:Suppress("UnusedImport")
 
-package com.github.soundpod.viewmodels
+package com.github.musick.viewmodels
 
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.ViewModel

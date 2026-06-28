@@ -1,16 +1,16 @@
-package com.github.soundpod.service
+package com.github.musick.service
 
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.media3.common.Player
-import com.github.soundpod.ui.common.MusicPlayerWidget
-import com.github.soundpod.ui.common.widgetArtistKey
-import com.github.soundpod.ui.common.widgetArtworkPathKey
-import com.github.soundpod.ui.common.widgetIsPlayingKey
-import com.github.soundpod.ui.common.widgetSongTitleKey
-import com.github.soundpod.utils.shouldBePlaying
+import com.github.musick.ui.common.MusicPlayerWidget
+import com.github.musick.ui.common.widgetArtistKey
+import com.github.musick.ui.common.widgetArtworkPathKey
+import com.github.musick.ui.common.widgetIsPlayingKey
+import com.github.musick.ui.common.widgetSongTitleKey
+import com.github.musick.utils.shouldBePlaying
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +23,7 @@ class WidgetUpdater(
 ) {
     fun updateWidget(player: Player, currentBitmap: Bitmap?) {
         val currentTitle = player.mediaMetadata.title?.toString() ?: "Not Playing"
-        val currentArtist = player.mediaMetadata.artist?.toString() ?: "SoundPod"
+        val currentArtist = player.mediaMetadata.artist?.toString() ?: "Musick"
         val isCurrentlyPlaying = player.shouldBePlaying
 
         coroutineScope.launch(Dispatchers.IO) {

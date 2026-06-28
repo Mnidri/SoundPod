@@ -1,6 +1,6 @@
-package com.github.soundpod.extractor
+package com.github.musick.extractor
 
-import com.github.soundpod.extractor.youtube.YoutubeService
+import com.github.musick.extractor.youtube.YoutubeService
 
 object ServiceList {
     val YouTube = YoutubeService()

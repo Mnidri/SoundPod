@@ -1,4 +1,4 @@
-package com.github.soundpod.service
+package com.github.musick.service
 
 import android.content.ComponentName
 import android.content.ContentResolver
@@ -17,17 +17,17 @@ import androidx.core.net.toUri
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.cache.Cache
-import com.github.soundpod.R
-import com.github.soundpod.db
-import com.github.soundpod.models.Album
-import com.github.soundpod.models.PlaylistPreview
-import com.github.soundpod.models.Song
-import com.github.soundpod.models.SongWithContentLength
-import com.github.soundpod.utils.asMediaItem
-import com.github.soundpod.utils.forcePlayAtIndex
-import com.github.soundpod.utils.forceSeekToNext
-import com.github.soundpod.utils.forceSeekToPrevious
-import com.github.soundpod.utils.intent
+import com.github.musick.R
+import com.github.musick.db
+import com.github.musick.models.Album
+import com.github.musick.models.PlaylistPreview
+import com.github.musick.models.Song
+import com.github.musick.models.SongWithContentLength
+import com.github.musick.utils.asMediaItem
+import com.github.musick.utils.forcePlayAtIndex
+import com.github.musick.utils.forceSeekToNext
+import com.github.musick.utils.forceSeekToPrevious
+import com.github.musick.utils.intent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first

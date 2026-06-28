@@ -1,4 +1,4 @@
-package com.github.soundpod.service
+package com.github.musick.service
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -14,14 +14,14 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.media3.common.Player
-import com.github.soundpod.MainActivity
-import com.github.soundpod.R
-import com.github.soundpod.utils.activityPendingIntent
-import com.github.soundpod.utils.broadCastPendingIntent
-import com.github.soundpod.utils.forceSeekToNext
-import com.github.soundpod.utils.forceSeekToPrevious
-import com.github.soundpod.utils.intent
-import com.github.soundpod.utils.shouldBePlaying
+import com.github.musick.MainActivity
+import com.github.musick.R
+import com.github.musick.utils.activityPendingIntent
+import com.github.musick.utils.broadCastPendingIntent
+import com.github.musick.utils.forceSeekToNext
+import com.github.musick.utils.forceSeekToPrevious
+import com.github.musick.utils.intent
+import com.github.musick.utils.shouldBePlaying
 
 class PlayerNotificationManager(
     private val context: Context,
@@ -155,10 +155,10 @@ private value class Action(val value: String) {
     )
 
     companion object {
-        val pause = Action("com.github.soundpod.pause")
-        val play = Action("com.github.soundpod.play")
-        val next = Action("com.github.soundpod.next")
-        val previous = Action("com.github.soundpod.previous")
+        val pause = Action("com.github.musick.pause")
+        val play = Action("com.github.musick.play")
+        val next = Action("com.github.musick.next")
+        val previous = Action("com.github.musick.previous")
     }
 }
 

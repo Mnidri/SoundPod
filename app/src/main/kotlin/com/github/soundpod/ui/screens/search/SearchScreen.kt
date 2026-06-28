@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.search
+package com.github.musick.ui.screens.search
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -48,12 +48,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.media3.common.util.UnstableApi
 import com.github.innertube.Innertube
 import com.github.innertube.requests.searchSuggestions
-import com.github.soundpod.db
-import com.github.soundpod.models.SearchQuery
-import com.github.soundpod.query
-import com.github.soundpod.ui.styling.Dimensions
-import com.github.soundpod.utils.pauseSearchHistoryKey
-import com.github.soundpod.utils.preferences
+import com.github.musick.db
+import com.github.musick.models.SearchQuery
+import com.github.musick.query
+import com.github.musick.ui.styling.Dimensions
+import com.github.musick.utils.pauseSearchHistoryKey
+import com.github.musick.utils.preferences
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch

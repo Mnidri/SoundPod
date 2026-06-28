@@ -1,12 +1,12 @@
-package com.github.soundpod.service
+package com.github.musick.service
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.media3.exoplayer.ExoPlayer
 import com.github.innertube.models.NavigationEndpoint
-import com.github.soundpod.utils.YouTubeRadio
-import com.github.soundpod.utils.forcePlayFromBeginning
+import com.github.musick.utils.YouTubeRadio
+import com.github.musick.utils.forcePlayFromBeginning
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

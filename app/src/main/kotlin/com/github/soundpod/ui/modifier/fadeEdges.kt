@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.modifier
+package com.github.musick.ui.modifier
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent

@@ -1,4 +1,4 @@
-package com.github.soundpod.utils
+package com.github.musick.utils
 
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem

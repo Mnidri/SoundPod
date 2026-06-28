@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.search
+package com.github.musick.ui.screens.search
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -31,13 +31,13 @@ import androidx.media3.common.util.UnstableApi
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.innertube.Innertube
 import com.github.innertube.utils.plus
-import com.github.soundpod.LocalPlayerPadding
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.ui.components.GridOverlay
-import com.github.soundpod.ui.components.ShimmerHost
-import com.github.soundpod.ui.styling.Dimensions
-import com.github.soundpod.viewmodels.ItemsPageViewModel
+import com.github.musick.LocalPlayerPadding
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.ui.components.GridOverlay
+import com.github.musick.ui.components.ShimmerHost
+import com.github.musick.ui.styling.Dimensions
+import com.github.musick.viewmodels.ItemsPageViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.settings
+package com.github.musick.ui.screens.settings
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
@@ -27,16 +27,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
-import com.github.soundpod.R
-import com.github.soundpod.service.PlayerMediaBrowserService
-import com.github.soundpod.ui.common.IconSource
-import com.github.soundpod.ui.components.SwitchSetting
-import com.github.soundpod.utils.isAtLeastAndroid12
-import com.github.soundpod.utils.isAtLeastAndroid13
-import com.github.soundpod.utils.isIgnoringBatteryOptimizations
-import com.github.soundpod.utils.isInvincibilityEnabledKey
-import com.github.soundpod.utils.rememberPreference
-import com.github.soundpod.utils.toast
+import com.github.musick.R
+import com.github.musick.service.PlayerMediaBrowserService
+import com.github.musick.ui.common.IconSource
+import com.github.musick.ui.components.SwitchSetting
+import com.github.musick.utils.isAtLeastAndroid12
+import com.github.musick.utils.isAtLeastAndroid13
+import com.github.musick.utils.isIgnoringBatteryOptimizations
+import com.github.musick.utils.isInvincibilityEnabledKey
+import com.github.musick.utils.rememberPreference
+import com.github.musick.utils.toast
 
 @SuppressLint("BatteryLife")
 @Composable
@@ -177,7 +177,7 @@ fun MoreSettingsContent() {
                                 Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
                             )
                         } catch (_: ActivityNotFoundException) {
-                            context.toast("Couldn't find battery optimization settings, please whitelist SoundPod manually")
+                            context.toast("Couldn't find battery optimization settings, please whitelist Musick manually")
                         }
                     }
                 },

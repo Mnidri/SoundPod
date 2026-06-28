@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.styling
+package com.github.musick.ui.styling
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

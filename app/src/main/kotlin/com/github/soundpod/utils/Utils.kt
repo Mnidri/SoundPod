@@ -1,4 +1,4 @@
-package com.github.soundpod.utils
+package com.github.musick.utils
 
 import android.net.Uri
 import android.os.Build
@@ -10,7 +10,7 @@ import androidx.media3.common.MediaMetadata
 import com.github.innertube.Innertube
 import com.github.innertube.requests.playlistPageContinuation
 import com.github.innertube.utils.plus
-import com.github.soundpod.models.Song
+import com.github.musick.models.Song
 
 val Innertube.SongItem.asMediaItem: MediaItem
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
@@ -92,14 +92,19 @@ fun String?.thumbnail(size: Int): String? {
     if (this == null) return null
 
     if (this.contains("i.ytimg.com")) {
-        return this.replace("hqdefault.jpg", "maxresdefault.jpg")
-            .replace("mqdefault.jpg", "maxresdefault.jpg")
-            .replace("sddefault.jpg", "maxresdefault.jpg")
+        val quality = when {
+            size <= 120 -> "default.jpg"
+            size <= 320 -> "mqdefault.jpg"
+            size <= 480 -> "hqdefault.jpg"
+            size <= 640 -> "sddefault.jpg"
+            else -> "maxresdefault.jpg"
+        }
+        return this.replace(Regex("(default|mqdefault|hqdefault|sddefault|maxresdefault|hq720)\\.jpg"), quality)
     }
 
     if (this.contains("googleusercontent.com") || this.contains("ggpht.com")) {
         val cleanUrl = this.substringBefore("=")
-        return "$cleanUrl=w1024-h1024-p-l100-rj"
+        return "$cleanUrl=w$size-h$size-p-l100-rj"
     }
 
     return this

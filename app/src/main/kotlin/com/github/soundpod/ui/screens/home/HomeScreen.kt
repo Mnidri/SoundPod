@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 
-package com.github.soundpod.ui.screens.home
+package com.github.musick.ui.screens.home
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.BorderStroke
@@ -28,15 +28,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.R
+import com.github.musick.R
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.github.soundpod.ui.components.HorizontalTabs
-import com.github.soundpod.ui.components.SettingsCard
-import com.github.soundpod.ui.components.SettingsScreenLayout
-import com.github.soundpod.enums.BuiltInPlaylist
-import com.github.soundpod.ui.navigation.Routes
-import com.github.soundpod.ui.screens.favorites.FavoritesScreen
-import com.github.soundpod.viewmodels.home.HomeViewModel
+import com.github.musick.ui.components.HorizontalTabs
+import com.github.musick.ui.components.SettingsCard
+import com.github.musick.ui.components.SettingsScreenLayout
+import com.github.musick.enums.BuiltInPlaylist
+import com.github.musick.ui.navigation.Routes
+import com.github.musick.ui.screens.favorites.FavoritesScreen
+import com.github.musick.viewmodels.home.HomeViewModel
 
 @Composable
 fun HomeScreen(
@@ -57,7 +57,7 @@ fun HomeScreen(
     SettingsScreenLayout(
         title = {
             Text(
-                text = "SoundPod",
+                text = "Musick",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = colorPalette.text

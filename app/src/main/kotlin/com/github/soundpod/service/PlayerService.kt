@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package com.github.soundpod.service
+package com.github.musick.service
 
 import android.app.Notification
 import android.content.Intent
@@ -35,27 +35,27 @@ import androidx.media3.exoplayer.audio.MediaCodecAudioRenderer
 import androidx.media3.exoplayer.audio.SilenceSkippingAudioProcessor
 import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
 import com.github.innertube.models.NavigationEndpoint
-import com.github.soundpod.db
-import com.github.soundpod.query
-import com.github.soundpod.utils.InvincibleService
-import com.github.soundpod.utils.broadCastPendingIntent
-import com.github.soundpod.utils.intent
-import com.github.soundpod.utils.isAtLeastAndroid13
-import com.github.soundpod.utils.isAtLeastAndroid8
-import com.github.soundpod.utils.isInvincibilityEnabledKey
-import com.github.soundpod.utils.isShowingThumbnailInLockscreenKey
-import com.github.soundpod.utils.pauseOnAppCloseKey
-import com.github.soundpod.utils.persistentQueueKey
-import com.github.soundpod.utils.playbackPitchKey
-import com.github.soundpod.utils.playbackSpeedKey
-import com.github.soundpod.utils.preferences
-import com.github.soundpod.utils.queueLoopEnabledKey
-import com.github.soundpod.utils.resumePlaybackWhenDeviceConnectedKey
-import com.github.soundpod.utils.shouldBePlaying
-import com.github.soundpod.utils.skipSilenceKey
-import com.github.soundpod.utils.stopAfterCurrentKey
-import com.github.soundpod.utils.trackLoopEnabledKey
-import com.github.soundpod.utils.volumeNormalizationKey
+import com.github.musick.db
+import com.github.musick.query
+import com.github.musick.utils.InvincibleService
+import com.github.musick.utils.broadCastPendingIntent
+import com.github.musick.utils.intent
+import com.github.musick.utils.isAtLeastAndroid13
+import com.github.musick.utils.isAtLeastAndroid8
+import com.github.musick.utils.isInvincibilityEnabledKey
+import com.github.musick.utils.isShowingThumbnailInLockscreenKey
+import com.github.musick.utils.pauseOnAppCloseKey
+import com.github.musick.utils.persistentQueueKey
+import com.github.musick.utils.playbackPitchKey
+import com.github.musick.utils.playbackSpeedKey
+import com.github.musick.utils.preferences
+import com.github.musick.utils.queueLoopEnabledKey
+import com.github.musick.utils.resumePlaybackWhenDeviceConnectedKey
+import com.github.musick.utils.shouldBePlaying
+import com.github.musick.utils.skipSilenceKey
+import com.github.musick.utils.stopAfterCurrentKey
+import com.github.musick.utils.trackLoopEnabledKey
+import com.github.musick.utils.volumeNormalizationKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -164,7 +164,7 @@ class PlayerService : InvincibleService(), Player.Listener,
         cacheManager = PlayerCacheManager(this)
 
         mediaSourceProvider = PlayerMediaSourceProvider(this, cacheManager)
-        preCacheManager = PreCacheManager(this, cacheManager, mediaSourceProvider)
+        preCacheManager = PreCacheManager(cacheManager, mediaSourceProvider)
 
         val loadControl = DefaultLoadControl.Builder()
             .setBufferDurationsMs(
@@ -348,7 +348,7 @@ class PlayerService : InvincibleService(), Player.Listener,
         }
 
         if (videoIdsToPrefetch.isNotEmpty()) {
-            Log.d("SoundPod-Prefetch", "Triggering prefetch for: $videoIdsToPrefetch")
+            Log.d("Musick-Prefetch", "Triggering prefetch for: $videoIdsToPrefetch")
             preCacheManager.preCache(videoIdsToPrefetch)
             
             // Also pre-fetch lyrics and artwork for the very next track

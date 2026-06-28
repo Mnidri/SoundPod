@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.common
+package com.github.musick.ui.common
 
 import android.content.Intent
 import androidx.compose.foundation.background
@@ -161,7 +161,7 @@ fun WidgetCustomizationScreen(
             TextButton(
                 onClick = {
                     coroutineScope.launch {
-                        val syncIntent = Intent("com.github.soundpod.SYNC_WIDGET").apply {
+                        val syncIntent = Intent("com.github.musick.SYNC_WIDGET").apply {
                             setPackage(context.packageName)
                         }
                         context.sendBroadcast(syncIntent)

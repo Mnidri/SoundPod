@@ -1,4 +1,4 @@
-package com.github.soundpod.service
+package com.github.musick.service
 
 import android.database.SQLException
 import androidx.media3.common.Timeline
@@ -6,9 +6,9 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.analytics.AnalyticsListener
 import androidx.media3.exoplayer.analytics.PlaybackStats
 import androidx.media3.exoplayer.analytics.PlaybackStatsListener
-import com.github.soundpod.db
-import com.github.soundpod.models.Event
-import com.github.soundpod.query
+import com.github.musick.db
+import com.github.musick.models.Event
+import com.github.musick.query
 
 @UnstableApi
 class PlaybackAnalyticsTracker : PlaybackStatsListener.Callback {

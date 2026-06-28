@@ -16,15 +16,15 @@ kotlin {
 }
 
 extensions.configure<ApplicationExtension>("android") {
-    namespace = "com.github.soundpod"
+    namespace = "com.github.musick"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.github.soundpod"
+        applicationId = "com.github.musick"
         minSdk = 23
         targetSdk = 37
-        versionCode = 27
-        versionName = "1.3.2"
+        versionCode = 28
+        versionName = "1.3.3"
     }
 
     flavorDimensions += "store"
@@ -133,6 +133,7 @@ dependencies {
     implementation(libs.media)
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.session)
+    implementation(libs.media3.datasource.okhttp)
     implementation(libs.reorderable)
     implementation(libs.room)
     implementation(libs.swipe)
@@ -143,7 +144,7 @@ dependencies {
     implementation(libs.compose.lottie)
     implementation(libs.datastore.preferences)
     implementation(libs.ui.geometry)
-    implementation(libs.duktape)
+    implementation(libs.rhino)
 
     implementation(project(":extractor"))
     implementation(libs.kotlin.coroutines)
@@ -159,6 +160,8 @@ dependencies {
     implementation(project(":innertube"))
 
     implementation(libs.newpipe.extractor)
+
+    testImplementation(libs.junit)
 
     coreLibraryDesugaring(libs.desugaring)
 }

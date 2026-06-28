@@ -1,14 +1,14 @@
-package com.github.soundpod.worker
+package com.github.musick.worker
 
 import android.content.Context
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.github.soundpod.db
-import com.github.soundpod.query
-import com.github.soundpod.utils.autoBackupUriPrefKey
-import com.github.soundpod.utils.preferences
+import com.github.musick.db
+import com.github.musick.query
+import com.github.musick.utils.autoBackupUriPrefKey
+import com.github.musick.utils.preferences
 import java.io.FileInputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -28,7 +28,7 @@ class AutoBackupWorker(
         return try {
             val formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss", Locale.US)
             val dateString = LocalDateTime.now().format(formatter)
-            val fileName = "SoundPod_Auto_$dateString.db"
+            val fileName = "Musick_Auto_$dateString.db"
 
             val pickedDir = DocumentFile.fromTreeUri(context, treeUri)
             val newFile = pickedDir?.createFile("application/vnd.sqlite3", fileName)
@@ -44,7 +44,7 @@ class AutoBackupWorker(
             }
 
             pickedDir.listFiles()
-                .filter { it.name?.startsWith("SoundPod_Auto_") == true }
+                .filter { it.name?.startsWith("Musick_Auto_") == true }
                 .sortedByDescending { it.name }
                 .drop(5)
                 .forEach { oldFile ->

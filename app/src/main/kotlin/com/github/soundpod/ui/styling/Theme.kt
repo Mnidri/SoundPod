@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.styling
+package com.github.musick.ui.styling
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

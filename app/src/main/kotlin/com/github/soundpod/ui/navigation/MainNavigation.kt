@@ -3,7 +3,7 @@
     ExperimentalAnimationApi::class
 )
 
-package com.github.soundpod.ui.navigation
+package com.github.musick.ui.navigation
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContentScope
@@ -27,19 +27,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.toRoute
-import com.github.soundpod.enums.BuiltInPlaylist
-import com.github.soundpod.ui.common.newSearchLayoutEnabled
-import com.github.soundpod.ui.screens.album.AlbumScreen
-import com.github.soundpod.ui.screens.artist.ArtistScreen
-import com.github.soundpod.ui.screens.builtinplaylist.BuiltInPlaylistScreen
-import com.github.soundpod.ui.screens.favorites.FavoriteTracksScreen
-import com.github.soundpod.ui.screens.favorites.FavoritesScreen
-import com.github.soundpod.ui.screens.home.HomeScreen
-import com.github.soundpod.ui.screens.localplaylist.LocalPlaylistScreen
-import com.github.soundpod.ui.screens.playlist.PlaylistScreen
-import com.github.soundpod.ui.screens.search.NewSearchLayout
-import com.github.soundpod.ui.screens.search.NewSearchResult
-import com.github.soundpod.ui.screens.search.SearchScreen
+import com.github.musick.enums.BuiltInPlaylist
+import com.github.musick.ui.common.newSearchLayoutEnabled
+import com.github.musick.ui.screens.album.AlbumScreen
+import com.github.musick.ui.screens.artist.ArtistScreen
+import com.github.musick.ui.screens.builtinplaylist.BuiltInPlaylistScreen
+import com.github.musick.ui.screens.favorites.FavoriteTracksScreen
+import com.github.musick.ui.screens.favorites.FavoritesScreen
+import com.github.musick.ui.screens.home.HomeScreen
+import com.github.musick.ui.screens.localplaylist.LocalPlaylistScreen
+import com.github.musick.ui.screens.playlist.PlaylistScreen
+import com.github.musick.ui.screens.search.NewSearchLayout
+import com.github.musick.ui.screens.search.NewSearchResult
+import com.github.musick.ui.screens.search.SearchScreen
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 

@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.navigation
+package com.github.musick.ui.navigation
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition

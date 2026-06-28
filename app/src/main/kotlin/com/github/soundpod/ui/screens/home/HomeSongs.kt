@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.home
+package com.github.musick.ui.screens.home
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -47,24 +47,24 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.util.UnstableApi
-import com.github.soundpod.LocalPlayerPadding
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.enums.SongSortBy
-import com.github.soundpod.enums.SortOrder
-import com.github.soundpod.models.LocalMenuState
-import com.github.soundpod.models.Song
-import com.github.soundpod.ui.components.InHistoryMediaItemMenu
-import com.github.soundpod.ui.components.SortingHeader
-import com.github.soundpod.ui.items.LocalSongItem
-import com.github.soundpod.ui.styling.onOverlay
-import com.github.soundpod.ui.styling.overlay
-import com.github.soundpod.utils.asMediaItem
-import com.github.soundpod.utils.forcePlayAtIndex
-import com.github.soundpod.utils.rememberPreference
-import com.github.soundpod.utils.songSortByKey
-import com.github.soundpod.utils.songSortOrderKey
-import com.github.soundpod.viewmodels.home.HomeSongsViewModel
+import com.github.musick.LocalPlayerPadding
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.enums.SongSortBy
+import com.github.musick.enums.SortOrder
+import com.github.musick.models.LocalMenuState
+import com.github.musick.models.Song
+import com.github.musick.ui.components.InHistoryMediaItemMenu
+import com.github.musick.ui.components.SortingHeader
+import com.github.musick.ui.items.LocalSongItem
+import com.github.musick.ui.styling.onOverlay
+import com.github.musick.ui.styling.overlay
+import com.github.musick.utils.asMediaItem
+import com.github.musick.utils.forcePlayAtIndex
+import com.github.musick.utils.rememberPreference
+import com.github.musick.utils.songSortByKey
+import com.github.musick.utils.songSortOrderKey
+import com.github.musick.viewmodels.home.HomeSongsViewModel
 
 @OptIn(UnstableApi::class)
 @ExperimentalFoundationApi

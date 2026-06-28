@@ -1,10 +1,10 @@
-package com.github.soundpod.viewmodels
+package com.github.musick.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.soundpod.db
-import com.github.soundpod.utils.LyricsData
-import com.github.soundpod.utils.LyricsParser
+import com.github.musick.db
+import com.github.musick.utils.LyricsData
+import com.github.musick.utils.LyricsParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

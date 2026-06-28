@@ -1,6 +1,6 @@
 @file:kotlin.OptIn(ExperimentalAnimationApi::class)
 
-package com.github.soundpod.ui.screens.player
+package com.github.musick.ui.screens.player
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -79,27 +79,27 @@ import androidx.media3.common.PlaybackParameters
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.db
-import com.github.soundpod.enums.PlayerLayout
-import com.github.soundpod.enums.ProgressBar
-import com.github.soundpod.models.Song
-import com.github.soundpod.query
-import com.github.soundpod.ui.components.CustomDropdownMenu
-import com.github.soundpod.ui.screens.player.seekbar.PaperBoatAnimation
-import com.github.soundpod.ui.screens.player.seekbar.SeekBar
-import com.github.soundpod.ui.screens.player.seekbar.SimpleWave
-import com.github.soundpod.ui.styling.Dimensions
-import com.github.soundpod.utils.forceSeekToNext
-import com.github.soundpod.utils.forceSeekToPrevious
-import com.github.soundpod.utils.formatAsDuration
-import com.github.soundpod.utils.playerlayout
-import com.github.soundpod.utils.queueLoopEnabledKey
-import com.github.soundpod.utils.rememberPreference
-import com.github.soundpod.utils.shuffleQueue
-import com.github.soundpod.utils.toast
-import com.github.soundpod.utils.trackLoopEnabledKey
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.db
+import com.github.musick.enums.PlayerLayout
+import com.github.musick.enums.ProgressBar
+import com.github.musick.models.Song
+import com.github.musick.query
+import com.github.musick.ui.components.CustomDropdownMenu
+import com.github.musick.ui.screens.player.seekbar.PaperBoatAnimation
+import com.github.musick.ui.screens.player.seekbar.SeekBar
+import com.github.musick.ui.screens.player.seekbar.SimpleWave
+import com.github.musick.ui.styling.Dimensions
+import com.github.musick.utils.forceSeekToNext
+import com.github.musick.utils.forceSeekToPrevious
+import com.github.musick.utils.formatAsDuration
+import com.github.musick.utils.playerlayout
+import com.github.musick.utils.queueLoopEnabledKey
+import com.github.musick.utils.rememberPreference
+import com.github.musick.utils.shuffleQueue
+import com.github.musick.utils.toast
+import com.github.musick.utils.trackLoopEnabledKey
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlin.math.PI

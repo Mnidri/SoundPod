@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.localplaylist
+package com.github.musick.ui.screens.localplaylist
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -34,13 +34,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.R
-import com.github.soundpod.db
-import com.github.soundpod.models.Playlist
-import com.github.soundpod.query
-import com.github.soundpod.ui.components.ConfirmationDialog
-import com.github.soundpod.ui.components.PlaylistScreenLayout
-import com.github.soundpod.ui.components.TextFieldDialog
+import com.github.musick.R
+import com.github.musick.db
+import com.github.musick.models.Playlist
+import com.github.musick.query
+import com.github.musick.ui.components.ConfirmationDialog
+import com.github.musick.ui.components.PlaylistScreenLayout
+import com.github.musick.ui.components.TextFieldDialog
 import kotlinx.coroutines.flow.filterNotNull
 
 @OptIn(ExperimentalMaterial3Api::class)

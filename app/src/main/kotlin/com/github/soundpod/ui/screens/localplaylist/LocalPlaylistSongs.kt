@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.localplaylist
+package com.github.musick.ui.screens.localplaylist
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -13,18 +13,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.github.soundpod.LocalPlayerPadding
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.db
-import com.github.soundpod.enums.SongSortBy
-import com.github.soundpod.enums.SortOrder
-import com.github.soundpod.models.LocalMenuState
-import com.github.soundpod.models.Song
-import com.github.soundpod.ui.components.InPlaylistMediaItemMenu
-import com.github.soundpod.ui.components.SortingHeader
-import com.github.soundpod.ui.items.LocalSongItem
-import com.github.soundpod.utils.asMediaItem
-import com.github.soundpod.utils.forcePlayAtIndex
+import com.github.musick.LocalPlayerPadding
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.db
+import com.github.musick.enums.SongSortBy
+import com.github.musick.enums.SortOrder
+import com.github.musick.models.LocalMenuState
+import com.github.musick.models.Song
+import com.github.musick.ui.components.InPlaylistMediaItemMenu
+import com.github.musick.ui.components.SortingHeader
+import com.github.musick.ui.items.LocalSongItem
+import com.github.musick.utils.asMediaItem
+import com.github.musick.utils.forcePlayAtIndex
 
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi

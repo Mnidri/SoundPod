@@ -1,9 +1,9 @@
-package com.github.soundpod.service
+package com.github.musick.service
 
 import com.github.innertube.Innertube
 import com.github.innertube.requests.lyrics
-import com.github.soundpod.db
-import com.github.soundpod.models.Lyrics
+import com.github.musick.db
+import com.github.musick.models.Lyrics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import android.database.sqlite.SQLiteConstraintException

@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.artist
+package com.github.musick.ui.screens.artist
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -25,18 +25,18 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.github.innertube.Innertube
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.models.LocalMenuState
-import com.github.soundpod.ui.components.NonQueuedMediaItemMenu
-import com.github.soundpod.ui.components.ShimmerHost
-import com.github.soundpod.ui.components.TextPlaceholder
-import com.github.soundpod.ui.items.AlbumItem
-import com.github.soundpod.ui.items.ListItemPlaceholder
-import com.github.soundpod.ui.items.SongItem
-import com.github.soundpod.ui.styling.Dimensions
-import com.github.soundpod.utils.asMediaItem
-import com.github.soundpod.utils.forcePlayAtIndex
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.models.LocalMenuState
+import com.github.musick.ui.components.NonQueuedMediaItemMenu
+import com.github.musick.ui.components.ShimmerHost
+import com.github.musick.ui.components.TextPlaceholder
+import com.github.musick.ui.items.AlbumItem
+import com.github.musick.ui.items.ListItemPlaceholder
+import com.github.musick.ui.items.SongItem
+import com.github.musick.ui.styling.Dimensions
+import com.github.musick.utils.asMediaItem
+import com.github.musick.utils.forcePlayAtIndex
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable

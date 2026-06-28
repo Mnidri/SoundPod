@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.appearance
+package com.github.musick.ui.appearance
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -23,7 +23,7 @@ import com.github.core.visuals.BlurredBackground
 import com.github.core.visuals.ThemedLottieBackground
 import com.github.core.visuals.adaptToTheme
 import com.github.core.visuals.extractColorClusters
-import com.github.soundpod.utils.rememberPreference
+import com.github.musick.utils.rememberPreference
 
 const val PLAYER_BACKGROUND_STYLE_KEY = "player_background_style"
 

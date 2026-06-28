@@ -1,4 +1,4 @@
-package com.github.soundpod.enums
+package com.github.musick.enums
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -7,8 +7,8 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.SortByAlpha
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.github.soundpod.R
-import com.github.soundpod.models.SortBy
+import com.github.musick.R
+import com.github.musick.models.SortBy
 
 enum class SongSortBy(
     @StringRes override val text: Int,

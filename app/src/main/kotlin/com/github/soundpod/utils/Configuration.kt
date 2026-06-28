@@ -1,4 +1,4 @@
-package com.github.soundpod.utils
+package com.github.musick.utils
 
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable

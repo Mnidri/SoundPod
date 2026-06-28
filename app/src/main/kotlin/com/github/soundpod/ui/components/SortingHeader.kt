@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.components
+package com.github.musick.ui.components
 
 import androidx.annotation.PluralsRes
 import androidx.compose.animation.core.animateFloatAsState
@@ -35,8 +35,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.github.soundpod.enums.SortOrder
-import com.github.soundpod.models.SortBy
+import com.github.musick.enums.SortOrder
+import com.github.musick.models.SortBy
 
 @Composable
 fun <T : SortBy> SortingHeader(

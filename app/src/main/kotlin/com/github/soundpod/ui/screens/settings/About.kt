@@ -1,6 +1,6 @@
 @file:Suppress("KotlinConstantConditions")
 
-package com.github.soundpod.ui.screens.settings
+package com.github.musick.ui.screens.settings
 
 import android.content.Intent
 import android.os.Build
@@ -27,15 +27,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.BuildConfig
-import com.github.soundpod.R
-import com.github.soundpod.github.UpdateMessage
-import com.github.soundpod.ui.common.IconSource
-import com.github.soundpod.ui.common.UpdateStatus
-import com.github.soundpod.ui.components.SettingsCard
-import com.github.soundpod.ui.components.SwitchSetting
-import com.github.soundpod.ui.styling.Dimensions
-import com.github.soundpod.viewmodels.AboutViewModel
+import com.github.musick.BuildConfig
+import com.github.musick.R
+import com.github.musick.github.UpdateMessage
+import com.github.musick.ui.common.IconSource
+import com.github.musick.ui.common.UpdateStatus
+import com.github.musick.ui.components.SettingsCard
+import com.github.musick.ui.components.SwitchSetting
+import com.github.musick.ui.styling.Dimensions
+import com.github.musick.viewmodels.AboutViewModel
 
 @Composable
 fun AboutSettingsContent(
@@ -124,12 +124,12 @@ fun AboutSettingsContent(
             SettingRow(
                 icon = IconSource.Icon(painterResource(id = R.drawable.github)),
                 title = stringResource(id = R.string.source_code),
-                onClick = { uriHandler.openUri("https://github.com/arunnechully/SoundPod") },
+                onClick = { uriHandler.openUri("https://github.com/arunnechully/Musick") },
             )
             SettingRow(
                 icon = IconSource.Icon(painterResource(id = R.drawable.idea)),
                 title = stringResource(id = R.string.suggest_an_idea),
-                onClick = { uriHandler.openUri("https://github.com/arunnechully/SoundPod/issues/new") },
+                onClick = { uriHandler.openUri("https://github.com/arunnechully/Musick/issues/new") },
             )
             val isRecording by viewModel.isRecordingLogs.collectAsState()
             SettingRow(
@@ -180,7 +180,7 @@ fun AboutSettingsContent(
                         modifier = Modifier.padding(top = 4.dp, bottom = 20.dp)
                     )
                     Button(
-                        onClick = { uriHandler.openUri("https://f-droid.org/packages/com.github.soundpod") },
+                        onClick = { uriHandler.openUri("https://f-droid.org/packages/com.github.musick") },
                         modifier = Modifier.fillMaxWidth(0.5f),
                         shape = MaterialTheme.shapes.large,
                     ) {

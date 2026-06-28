@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.styling
+package com.github.musick.ui.styling
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration

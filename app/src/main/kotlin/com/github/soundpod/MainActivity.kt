@@ -1,6 +1,6 @@
 @file:Suppress("SpellCheckingInspection")
 
-package com.github.soundpod
+package com.github.musick
 
 import android.Manifest
 import android.content.ComponentName
@@ -35,7 +35,9 @@ import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,21 +60,22 @@ import androidx.work.WorkManager
 import com.github.innertube.Innertube
 import com.github.innertube.requests.playlistPage
 import com.github.innertube.requests.song
-import com.github.soundpod.enums.AppThemeColor
-import com.github.soundpod.models.LocalMenuState
-import com.github.soundpod.service.PlayerService
-import com.github.soundpod.github.UpdateCheckWorker
-import com.github.soundpod.ui.components.YouTubeWebView
-import com.github.soundpod.ui.navigation.MainNavigation
-import com.github.soundpod.ui.navigation.Routes
-import com.github.soundpod.ui.navigation.SettingsDestinations
-import com.github.soundpod.ui.screens.player.SharedPlayer
-import com.github.soundpod.ui.styling.AppTheme
-import com.github.soundpod.utils.appTheme
-import com.github.soundpod.utils.asMediaItem
-import com.github.soundpod.utils.forcePlay
-import com.github.soundpod.utils.intent
-import com.github.soundpod.utils.rememberPreference
+import com.github.musick.enums.AppThemeColor
+import com.github.musick.models.LocalMenuState
+import com.github.musick.service.PlayerService
+import com.github.musick.github.UpdateCheckWorker
+import com.github.musick.service.YouTubeSessionManager
+import com.github.musick.ui.components.YouTubeWebView
+import com.github.musick.ui.navigation.MainNavigation
+import com.github.musick.ui.navigation.Routes
+import com.github.musick.ui.navigation.SettingsDestinations
+import com.github.musick.ui.screens.player.SharedPlayer
+import com.github.musick.ui.styling.AppTheme
+import com.github.musick.utils.appTheme
+import com.github.musick.utils.asMediaItem
+import com.github.musick.utils.forcePlay
+import com.github.musick.utils.intent
+import com.github.musick.utils.rememberPreference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -133,8 +136,8 @@ class MainActivity : ComponentActivity() {
             
             LaunchedEffect(Unit) {
                 withContext(Dispatchers.IO) {
-                    val isNewPipeAvailable = com.github.soundpod.extractor.NewPipeHelper.isLibraryAvailable
-                    android.util.Log.d("SoundPod-Init", "NewPipe Extractor available: ${isNewPipeAvailable}")
+                    val isNewPipeAvailable = com.github.musick.extractor.NewPipeHelper.isLibraryAvailable
+                    android.util.Log.d("Musick-Init", "NewPipe Extractor available: ${isNewPipeAvailable}")
 
                     val updateFile = File(externalCacheDir, "update.apk")
                     if (updateFile.exists()) {
@@ -161,6 +164,7 @@ class MainActivity : ComponentActivity() {
             )
 
             val appTheme by rememberPreference(appTheme, AppThemeColor.System)
+            val isBootstrapped by YouTubeSessionManager.isBootstrapped.collectAsState()
 
             val darkTheme = when (appTheme) {
                 AppThemeColor.System -> isSystemInDarkTheme()
@@ -183,7 +187,9 @@ class MainActivity : ComponentActivity() {
                 usePureBlack = false,
                 useMaterialNeutral = false,
             ) {
-                YouTubeWebView()
+                if (!isBootstrapped) {
+                    YouTubeWebView()
+                }
                 Box(
                     modifier = Modifier.fillMaxSize()
                 ) {

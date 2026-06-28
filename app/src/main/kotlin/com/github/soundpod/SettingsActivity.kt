@@ -1,4 +1,4 @@
-package com.github.soundpod
+package com.github.musick
 
 import android.content.ComponentName
 import android.content.Intent
@@ -19,13 +19,13 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.github.soundpod.enums.AppThemeColor
-import com.github.soundpod.service.PlayerService
-import com.github.soundpod.ui.navigation.SettingsDestinations
-import com.github.soundpod.ui.screens.settings.SettingsScreen
-import com.github.soundpod.ui.styling.AppTheme
-import com.github.soundpod.utils.appTheme
-import com.github.soundpod.utils.rememberPreference
+import com.github.musick.enums.AppThemeColor
+import com.github.musick.service.PlayerService
+import com.github.musick.ui.navigation.SettingsDestinations
+import com.github.musick.ui.screens.settings.SettingsScreen
+import com.github.musick.ui.styling.AppTheme
+import com.github.musick.utils.appTheme
+import com.github.musick.utils.rememberPreference
 
 class SettingsActivity : ComponentActivity() {
 

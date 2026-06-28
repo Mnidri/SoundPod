@@ -1,13 +1,13 @@
-package com.github.soundpod.service
+package com.github.musick.service
 
 import android.content.Context
 import android.content.Intent
 import android.media.audiofx.AudioEffect
 import android.media.audiofx.LoudnessEnhancer
 import androidx.media3.exoplayer.ExoPlayer
-import com.github.soundpod.db
-import com.github.soundpod.utils.preferences
-import com.github.soundpod.utils.volumeNormalizationKey
+import com.github.musick.db
+import com.github.musick.utils.preferences
+import com.github.musick.utils.volumeNormalizationKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

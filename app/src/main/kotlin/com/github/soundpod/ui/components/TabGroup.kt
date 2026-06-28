@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.components
+package com.github.musick.ui.components
 
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -10,7 +10,7 @@ import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import com.github.soundpod.models.Section
+import com.github.musick.models.Section
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

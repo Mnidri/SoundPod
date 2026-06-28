@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.items
+package com.github.musick.ui.items
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -40,12 +40,12 @@ import androidx.compose.ui.unit.sp
 import androidx.media3.common.MediaItem
 import coil3.compose.AsyncImage
 import com.github.innertube.Innertube
-import com.github.soundpod.R
-import com.github.soundpod.models.Song
-import com.github.soundpod.ui.components.TextPlaceholder
-import com.github.soundpod.ui.styling.px
-import com.github.soundpod.ui.styling.shimmer
-import com.github.soundpod.utils.thumbnail
+import com.github.musick.R
+import com.github.musick.models.Song
+import com.github.musick.ui.components.TextPlaceholder
+import com.github.musick.ui.styling.px
+import com.github.musick.ui.styling.shimmer
+import com.github.musick.utils.thumbnail
 
 @Composable
 fun ItemContainer(

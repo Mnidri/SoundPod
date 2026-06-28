@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.artist
+package com.github.musick.ui.screens.artist
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -17,19 +17,19 @@ import com.github.innertube.Innertube
 import com.github.innertube.requests.itemsPage
 import com.github.innertube.requests.itemsPageContinuation
 import com.github.innertube.utils.from
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.enums.SongSortBy
-import com.github.soundpod.enums.SortOrder
-import com.github.soundpod.models.LocalMenuState
-import com.github.soundpod.ui.components.NonQueuedMediaItemMenu
-import com.github.soundpod.ui.components.SortingHeader
-import com.github.soundpod.ui.items.ListItemPlaceholder
-import com.github.soundpod.ui.items.SongItem
-import com.github.soundpod.ui.screens.search.ItemsPage
-import com.github.soundpod.utils.asMediaItem
-import com.github.soundpod.utils.forcePlayAtIndex
-import com.github.soundpod.viewmodels.ItemsPageViewModel
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.enums.SongSortBy
+import com.github.musick.enums.SortOrder
+import com.github.musick.models.LocalMenuState
+import com.github.musick.ui.components.NonQueuedMediaItemMenu
+import com.github.musick.ui.components.SortingHeader
+import com.github.musick.ui.items.ListItemPlaceholder
+import com.github.musick.ui.items.SongItem
+import com.github.musick.ui.screens.search.ItemsPage
+import com.github.musick.utils.asMediaItem
+import com.github.musick.utils.forcePlayAtIndex
+import com.github.musick.viewmodels.ItemsPageViewModel
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @UnstableApi

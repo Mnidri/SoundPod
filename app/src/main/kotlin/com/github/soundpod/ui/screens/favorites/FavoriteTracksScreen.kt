@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.favorites
+package com.github.musick.ui.screens.favorites
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,18 +10,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.github.soundpod.LocalPlayerPadding
-import com.github.soundpod.LocalPlayerServiceBinder
-import com.github.soundpod.R
-import com.github.soundpod.models.LocalMenuState
-import com.github.soundpod.models.Song
-import com.github.soundpod.ui.components.InHistoryMediaItemMenu
-import com.github.soundpod.ui.components.SettingsCard
-import com.github.soundpod.ui.components.SettingsScreenLayout
-import com.github.soundpod.ui.items.LocalSongItem
-import com.github.soundpod.utils.asMediaItem
-import com.github.soundpod.utils.forcePlayAtIndex
-import com.github.soundpod.viewmodels.favorites.FavoritesViewModel
+import com.github.musick.LocalPlayerPadding
+import com.github.musick.LocalPlayerServiceBinder
+import com.github.musick.R
+import com.github.musick.models.LocalMenuState
+import com.github.musick.models.Song
+import com.github.musick.ui.components.InHistoryMediaItemMenu
+import com.github.musick.ui.components.SettingsCard
+import com.github.musick.ui.components.SettingsScreenLayout
+import com.github.musick.ui.items.LocalSongItem
+import com.github.musick.utils.asMediaItem
+import com.github.musick.utils.forcePlayAtIndex
+import com.github.musick.viewmodels.favorites.FavoritesViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

@@ -11,46 +11,46 @@ import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 
-private const val TAG = "SoundPod-Player"
+data class PlayerResult(
+    val response: PlayerResponse,
+    val userAgent: String
+)
 
-suspend fun Innertube.player(videoId: String) = runCatchingNonCancellable {
-    println("$TAG: Starting player request for videoId: $videoId")
-    
-    // Ensure we have a session before proceeding
+suspend fun Innertube.player(videoId: String): Result<PlayerResult>? = runCatchingNonCancellable {
     waitForSession(5000)
+    
+    // Try DYNAMIC client first if we have extracted context
+    if (context != null) {
+        val dynamicResponse = tryPlayer(videoId, YouTubeClient.DYNAMIC, useCookies = true)
+        if (dynamicResponse?.playabilityStatus?.status == "OK") {
+            println("Innertube: Successfully used DYNAMIC client for $videoId")
+            return@runCatchingNonCancellable PlayerResult(
+                response = dynamicResponse.applyDecipher(decipher, signatureDecipher),
+                userAgent = YouTubeClient.DYNAMIC.userAgent
+            )
+        } else {
+            println("Innertube: DYNAMIC client failed for $videoId: ${dynamicResponse?.playabilityStatus?.status}")
+        }
+    }
 
-    // TIER 1: ANDROID_VR (The most reliable workaround)
     val vrResponse = tryPlayer(videoId, YouTubeClient.ANDROID_VR, useCookies = false)
     if (vrResponse?.playabilityStatus?.status == "OK") {
-        println("$TAG: Successfully resolved player via ANDROID_VR")
-        return@runCatchingNonCancellable vrResponse.applyDecipher(decipher, signatureDecipher)
+        println("Innertube: Successfully used ANDROID_VR client for $videoId")
+        return@runCatchingNonCancellable PlayerResult(
+            response = vrResponse.applyDecipher(decipher, signatureDecipher),
+            userAgent = YouTubeClient.ANDROID_VR.userAgent
+        )
     }
-    logFailure("ANDROID_VR", vrResponse)
-
-    // TIER 2: ANDROID_TESTSUITE (Reliable fallback for many tracks)
-    val testSuiteResponse = tryPlayer(videoId, YouTubeClient.ANDROID_TESTSUITE, useCookies = false)
-    if (testSuiteResponse?.playabilityStatus?.status == "OK") {
-        println("$TAG: Successfully resolved player via ANDROID_TESTSUITE")
-        return@runCatchingNonCancellable testSuiteResponse.applyDecipher(decipher, signatureDecipher)
-    }
-    logFailure("ANDROID_TESTSUITE", testSuiteResponse)
-    
-    // TIER 3: TVHTML5_SIMPLY_EMBEDDED_PLAYER (Permissive for embedded content)
-    val tvResponse = tryPlayer(videoId, YouTubeClient.TVHTML5_SIMPLY_EMBEDDED_PLAYER, useCookies = false, includeThirdParty = true)
+    val tvResponse = tryPlayer(videoId, YouTubeClient.TVHTML5_SIMPLY_EMBEDDED_PLAYER, useCookies = false)
     if (tvResponse?.playabilityStatus?.status == "OK") {
-        println("$TAG: Successfully resolved player via TVHTML5_SIMPLY_EMBEDDED_PLAYER")
-        return@runCatchingNonCancellable tvResponse.applyDecipher(decipher, signatureDecipher)
+        println("Innertube: Successfully used TVHTML5 client for $videoId")
+        return@runCatchingNonCancellable PlayerResult(
+            response = tvResponse.applyDecipher(decipher, signatureDecipher),
+            userAgent = YouTubeClient.TVHTML5_SIMPLY_EMBEDDED_PLAYER.userAgent
+        )
     }
-    logFailure("TVHTML5_SIMPLY_EMBEDDED_PLAYER", tvResponse)
 
-    return@runCatchingNonCancellable tvResponse ?: testSuiteResponse ?: vrResponse
-}
-
-private fun logFailure(clientName: String, response: PlayerResponse?) {
-    val info = response?.playabilityStatus?.let { 
-        "Status: ${it.status}, Reason: ${it.reason}, Messages: ${it.messages}"
-    } ?: "Unknown error"
-    println("$TAG: $clientName failed ($info)")
+    throw Exception("All Innertube player clients failed for $videoId")
 }
 
 private suspend fun Innertube.tryPlayer(
@@ -58,17 +58,12 @@ private suspend fun Innertube.tryPlayer(
     clientType: YouTubeClient, 
     useCookies: Boolean,
     extraHeaders: Map<String, String> = emptyMap(),
-    includeThirdParty: Boolean = false
+    includeThirdParty: Boolean = false,
+    host: String = "www.youtube.com"
 ): PlayerResponse? = runCatching {
-    println("$TAG: Attempting player request with client: ${clientType.clientName} (useCookies=$useCookies)")
-    
-    client.post(Innertube.PLAYER) {
+    client.post("https://$host/youtubei/v1/player") {
         header("User-Agent", clientType.userAgent)
-        
-        // Control cookie usage via custom attribute
         attributes.put(Innertube.Attributes.UseCookies, useCookies)
-        
-        // Apply extra headers
         extraHeaders.forEach { (key, value) -> header(key, value) }
         
         setBody(
@@ -80,8 +75,6 @@ private suspend fun Innertube.tryPlayer(
         )
         mask("playabilityStatus(status,reason,messages),playerConfig.audioConfig,streamingData.adaptiveFormats,streamingData.formats,videoDetails.videoId")
     }.body<PlayerResponse>()
-}.onFailure {
-    println("$TAG: Network or parsing error for ${clientType.clientName}: ${it.message}")
 }.getOrNull()
 
 private suspend fun PlayerResponse.applyDecipher(
@@ -112,7 +105,7 @@ private suspend fun parseSignatureCipher(cipher: String, decipher: (suspend (Str
     
     val baseUrl = params["url"] ?: return null
     val signature = params["s"] ?: return baseUrl
-    val sp = params["sp"] ?: "sig"
+    val sp = params["Musick"] ?: "sig"
     
     val decipheredSig = if (decipher != null) decipher(signature) else signature
     

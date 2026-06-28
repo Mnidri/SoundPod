@@ -1,4 +1,4 @@
-package com.github.soundpod.models
+package com.github.musick.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

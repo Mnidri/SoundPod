@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.navigation
+package com.github.musick.ui.navigation
 
 import kotlinx.serialization.Serializable
 

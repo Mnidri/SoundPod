@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.components
+package com.github.musick.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -11,9 +11,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.github.soundpod.models.ActionInfo
-import com.github.soundpod.utils.listGesturesEnabledKey
-import com.github.soundpod.utils.rememberPreference
+import com.github.musick.models.ActionInfo
+import com.github.musick.utils.listGesturesEnabledKey
+import com.github.musick.utils.rememberPreference
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 

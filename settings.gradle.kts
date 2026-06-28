@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SoundPod"
+rootProject.name = "Musick"
 
 // Modules
 include(":app")

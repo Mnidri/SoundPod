@@ -31,7 +31,7 @@
     <string name="persistent_queue">Cola persistente</string>
     <string name="persistent_queue_description">Guarda y restaura la reproducción de canciones</string>
     <string name="resume_playback">Reanudar la reproducción</string>
-    <string name="resume_playback_description">Cuando se conecta un dispositivo cableado o Bluetooth</string>
+    <string name="resume_playback_description">Cuando se conecta un diMusickositivo cableado o Bluetooth</string>
     <string name="skip_silence">Saltar los silencios</string>
     <string name="skip_silence_description">Omite las partes silenciosas durante la reproducción</string>
     <string name="loudness_normalization">Normalización del volumen</string>
@@ -51,7 +51,7 @@
     <string name="image_cache">Caché de imágenes</string>
     <string name="audio_cache">Caché de canciones</string>
     <string name="max_size">Tamaño máximo</string>
-    <string name="cache_information">Cuando la caché se queda sin espacio, los recursos a los que no se ha accedido durante más tiempo se borran.</string>
+    <string name="cache_information">Cuando la caché se queda sin eMusickacio, los recursos a los que no se ha accedido durante más tiempo se borran.</string>
     <string name="backup">Copia de seguridad</string>
     <string name="restore">Restauración</string>
     <string name="reset_quick_picks">Restablecer las selecciones rápidas</string>
@@ -100,7 +100,7 @@
     <string name="sign_in_description">Sign in to access your library</string>
     <string name="sign_out">Sign out</string>
     <string name="sign_out_description">Clear session and cookies</string>
-    <string name="account">Account</string>
+    <string name="youtube">YouTube</string>
     <string name="search_lyrics_online">Buscar la letra en línea</string>
     <plurals name="number_of_songs">
         <item quantity="one">%d canción</item>
@@ -125,7 +125,7 @@
     <string name="hide_song_dialog_description">El tiempo de reproducción y la caché se borrarán. Esta acción es irreversible.</string>
     <string name="delete_playlist_dialog">¿Borrar esta lista?</string>
     <string name="no_items_found">No se han encontrado elementos</string>
-    <string name="no_songs_found">No hay canciones disponibles en el dispositivo</string>
+    <string name="no_songs_found">No hay canciones diMusickonibles en el diMusickositivo</string>
     <string name="audio_permission_denied">Se requiere permiso musical para reproducir canciones locales</string>
     <string name="grant_permission">Otorgar permiso</string>
     <string name="no_results_found">No se han encontrado resultados. Intenta una búsqueda o categoría distinta</string>
@@ -137,11 +137,11 @@
     <string name="playable_format_not_found_error">No se pudo encontrar un formato de audio compatible</string>
     <string name="video_source_deleted_error">La fuente de vídeo original de está canción ha sido borrada</string>
     <string name="server_restrictions_error">Esta canción no puede ser reproducida debido a restricciones del servidor</string>
-    <string name="id_mismatch_error">El identificador del vídeo no se corresponde con el que se solicitó</string>
+    <string name="id_mismatch_error">El identificador del vídeo no se correMusickonde con el que se solicitó</string>
     <string name="unknown_playback_error">Ha ocurrido un error de reproducción desconocido</string>
     <string name="no_alternative_versions">Este álbum no tiene ninguna versión alternativa</string>
     <string name="fetch_lyrics_again">Cargar la letra de nuevo</string>
-    <string name="lyrics_not_available">La letra no está disponible para esta canción</string>
+    <string name="lyrics_not_available">La letra no está diMusickonible para esta canción</string>
     <string name="error_fetching_lyrics">Ha ocurrido un error al cargar la letra</string>
     <string name="delete_playback_events">Eliminar %d eventos de reproducción</string>
     <string name="quick_picks_cleared">Las selecciones rápidas están eliminadas</string>
@@ -196,8 +196,8 @@
     <string name="hidden">Ocultas</string>
     <string name="check_for_updates">Comprobar actualizaciones</string>
     <string name="checking_for_updates">Buscando actualizaciones</string>
-    <string name="new_version_available">Nueva versión disponible</string>
-    <string name="no_updates_available">No hay actualizaciones disponibles</string>
+    <string name="new_version_available">Nueva versión diMusickonible</string>
+    <string name="no_updates_available">No hay actualizaciones diMusickonibles</string>
     <string name="version">Versión %s</string>
     <string name="open_in_github">Abrir en GitHub</string>
     <string name="gestures">Gestos</string>
@@ -228,13 +228,13 @@
     <string name="autocheck">Comprobación automática de actualizaciones</string>
     <string name="autocheck_description">Comprueba automáticamente si hay nuevas versiones en segundo plano</string>
     <string name="update_alert">Mostrar alerta de actualización</string>
-    <string name="update_alert_desription">Reciba una notificación cuando haya una nueva versión disponible</string>
+    <string name="update_alert_desription">Reciba una notificación cuando haya una nueva versión diMusickonible</string>
     <string name="defualt">Por defecto</string>
     <string name="dynamic">Dinámico</string>
     <string name="material_you">MaterialYou</string>
     <string name="progress_bar_style">Estilo de barra de progreso</string>
     <string name="background_style">Estilo de fondo</string>
-    <string name="morphing_glow">Resplandor cambiante</string>
+    <string name="morphing_glow">ReMusicklandor cambiante</string>
     <string name="wave">Onda</string>
     <string name="pause_song_cache">Pausar caché de canciones</string>
     <string name="pause_song_cache_description">Pausar el almacenamiento en caché de canciones</string>
@@ -246,7 +246,7 @@
     <string name="seamless_update">Actualización sin interrupciones</string>
     <string name="seamless_update_description">Instalar actualizaciones directamente desde la app</string>
     <string name="enable_seamless_update">​¿Activar actualizaciones sin interrupciones?</string>
-    <string name="enable_seamless_update_description">Para instalar actualizaciones internamente, SoundPod necesita permiso para instalar aplicaciones desconocidas. De lo contrario, las actualizaciones se guardarán en la carpeta Descargas.</string>
+    <string name="enable_seamless_update_description">Para instalar actualizaciones internamente, Musick necesita permiso para instalar aplicaciones desconocidas. De lo contrario, las actualizaciones se guardarán en la carpeta Descargas.</string>
     <string name="permissions">Permisos</string>
     <string name="notifications">Notificaciones</string>
     <string name="update_now">Actualizar ahora</string>
@@ -254,7 +254,7 @@
     <string name="installing_update">Instalando actualización... </string>
     <string name="update_manually">Actualizar manualmente desde Descargas</string>
     <string name="update_failed">Error de actualización</string>
-    <string name="updates_available">Nueva actualización disponible</string>
+    <string name="updates_available">Nueva actualización diMusickonible</string>
     <string name="download_and_update"><![CDATA[Descargar y actualizar]]></string>
     <string name="install">Instalar</string>
     <string name="search_placeholder">No se encontró historial de búsqueda</string>
@@ -285,13 +285,13 @@
     <string name="player_layout">Diseño del reproductor</string>
     <string name="new_layout">Nuevo diseño</string>
     <string name="loading">Cargando</string>
-    <string name="clear">Despejar</string>
+    <string name="clear">DeMusickejar</string>
     <string name="new_player">Nueva interfaz de reproducción</string>
     <string name="new_player_description">Prueba el nuevo reproductor experimental. Algunas funciones pueden ser inestables.</string>
     <string name="updates_handled_by_fdroid">Las actualizaciones para esta versión se gestionan a través de F-Droid.</string>
     <string name="distribution_info">Distribución</string>
     <string name="view_on_f_droid">Ver en F-Droid</string>
-    <string name="widget_description">Reproductor de música SoundPod</string>
+    <string name="widget_description">Reproductor de música Musick</string>
     <string name="background_style_discription">Elige tu estilo de fondo favorito</string>
     <string name="player_background">Fondo del reproductor</string>
     <string name="style">Estilo</string>
@@ -313,7 +313,7 @@
     <string name="install_unknown_apps">Instalar aplicaciones desconocidas</string>
     <string name="storage">Almacenamiento</string>
     <string name="local_data">Datos locales</string>
-    <string name="local_data_discription">SoundPod almacena la caché y la base de datos localmente en tu dispositivo.</string>
+    <string name="local_data_discription">Musick almacena la caché y la base de datos localmente en tu diMusickositivo.</string>
     <string name="f_droid_build">Compilación de F-Droid</string>
     <string name="language_selector_not_found">No se encontraron los ajustes de idioma de la aplicación; por favor, configúrelos manualmente</string>
     <string name="play_back">Reproducción</string>
@@ -324,7 +324,7 @@
     <string name="daily">A diario</string>
     <string name="weekly">Semanalmente</string>
     <string name="monthly">Mensual</string>
-    <string name="backup_location">Ubicación de respaldo</string>
+    <string name="backup_location">Ubicación de reMusickaldo</string>
     <string name="backup_location_description">Toca para seleccionar una carpeta</string>
     <string name="remove_from_favorites">Eliminar de favoritos</string>
     <string name="clear_playlist">¿Eliminar canciones seleccionadas?</string>
@@ -356,4 +356,8 @@
     <string name="favorite_artists">Favorite Artists</string>
     <string name="no_favorites">No favorites</string>
     <string name="no_favorites_description">Tap the heart icon on songs, albums, or artists to add them to your favorites.</string>
+    <string name="youtube_session">YouTube Session</string>
+    <string name="consent_granted">Consent: Granted</string>
+    <string name="consent_required">Consent: Required</string>
+    <string name="renew_consent">Renew Consent</string>
 </resources>

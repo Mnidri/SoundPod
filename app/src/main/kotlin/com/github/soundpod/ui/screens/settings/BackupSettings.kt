@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.settings
+package com.github.musick.ui.screens.settings
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
@@ -25,20 +25,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.R
-import com.github.soundpod.db
-import com.github.soundpod.enums.AutoBackUp
-import com.github.soundpod.internal
-import com.github.soundpod.query
-import com.github.soundpod.service.PlayerService
-import com.github.soundpod.ui.common.IconSource
-import com.github.soundpod.ui.components.SwitchSetting
-import com.github.soundpod.utils.autoBackup
-import com.github.soundpod.utils.autoBackupUriPrefKey
-import com.github.soundpod.utils.intent
-import com.github.soundpod.utils.rememberPreference
-import com.github.soundpod.utils.toast
-import com.github.soundpod.worker.scheduleAutoBackup
+import com.github.musick.R
+import com.github.musick.db
+import com.github.musick.enums.AutoBackUp
+import com.github.musick.internal
+import com.github.musick.query
+import com.github.musick.service.PlayerService
+import com.github.musick.ui.common.IconSource
+import com.github.musick.ui.components.SwitchSetting
+import com.github.musick.utils.autoBackup
+import com.github.musick.utils.autoBackupUriPrefKey
+import com.github.musick.utils.intent
+import com.github.musick.utils.rememberPreference
+import com.github.musick.utils.toast
+import com.github.musick.worker.scheduleAutoBackup
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.time.LocalDateTime
@@ -122,7 +122,7 @@ fun BackupSettingsContent() {
                     val formattedDate = LocalDateTime.now().format(formatter)
 
                     try {
-                        backupLauncher.launch("SoundPod_Manual_$formattedDate.db")
+                        backupLauncher.launch("Musick_Manual_$formattedDate.db")
                     } catch (_: ActivityNotFoundException) {
                         context.toast("Couldn't find an application to create documents")
                     }

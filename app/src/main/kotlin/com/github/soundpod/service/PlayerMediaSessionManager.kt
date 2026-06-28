@@ -1,4 +1,4 @@
-package com.github.soundpod.service
+package com.github.musick.service
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -9,9 +9,9 @@ import android.media.session.PlaybackState
 import android.os.Bundle
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
-import com.github.soundpod.R
-import com.github.soundpod.utils.forceSeekToNext
-import com.github.soundpod.utils.forceSeekToPrevious
+import com.github.musick.R
+import com.github.musick.utils.forceSeekToNext
+import com.github.musick.utils.forceSeekToPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

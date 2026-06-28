@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.common
+package com.github.musick.ui.common
 
 import android.content.Context
 import android.content.Intent
@@ -45,8 +45,8 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import com.github.soundpod.MainActivity
-import com.github.soundpod.R
+import com.github.musick.MainActivity
+import com.github.musick.R
 import java.io.File
 
 val widgetSongTitleKey = stringPreferencesKey("widget_song_title")
@@ -195,20 +195,20 @@ private fun ControlButton(iconRes: Int, iconSize: Dp, touchSize: Dp, tint: Color
 class TogglePlayAction : ActionCallback {
     override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         val isPlaying = parameters[isPlayingParamKey] ?: false
-        val actionString = if (isPlaying) "com.github.soundpod.pause" else "com.github.soundpod.play"
+        val actionString = if (isPlaying) "com.github.musick.pause" else "com.github.musick.play"
         context.sendBroadcast(Intent(actionString).setPackage(context.packageName))
     }
 }
 
 class SkipNextAction : ActionCallback {
     override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
-        context.sendBroadcast(Intent("com.github.soundpod.next").setPackage(context.packageName))
+        context.sendBroadcast(Intent("com.github.musick.next").setPackage(context.packageName))
     }
 }
 
 class SkipPreviousAction : ActionCallback {
     override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
-        context.sendBroadcast(Intent("com.github.soundpod.previous").setPackage(context.packageName))
+        context.sendBroadcast(Intent("com.github.musick.previous").setPackage(context.packageName))
     }
 }
 

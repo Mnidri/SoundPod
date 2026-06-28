@@ -1,5 +1,6 @@
-package com.github.soundpod.viewmodels.home
+package com.github.musick.viewmodels.home
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,15 +12,15 @@ import com.github.innertube.requests.recommendations
 import com.github.innertube.requests.relatedPage
 import com.github.innertube.requests.searchPage
 import com.github.innertube.utils.from
-import com.github.soundpod.appContext
-import com.github.soundpod.db
-import com.github.soundpod.enums.QuickPicksSource
-import com.github.soundpod.models.Song
-import com.github.soundpod.utils.ScreenCache
-import com.github.soundpod.utils.asMediaItem
-import com.github.soundpod.utils.isScreenCacheEnabledKey
-import com.github.soundpod.utils.preferences
-import com.github.soundpod.utils.quickPicksCustomGenreKey
+import com.github.musick.appContext
+import com.github.musick.db
+import com.github.musick.enums.QuickPicksSource
+import com.github.musick.models.Song
+import com.github.musick.utils.ScreenCache
+import com.github.musick.utils.asMediaItem
+import com.github.musick.utils.isScreenCacheEnabledKey
+import com.github.musick.utils.preferences
+import com.github.musick.utils.quickPicksCustomGenreKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -27,6 +28,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class QuickPicksViewModel : ViewModel() {
     var relatedPageResult: Result<Innertube.RelatedPage?>? by mutableStateOf(null)
@@ -86,52 +88,60 @@ class QuickPicksViewModel : ViewModel() {
 
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
-            val seedSongs = when (quickPicksSource) {
-                QuickPicksSource.Custom -> {
-                    val customGenre = appContext.preferences.getString(quickPicksCustomGenreKey, "Psaltic music") ?: "Psaltic music"
-                    val searchResult = Innertube.searchPage(
-                        query = customGenre,
-                        params = Innertube.SearchFilter.Song.value,
-                        fromMusicShelfRendererContent = Innertube.SongItem.Companion::from
-                    )?.getOrNull()
-                    
-                    searchResult?.items?.take(3)?.map { item -> 
-                        val mediaItem = item.asMediaItem
-                        Song(
-                            id = mediaItem.mediaId,
-                            title = mediaItem.mediaMetadata.title.toString(),
-                            artistsText = mediaItem.mediaMetadata.artist.toString(),
-                            durationText = null,
-                            thumbnailUrl = mediaItem.mediaMetadata.artworkUri.toString()
-                        )
-                    } ?: emptyList()
+            Log.d("Musick", "Loading Quick Picks for source: $quickPicksSource")
+            val seedSongs = runCatching {
+                when (quickPicksSource) {
+                    QuickPicksSource.Custom -> {
+                        val customGenre = appContext.preferences.getString(quickPicksCustomGenreKey, "Psaltic music") ?: "Psaltic music"
+                        val searchResult = Innertube.searchPage(
+                            query = customGenre,
+                            params = Innertube.SearchFilter.Song.value,
+                            fromMusicShelfRendererContent = Innertube.SongItem.Companion::from
+                        )?.getOrNull()
+                        
+                        searchResult?.items?.take(3)?.map { item -> 
+                            val mediaItem = item.asMediaItem
+                            Song(
+                                id = mediaItem.mediaId,
+                                title = mediaItem.mediaMetadata.title.toString(),
+                                artistsText = mediaItem.mediaMetadata.artist.toString(),
+                                durationText = null,
+                                thumbnailUrl = mediaItem.mediaMetadata.artworkUri.toString()
+                            )
+                        } ?: emptyList()
+                    }
+                    QuickPicksSource.Trending -> {
+                        Innertube.charts()?.getOrNull()?.take(3)?.map { item ->
+                            val mediaItem = item.asMediaItem
+                            Song(
+                                id = mediaItem.mediaId,
+                                title = mediaItem.mediaMetadata.title.toString(),
+                                artistsText = mediaItem.mediaMetadata.artist.toString(),
+                                durationText = null,
+                                thumbnailUrl = mediaItem.mediaMetadata.artworkUri.toString()
+                            )
+                        } ?: getSeedSongsFlow(quickPicksSource, 3).first()
+                    }
+                    QuickPicksSource.Recommended -> {
+                        Innertube.recommendations()?.getOrNull()?.take(3)?.map { item ->
+                            val mediaItem = item.asMediaItem
+                            Song(
+                                id = mediaItem.mediaId,
+                                title = mediaItem.mediaMetadata.title.toString(),
+                                artistsText = mediaItem.mediaMetadata.artist.toString(),
+                                durationText = null,
+                                thumbnailUrl = mediaItem.mediaMetadata.artworkUri.toString()
+                            )
+                        } ?: getSeedSongsFlow(quickPicksSource, 3).first()
+                    }
+                    else -> getSeedSongsFlow(quickPicksSource, 3).first()
                 }
-                QuickPicksSource.Trending -> {
-                    Innertube.charts()?.getOrNull()?.take(3)?.map { item ->
-                        val mediaItem = item.asMediaItem
-                        Song(
-                            id = mediaItem.mediaId,
-                            title = mediaItem.mediaMetadata.title.toString(),
-                            artistsText = mediaItem.mediaMetadata.artist.toString(),
-                            durationText = null,
-                            thumbnailUrl = mediaItem.mediaMetadata.artworkUri.toString()
-                        )
-                    } ?: getSeedSongsFlow(quickPicksSource, 3).first()
-                }
-                QuickPicksSource.Recommended -> {
-                    Innertube.recommendations()?.getOrNull()?.take(3)?.map { item ->
-                        val mediaItem = item.asMediaItem
-                        Song(
-                            id = mediaItem.mediaId,
-                            title = mediaItem.mediaMetadata.title.toString(),
-                            artistsText = mediaItem.mediaMetadata.artist.toString(),
-                            durationText = null,
-                            thumbnailUrl = mediaItem.mediaMetadata.artworkUri.toString()
-                        )
-                    } ?: getSeedSongsFlow(QuickPicksSource.LastPlayed, 3).first()
-                }
-                else -> getSeedSongsFlow(quickPicksSource, 3).first()
+            }.getOrElse { e ->
+                Log.e("Musick", "Failed to load seed songs for $quickPicksSource", e)
+                emptyList()
             }
+
+            Log.d("Musick", "Seed songs found: ${seedSongs.size}")
 
             coroutineScope {
                 val chartsDeferred = async {
@@ -143,6 +153,7 @@ class QuickPicksViewModel : ViewModel() {
                 }
 
                 val relatedResults = relatedDeferreds.mapNotNull { it.await() }
+                Log.d("Musick", "Related results found: ${relatedResults.size}")
                 
                 var mergedPage = if (relatedResults.isNotEmpty()) {
                     Innertube.RelatedPage(
@@ -154,6 +165,7 @@ class QuickPicksViewModel : ViewModel() {
                 } else null
 
                 if (mergedPage == null || mergedPage.songs.isNullOrEmpty()) {
+                    Log.d("Musick", "No related songs, trying charts fallback")
                     chartsDeferred.await()?.shuffled()?.take(2)?.forEach { fallbackSong ->
                         val fallbackResult = Innertube.relatedPage(videoId = fallbackSong.key)?.getOrNull()
                         if (fallbackResult != null && !fallbackResult.songs.isNullOrEmpty()) {
@@ -164,6 +176,7 @@ class QuickPicksViewModel : ViewModel() {
                 }
 
                 if (mergedPage == null || mergedPage.songs.isNullOrEmpty()) {
+                    Log.d("Musick", "Still no songs, trying global fallbacks")
                     val globalFallbacks = listOf("fJ9rUzIMcZQ", "kJQP7kiw5Fk", "JGwWNGJdvx8")
                     mergedPage = Innertube.relatedPage(videoId = globalFallbacks.random())?.getOrNull()
                 }
@@ -177,7 +190,9 @@ class QuickPicksViewModel : ViewModel() {
                     }
                 }
 
-                relatedPageResult = finalResult
+                withContext(Dispatchers.Main) {
+                    relatedPageResult = finalResult
+                }
             }
         }
     }

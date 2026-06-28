@@ -1,10 +1,10 @@
-package com.github.soundpod.viewmodels
+package com.github.musick.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
-import com.github.soundpod.utils.shouldBePlaying
-import com.github.soundpod.utils.windows
+import com.github.musick.utils.shouldBePlaying
+import com.github.musick.utils.windows
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

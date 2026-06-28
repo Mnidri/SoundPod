@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.components
+package com.github.musick.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -61,7 +61,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.R
+import com.github.musick.R
 import kotlinx.coroutines.delay
 
 @Composable

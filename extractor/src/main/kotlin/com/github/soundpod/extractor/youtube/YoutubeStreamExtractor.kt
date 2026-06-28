@@ -1,9 +1,9 @@
-package com.github.soundpod.extractor.youtube
+package com.github.musick.extractor.youtube
 
 import com.github.innertube.Innertube
 import com.github.innertube.models.PlayerResponse
 import com.github.innertube.requests.player
-import com.github.soundpod.extractor.NewPipeHelper
+import com.github.musick.extractor.NewPipeHelper
 import kotlinx.coroutines.runBlocking
 import org.schabi.newpipe.extractor.ServiceList
 import org.schabi.newpipe.extractor.stream.Stream as NewPipeStream
@@ -14,19 +14,16 @@ class YoutubeStreamExtractor(private val url: String) {
     private var realExtractor: org.schabi.newpipe.extractor.services.youtube.extractors.YoutubeStreamExtractor? = null
 
     fun fetchPage() {
-        // PRIMARY: Try Innertube
-        playerResponse = runBlocking { Innertube.player(videoId) }?.getOrNull()
-        
-        // SECONDARY: Fallback to real NewPipe (now non-optional as per user request)
+        playerResponse = runBlocking { Innertube.player(videoId)?.getOrNull() }?.response
+
         if (playerResponse == null || playerResponse?.playabilityStatus?.status != "OK" || playerResponse?.streamingData?.highestQualityFormat == null) {
             try {
                 NewPipeHelper.init()
                 val extractor = ServiceList.YouTube.getStreamExtractor(url)
                 extractor.fetchPage()
                 realExtractor = extractor as? org.schabi.newpipe.extractor.services.youtube.extractors.YoutubeStreamExtractor
-                println("SoundPod-Extractor: Switched to real NewPipe extraction for $videoId")
-            } catch (e: Exception) {
-                println("SoundPod-Extractor: Failed to use real NewPipe fallback: ${e.message}")
+            } catch (_: Exception) {
+                // Silently fail
             }
         }
     }
@@ -39,12 +36,9 @@ class YoutubeStreamExtractor(private val url: String) {
             val streamingData = playerResponse?.streamingData ?: return emptyList()
             val combined = (streamingData.adaptiveFormats.orEmpty() + streamingData.formats.orEmpty())
             
-            val streams = combined
+            return combined
                 .filter { it.mimeType.startsWith("audio/") }
                 .map { AudioStream(it) }
-            
-            println("SoundPod-Extractor: Found ${streams.size} audio streams for $videoId")
-            return streams
         }
 
     val videoStreams: List<Stream>
@@ -55,12 +49,9 @@ class YoutubeStreamExtractor(private val url: String) {
             val streamingData = playerResponse?.streamingData ?: return emptyList()
             val combined = (streamingData.adaptiveFormats.orEmpty() + streamingData.formats.orEmpty())
             
-            val streams = combined
+            return combined
                 .filter { it.mimeType.startsWith("video/") }
                 .map { VideoStream(it) }
-            
-            println("SoundPod-Extractor: Found ${streams.size} video streams for $videoId")
-            return streams
         }
 
     interface Stream {

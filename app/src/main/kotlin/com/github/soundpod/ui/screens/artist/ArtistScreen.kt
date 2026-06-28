@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.artist
+package com.github.musick.ui.screens.artist
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -44,11 +44,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.util.UnstableApi
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.LocalPlayerPadding
-import com.github.soundpod.R
-import com.github.soundpod.ui.components.AdaptiveThumbnail
-import com.github.soundpod.ui.components.PlaylistScreenLayout
-import com.github.soundpod.viewmodels.ArtistViewModel
+import com.github.musick.LocalPlayerPadding
+import com.github.musick.R
+import com.github.musick.ui.components.AdaptiveThumbnail
+import com.github.musick.ui.components.PlaylistScreenLayout
+import com.github.musick.viewmodels.ArtistViewModel
 import kotlinx.coroutines.launch
 
 enum class ArtistTab {

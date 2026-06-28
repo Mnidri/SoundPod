@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.settings
+package com.github.musick.ui.screens.settings
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -32,16 +32,16 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.R
-import com.github.soundpod.enums.QuickPicksSource
-import com.github.soundpod.ui.components.SettingsCard
-import com.github.soundpod.utils.quickPicksCustomGenreKey
-import com.github.soundpod.utils.quickPicksSourceKey
-import com.github.soundpod.utils.rememberPreference
+import com.github.musick.R
+import com.github.musick.enums.QuickPicksSource
+import com.github.musick.ui.components.SettingsCard
+import com.github.musick.utils.quickPicksCustomGenreKey
+import com.github.musick.utils.quickPicksSourceKey
+import com.github.musick.utils.rememberPreference
 
 @Composable
 fun QuickPicksSettingsContent() {
-    var quickPicksSource by rememberPreference(quickPicksSourceKey, QuickPicksSource.Trending)
+    var quickPicksSource by rememberPreference(quickPicksSourceKey, QuickPicksSource.LastPlayed)
     var customGenre by rememberPreference(quickPicksCustomGenreKey, "Psaltic music")
     val focusManager = LocalFocusManager.current
     val (colorPalette) = LocalAppearance.current

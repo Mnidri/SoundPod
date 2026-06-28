@@ -42,7 +42,9 @@ object Innertube {
     var onVisitorDataChanged: ((String?) -> Unit)? = null
     var poToken: String? = null
     var apiKey: String? = null
+    var clientName: String? = null
     var clientVersion: String? = null
+    var context: com.github.innertube.models.Context? = null
     
     private val _cookies = mutableStateOf<String?>(null)
     var cookies: String?
@@ -59,12 +61,6 @@ object Innertube {
 
     var decipher: (suspend (String) -> String)? = null
     var signatureDecipher: (suspend (String) -> String)? = null
-
-    interface PoTokenResolver {
-        suspend fun getPoToken(videoId: String?): String?
-    }
-
-    var poTokenResolver: PoTokenResolver? = null
 
     val client = HttpClient(OkHttp) {
         expectSuccess = true
@@ -98,7 +94,7 @@ object Innertube {
                 
                 // Set default User-Agent if not already set by the request
                 if (headers["User-Agent"] == null) {
-                    headers.append("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36")
+                    headers.append("User-Agent", "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36")
                 }
 
                 // Only append cookies if the request explicitly allows it via a custom attribute
@@ -134,7 +130,7 @@ object Innertube {
             val digest = MessageDigest.getInstance("SHA-1").digest(payload.toByteArray())
             val hash = digest.joinToString("") { "%02x".format(it) }
             "$timestamp" + "_" + hash
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -173,7 +169,7 @@ object Innertube {
                     fetchVisitorData()
                 }
                 if (apiKey == null) {
-                    delay(100)
+                    delay(100.milliseconds)
                 }
             }
             true
@@ -185,15 +181,12 @@ object Innertube {
 
     internal const val BROWSE = "/youtubei/v1/browse"
     internal const val NEXT = "/youtubei/v1/next"
-    internal const val PLAYER = "/youtubei/v1/player"
     internal const val QUEUE = "/youtubei/v1/music/get_queue"
     internal const val SEARCH = "/youtubei/v1/search"
     internal const val SEARCH_SUGGESTIONS = "/youtubei/v1/music/get_search_suggestions"
 
     internal const val MUSIC_RESPONSIVE_LIST_ITEM_RENDERER_MASK =
         "musicResponsiveListItemRenderer(flexColumns,fixedColumns,thumbnail,navigationEndpoint)"
-    internal const val MUSIC_TWO_ROW_ITEM_RENDERER_MASK =
-        "musicTwoRowItemRenderer(thumbnailRenderer,title,subtitle,navigationEndpoint)"
     const val PLAYLIST_PANEL_VIDEO_RENDERER_MASK =
         "playlistPanelVideoRenderer(title,navigationEndpoint,longBylineText,shortBylineText,thumbnail,lengthText)"
 

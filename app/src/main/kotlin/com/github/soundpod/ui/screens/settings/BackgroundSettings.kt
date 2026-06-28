@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.settings
+package com.github.musick.ui.screens.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -40,11 +40,11 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.R
-import com.github.soundpod.ui.appearance.BackgroundStyles
-import com.github.soundpod.ui.appearance.PLAYER_BACKGROUND_STYLE_KEY
-import com.github.soundpod.utils.preferences
-import com.github.soundpod.utils.rememberPreference
+import com.github.musick.R
+import com.github.musick.ui.appearance.BackgroundStyles
+import com.github.musick.ui.appearance.PLAYER_BACKGROUND_STYLE_KEY
+import com.github.musick.utils.preferences
+import com.github.musick.utils.rememberPreference
 
 private data class BackgroundPreset(val title: String, val asset: String, val styleId: Int)
 

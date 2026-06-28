@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.player.seekbar
+package com.github.musick.ui.screens.player.seekbar
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.github.core.ui.LocalAppearance
-import com.github.soundpod.R
+import com.github.musick.R
 import kotlin.math.*
 
 @Composable

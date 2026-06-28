@@ -1,4 +1,4 @@
-package com.github.soundpod.ui.screens.home
+package com.github.musick.ui.screens.home
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -23,22 +23,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.github.soundpod.LocalPlayerPadding
-import com.github.soundpod.R
-import com.github.soundpod.db
-import com.github.soundpod.enums.BuiltInPlaylist
-import com.github.soundpod.enums.PlaylistSortBy
-import com.github.soundpod.enums.SortOrder
-import com.github.soundpod.models.Playlist
-import com.github.soundpod.query
-import com.github.soundpod.ui.components.SortingHeader
-import com.github.soundpod.ui.components.TextFieldDialog
-import com.github.soundpod.ui.items.BuiltInPlaylistItem
-import com.github.soundpod.ui.items.LocalPlaylistItem
-import com.github.soundpod.utils.playlistSortByKey
-import com.github.soundpod.utils.playlistSortOrderKey
-import com.github.soundpod.utils.rememberPreference
-import com.github.soundpod.viewmodels.home.HomePlaylistsViewModel
+import com.github.musick.LocalPlayerPadding
+import com.github.musick.R
+import com.github.musick.db
+import com.github.musick.enums.BuiltInPlaylist
+import com.github.musick.enums.PlaylistSortBy
+import com.github.musick.enums.SortOrder
+import com.github.musick.models.Playlist
+import com.github.musick.query
+import com.github.musick.ui.components.SortingHeader
+import com.github.musick.ui.components.TextFieldDialog
+import com.github.musick.ui.items.BuiltInPlaylistItem
+import com.github.musick.ui.items.LocalPlaylistItem
+import com.github.musick.utils.playlistSortByKey
+import com.github.musick.utils.playlistSortOrderKey
+import com.github.musick.utils.rememberPreference
+import com.github.musick.viewmodels.home.HomePlaylistsViewModel
 
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
