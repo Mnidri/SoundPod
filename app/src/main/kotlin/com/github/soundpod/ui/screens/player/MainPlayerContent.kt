@@ -39,7 +39,6 @@ import androidx.media3.common.util.UnstableApi
 import com.github.musick.LocalPlayerServiceBinder
 import com.github.musick.enums.PlayerLayout
 import com.github.musick.enums.ProgressBar
-import com.github.musick.ui.screens.player.lyrics.LyricsOverlay
 import com.github.musick.ui.styling.Dimensions
 import com.github.musick.utils.isLandscape
 import com.github.musick.utils.progressBarStyle
@@ -144,7 +143,9 @@ fun MainPlayerContent(
                                 .fillMaxSize()
                                 .padding(vertical = 48.dp, horizontal = 12.dp),
                             mediaId = mediaItem.mediaId,
-                            mediaMetadata = mediaItem.mediaMetadata
+                            mediaMetadata = mediaItem.mediaMetadata,
+                            playbackPositionProvider = { player.currentPosition },
+                            onSeekToPosition = { pos: Long -> player.seekTo(pos) }
                         )
                     }
                 }
@@ -274,7 +275,9 @@ fun MainPlayerContent(
                             LyricsOverlay(
                                 modifier = Modifier.weight(1f),
                                 mediaId = mediaItem.mediaId,
-                                mediaMetadata = mediaItem.mediaMetadata
+                                mediaMetadata = mediaItem.mediaMetadata,
+                                playbackPositionProvider = { player.currentPosition },
+                                onSeekToPosition = { pos: Long -> player.seekTo(pos) }
                             )
                             Spacer(modifier = Modifier.height(26.dp))
                         }
