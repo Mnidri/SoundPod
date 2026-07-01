@@ -1,17 +1,15 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.github.musick.ui.screens.settings
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.musick.R
@@ -54,13 +52,9 @@ fun SettingsScreen(
         content = {
             when (screenId) {
                 SettingsDestinations.MAIN -> SettingsMainContent(onOptionClick)
-                SettingsDestinations.APPEARANCE -> AppearanceSettingsContent(
-                    onBackgroundClick = { onOptionClick(SettingsDestinations.BACKGROUND) }
-                )
+                SettingsDestinations.APPEARANCE -> AppearanceSettingsContent(onBackgroundClick = { onOptionClick(SettingsDestinations.BACKGROUND) })
                 SettingsDestinations.BACKGROUND -> BackgroundSettingsContent()
-                SettingsDestinations.PLAYER -> PlayerSettingsContent(
-                    onSleepTimerClick = { onOptionClick(SettingsDestinations.SLEEP_TIMER) }
-                )
+                SettingsDestinations.PLAYER -> PlayerSettingsContent(onSleepTimerClick = { onOptionClick(SettingsDestinations.SLEEP_TIMER) })
                 SettingsDestinations.SLEEP_TIMER -> SleepTimerSettingsContent()
                 SettingsDestinations.PRIVACY -> PrivacySettingsContent()
                 SettingsDestinations.BACKUP -> BackupSettingsContent()
@@ -83,9 +77,60 @@ fun SettingsMainContent(
     viewModel: SettingsViewModel = viewModel()
 ) {
     val sections by viewModel.sections.collectAsStateWithLifecycle()
+    
+    // متغیرهای مدیریت دیالوگ‌های اختصاصی بدون تداخل در ناوبری
+    var showPremiumDialog by remember { mutableStateOf(false) }
+    var showAiDialog by remember { mutableStateOf(false) }
+    var apiKey by remember { mutableStateOf("") }
+
+    if (showPremiumDialog) {
+        AlertDialog(
+            onDismissRequest = { showPremiumDialog = false },
+            title = { Text("Musick Premium", fontWeight = FontWeight.Bold, color = androidx.compose.ui.graphics.Color(0xFFFFD700)) },
+            text = { Text("Coming soon...", fontSize = 22.sp, fontWeight = FontWeight.Bold) },
+            confirmButton = { TextButton(onClick = { showPremiumDialog = false }) { Text("OK") } }
+        )
+    }
+
+    if (showAiDialog) {
+        AlertDialog(
+            onDismissRequest = { showAiDialog = false },
+            title = { Text("AI Translation Settings", fontWeight = FontWeight.Bold) },
+            text = {
+                Column {
+                    Text("Enter your AI API Key for smart lyrics translation:")
+                    Spacer(modifier = Modifier.height(12.dp))
+                    OutlinedTextField(
+                        value = apiKey,
+                        onValueChange = { apiKey = it },
+                        label = { Text("API Key") },
+                        singleLine = true
+                    )
+                }
+            },
+            confirmButton = { TextButton(onClick = { showAiDialog = false }) { Text("Save") } },
+            dismissButton = { TextButton(onClick = { showAiDialog = false }) { Text("Cancel") } }
+        )
+    }
 
     Spacer(modifier = Modifier.height(8.dp))
+    
+    // رندر کارت اختصاصی شما با آیکون‌های حرفه‌ای جدید
+    SettingsCard {
+        SettingRow(
+            title = "Musick Premium",
+            icon = IconSource.Icon(painterResource(id = R.drawable.ic_premium_custom)),
+            onClick = { showPremiumDialog = true }
+        )
+        SettingRow(
+            title = "AI Translation",
+            icon = IconSource.Icon(painterResource(id = R.drawable.ic_translate_custom)),
+            onClick = { showAiDialog = true }
+        )
+    }
+    Spacer(modifier = Modifier.height(8.dp))
 
+    // رندر بقیه تنظیمات
     sections.forEach { section ->
         SettingsCard {
             section.options.forEach { option ->
@@ -106,7 +151,6 @@ fun SettingsMainContent(
                 }
             }
         }
-
         Spacer(modifier = Modifier.height(8.dp))
     }
 }

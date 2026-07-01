@@ -43,6 +43,8 @@ const val pauseSongCacheKey = "pauseSongCache"
 const val showCachedSongsInOfflineKey = "showCachedSongsInOffline"
 const val quickPicksSourceKey = "quickPicksSource"
 const val quickPicksCustomGenreKey = "quickPicksCustomGenre"
+const val isOnboardingComplete = "isOnboardingComplete"
+const val onboardingSelectedArtists = "onboardingSelectedArtists"
 const val isScreenCacheEnabledKey = "isScreenCacheEnabled"
 
 const val appTheme = "appTheme"

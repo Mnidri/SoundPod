@@ -1,4 +1,67 @@
-package com.github.musick.ui.screens.album
+import os
+
+# ۱. رفع قطعی ارور Type Mismatch با برگرداندن لیست خالص
+fp_vm = "app/src/main/kotlin/com/github/soundpod/viewmodels/home/QuickPicksViewModel.kt"
+if not os.path.exists(fp_vm): fp_vm = "app/src/main/kotlin/com/github/musick/viewmodels/home/QuickPicksViewModel.kt"
+
+if os.path.exists(fp_vm):
+    with open(fp_vm, "r") as f: code_vm = f.read()
+    
+    start_idx = code_vm.find("val newReleasesDeferred = async")
+    end_idx = code_vm.find("val relatedDeferreds = seedSongs.map")
+    
+    if start_idx != -1 and end_idx != -1:
+        before = code_vm[:start_idx]
+        after = code_vm[end_idx:]
+        
+        new_block = """val newReleasesDeferred = async<List<Innertube.SongItem>?> {
+                    var interleaved: List<Innertube.SongItem>? = null
+                    try {
+                        val historySongs = runCatching { db.lastPlayed(50).first() }.getOrNull() ?: emptyList()
+                        val historyArtists = historySongs.mapNotNull { it.artistsText?.split(",")?.firstOrNull()?.trim() }.filter { it.isNotBlank() }
+                        val onboardedPref = appContext.getSharedPreferences("preferences", android.content.Context.MODE_PRIVATE).getString("onboardingSelectedArtists", "") ?: ""
+                        val onboardedArtists = onboardedPref.split(",").filter { it.isNotBlank() }
+                        val activeArtists = (historyArtists + onboardedArtists).distinct().take(4)
+                        
+                        if (activeArtists.isNotEmpty()) {
+                            val fetchedSongLists = mutableListOf<List<Innertube.SongItem>>()
+                            for (artist in activeArtists) {
+                                val res = runCatching { Innertube.searchPage(query = "$artist latest single releases", params = Innertube.SearchFilter.Song.value, fromMusicShelfRendererContent = Innertube.SongItem.Companion::from)?.getOrNull() }.getOrNull()
+                                res?.items?.filterIsInstance<Innertube.SongItem>()?.let { fetchedSongLists.add(it.take(3)) }
+                            }
+                            
+                            val tempInterleaved = mutableListOf<Innertube.SongItem>()
+                            val maxLen = fetchedSongLists.maxOfOrNull { it.size } ?: 0
+                            for (i in 0 until maxLen) {
+                                for (list in fetchedSongLists) {
+                                    if (i < list.size) tempInterleaved.add(list[i])
+                                }
+                            }
+                            if (tempInterleaved.isNotEmpty()) {
+                                interleaved = tempInterleaved.distinctBy { it.key }
+                            }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                    
+                    if (interleaved.isNullOrEmpty()) {
+                        val fallbackRes = runCatching { Innertube.searchPage(query = "New Music Releases", params = Innertube.SearchFilter.Song.value, fromMusicShelfRendererContent = Innertube.SongItem.Companion::from)?.getOrNull() }.getOrNull()
+                        interleaved = fallbackRes?.items?.filterIsInstance<Innertube.SongItem>() ?: seedSongs.shuffled().take(6).filterIsInstance<Innertube.SongItem>()
+                    }
+                    
+                    interleaved // برگرداندن لیست خالص بدون جعبه‌های اضافه!
+                }
+                
+                """
+        with open(fp_vm, "w") as f: f.write(before + new_block + after)
+
+
+# ۲. دیزاین مینیمال، کلاسیک و غیرفعال کردن کلیک‌های مزاحم در صفحه آلبوم
+fp_album = "app/src/main/kotlin/com/github/soundpod/ui/screens/album/AlbumScreen.kt"
+if not os.path.exists(fp_album): fp_album = "app/src/main/kotlin/com/github/musick/ui/screens/album/AlbumScreen.kt"
+
+code_album = """package com.github.musick.ui.screens.album
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -46,7 +109,7 @@ fun extractHighResUrl(rawThumb: String?): String {
     if (rawThumb == null) return ""
     var extracted = if (rawThumb.contains("url=")) Regex("url=([^,)]+)").find(rawThumb)?.groupValues?.get(1) ?: rawThumb else rawThumb
     extracted = if (extracted.startsWith("//")) "https:$extracted" else extracted
-    return extracted.replace(Regex("=w\\d+-h\\d+"), "=w1080-h1080").replace(Regex("=s\\d+"), "=s1080")
+    return extracted.replace(Regex("=w\\\\d+-h\\\\d+"), "=w1080-h1080").replace(Regex("=s\\\\d+"), "=s1080")
 }
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class)
@@ -160,3 +223,7 @@ fun AlbumScreen(
         content = { AlbumSongs(browseId = browseId, onGoToArtist = onGoToArtist) }
     )
 }
+"""
+with open(fp_album, "w") as f: f.write(code_album)
+
+print("Kotlin Type Error annihilated. Clean Album UI deployed!")

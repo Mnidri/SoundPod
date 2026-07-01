@@ -46,6 +46,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.github.core.ui.LocalAppearance
 import com.github.musick.LocalPlayerPadding
 import com.github.musick.LocalPlayerServiceBinder
@@ -73,70 +74,39 @@ fun SharedPlayer(
     val scope = rememberCoroutineScope()
     val layoutDirection = LocalLayoutDirection.current
     val context = LocalContext.current
-
     var showPlaylist by remember { mutableStateOf(false) }
     var showLyrics by remember { mutableStateOf(false) }
     var targetExpandProgress by remember { mutableFloatStateOf(0f) }
-
     val expandProgress by animateFloatAsState(
         targetValue = targetExpandProgress,
-        animationSpec = spring(
-            dampingRatio = 0.85f,
-            stiffness = Spring.StiffnessLow
-        ),
+        animationSpec = spring(dampingRatio = 0.85f, stiffness = Spring.StiffnessLow),
         label = "expandAnimation"
     )
-
     val binder = LocalPlayerServiceBinder.current
     val player = binder?.player
-    var currentArtworkUrl by remember {
-        mutableStateOf(player?.currentMediaItem?.mediaMetadata?.artworkUri?.toString())
-    }
-
-    var hasMediaItems by remember {
-        mutableStateOf((player?.mediaItemCount ?: 0) > 0)
-    }
-
+    var currentArtworkUrl by remember { mutableStateOf(player?.currentMediaItem?.mediaMetadata?.artworkUri?.toString()) }
+    var hasMediaItems by remember { mutableStateOf((player?.mediaItemCount ?: 0) > 0) }
     var isPlaying by remember { mutableStateOf(player?.isPlaying ?: false) }
 
     DisposableEffect(player) {
         if (player == null) return@DisposableEffect onDispose {}
-
         val listener = object : Player.Listener {
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-                val metadata = mediaItem?.mediaMetadata
-                currentArtworkUrl = metadata?.artworkUri?.toString()
-                    ?: metadata?.extras?.getString("artwork_url")
-                    ?: ""
+                currentArtworkUrl = mediaItem?.mediaMetadata?.artworkUri?.toString() ?: mediaItem?.mediaMetadata?.extras?.getString("artwork_url") ?: ""
                 hasMediaItems = player.mediaItemCount > 0
             }
-
-            override fun onTimelineChanged(timeline: Timeline, reason: Int) {
-                hasMediaItems = player.mediaItemCount > 0
-            }
-
-            override fun onIsPlayingChanged(isPlayingChanged: Boolean) {
-                isPlaying = isPlayingChanged
-            }
+            override fun onTimelineChanged(timeline: Timeline, reason: Int) { hasMediaItems = player.mediaItemCount > 0 }
+            override fun onIsPlayingChanged(isPlayingChanged: Boolean) { isPlaying = isPlayingChanged }
         }
         player.addListener(listener)
-
         hasMediaItems = player.mediaItemCount > 0
         isPlaying = player.isPlaying
-        currentArtworkUrl = player.currentMediaItem?.mediaMetadata?.artworkUri?.toString()
-            ?: player.currentMediaItem?.mediaMetadata?.extras?.getString("artwork_url")
-            ?: ""
-
-        onDispose {
-            player.removeListener(listener)
-        }
+        currentArtworkUrl = player.currentMediaItem?.mediaMetadata?.artworkUri?.toString() ?: player.currentMediaItem?.mediaMetadata?.extras?.getString("artwork_url") ?: ""
+        onDispose { player.removeListener(listener) }
     }
 
     LaunchedEffect(expandProgress) {
-        if (expandProgress == 0f) {
-            showLyrics = false
-            showPlaylist = false
-        }
+        if (expandProgress == 0f) { showLyrics = false; showPlaylist = false }
     }
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
@@ -144,11 +114,9 @@ fun SharedPlayer(
         val exactScreenHeight = maxHeight
         val exactScreenWidth = maxWidth
         val screenHeightPx = with(density) { exactScreenHeight.toPx() }
-
         val systemBottomPadding = scaffoldPadding.calculateBottomPadding()
         val activeBottomPadding = lerp(systemBottomPadding, 0.dp, expandProgress).coerceAtLeast(0.dp)
         val playerHeight = lerp(60.dp, exactScreenHeight, expandProgress).coerceAtLeast(0.dp)
-
         val cornerRadius = lerp(28.dp, 0.dp, expandProgress).coerceAtLeast(0.dp)
 
         CompositionLocalProvider(value = LocalPlayerPadding provides (60.dp + systemBottomPadding)) {
@@ -156,15 +124,15 @@ fun SharedPlayer(
                 color = MaterialTheme.colorScheme.background,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(
-                        start = scaffoldPadding.calculateLeftPadding(layoutDirection),
-                        end = scaffoldPadding.calculateRightPadding(layoutDirection)
-                    ),
+                    .padding(start = scaffoldPadding.calculateLeftPadding(layoutDirection), end = scaffoldPadding.calculateRightPadding(layoutDirection)),
                 content = content
             )
         }
 
-        if (showPlayer) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+        val activeShowPlayer = showPlayer && currentRoute?.contains("Onboarding", ignoreCase = true) != true
+        if (activeShowPlayer) {
             val (colorPalette) = LocalAppearance.current
             val isDark = colorPalette.isDark
             val bottomPaddingColor = if (isDark) Color.Black else Color.White
@@ -178,24 +146,18 @@ fun SharedPlayer(
                     .alpha(if (expandProgress > 0f) 0f else 1f)
             )
 
-            val dragGestureModifier = if (showPlaylist || showLyrics || !hasMediaItems) {
-                Modifier
-            } else {
-                Modifier.pointerInput(screenHeightPx) {
-                    detectVerticalDragGestures(
-                        onVerticalDrag = { change, dragAmount ->
-                            change.consume()
-                            val delta = (dragAmount / screenHeightPx) * 3f
-                            targetExpandProgress = (targetExpandProgress - delta).coerceIn(0f, 1f)
-                        },
-                        onDragEnd = {
-                            targetExpandProgress = if (targetExpandProgress > 0.2f) 1f else 0f
-                            scope.launch {
-                                if (targetExpandProgress == 1f) sheetState.expand() else sheetState.partialExpand()
-                            }
-                        }
-                    )
-                }
+            val dragGestureModifier = if (showPlaylist || showLyrics || !hasMediaItems) Modifier else Modifier.pointerInput(screenHeightPx) {
+                detectVerticalDragGestures(
+                    onVerticalDrag = { change, dragAmount ->
+                        change.consume()
+                        val delta = (dragAmount / screenHeightPx) * 3f
+                        targetExpandProgress = (targetExpandProgress - delta).coerceIn(0f, 1f)
+                    },
+                    onDragEnd = {
+                        targetExpandProgress = if (targetExpandProgress > 0.2f) 1f else 0f
+                        scope.launch { if (targetExpandProgress == 1f) sheetState.expand() else sheetState.partialExpand() }
+                    }
+                )
             }
 
             Box(
@@ -204,131 +166,56 @@ fun SharedPlayer(
                     .padding(bottom = activeBottomPadding)
                     .width(exactScreenWidth)
                     .height(playerHeight)
-                    .graphicsLayer {
-                        shape = RoundedCornerShape(cornerRadius)
-                        clip = true
-                    }
+                    .graphicsLayer { shape = RoundedCornerShape(cornerRadius); clip = true }
                     .then(dragGestureModifier)
             ) {
-                PlayerBackground(
-                    thumbnailUrl = currentArtworkUrl,
-                    isPlaying = isPlaying,
-                    expandProgress = expandProgress
-                ) {
+                PlayerBackground(thumbnailUrl = currentArtworkUrl, isPlaying = isPlaying, expandProgress = expandProgress) {
                     Box(modifier = Modifier.fillMaxSize()) {
-
                         if (expandProgress > 0f) {
-                            Box(
-                                modifier = Modifier
-                                    .layout { measurable, constraints ->
-                                        val screenW = exactScreenWidth.roundToPx()
-                                        val screenH = exactScreenHeight.roundToPx()
-                                        val currentH = constraints.maxHeight
-                                        val pad = activeBottomPadding.roundToPx()
-
-                                        val placeable = measurable.measure(
-                                            androidx.compose.ui.unit.Constraints.fixed(screenW, screenH)
-                                        )
-
-                                        layout(constraints.maxWidth, currentH) {
-                                            val yOffset = currentH + pad - screenH
-                                            placeable.placeRelative(0, yOffset)
-                                        }
-                                    }
-                                    .alpha(expandProgress)
-                            ) {
+                            Box(modifier = Modifier.layout { measurable, constraints ->
+                                val screenW = exactScreenWidth.roundToPx()
+                                val screenH = exactScreenHeight.roundToPx()
+                                val currentH = constraints.maxHeight
+                                val pad = activeBottomPadding.roundToPx()
+                                val placeable = measurable.measure(androidx.compose.ui.unit.Constraints.fixed(screenW, screenH))
+                                layout(constraints.maxWidth, currentH) {
+                                    val yOffset = currentH + pad - screenH
+                                    placeable.placeRelative(0, yOffset)
+                                }
+                            }.alpha(expandProgress)) {
                                 PlayerLayout(
                                     expandProgress = expandProgress,
-                                    onGoToAlbum = { browseId ->
-                                        scope.launch { sheetState.partialExpand() }
-                                        navController.navigate(route = Routes.Album(id = browseId)) {
-                                            launchSingleTop = true
-                                            restoreState = true
-                                        }
-                                    },
-                                    onGoToArtist = { browseId ->
-                                        scope.launch { sheetState.partialExpand() }
-                                        navController.navigate(route = Routes.Artist(id = browseId)) {
-                                            launchSingleTop = true
-                                            restoreState = true
-                                        }
-                                    },
-                                    onGoToTrackDetails = {
-                                        val intent = Intent(context, SettingsActivity::class.java).apply {
-                                            putExtra("SCREEN_ID", SettingsDestinations.TRACK_DETAILS)
-                                        }
-                                        context.startActivity(intent)
-                                    },
-                                    onBack = {
-                                        if (showLyrics) {
-                                            showLyrics = false
-                                        } else if (showPlaylist) {
-                                            showPlaylist = false
-                                        } else {
-                                            targetExpandProgress = 0f
-                                            scope.launch { sheetState.partialExpand() }
-                                        }
-                                    },
+                                    onGoToAlbum = { browseId -> scope.launch { sheetState.partialExpand() }; navController.navigate(route = Routes.Album(id = browseId)) { launchSingleTop = true; restoreState = true } },
+                                    onGoToArtist = { browseId -> scope.launch { sheetState.partialExpand() }; navController.navigate(route = Routes.Artist(id = browseId)) { launchSingleTop = true; restoreState = true } },
+                                    onGoToTrackDetails = { val intent = Intent(context, SettingsActivity::class.java).apply { putExtra("SCREEN_ID", SettingsDestinations.TRACK_DETAILS) }; context.startActivity(intent) },
+                                    onBack = { if (showLyrics) showLyrics = false else if (showPlaylist) showPlaylist = false else { targetExpandProgress = 0f; scope.launch { sheetState.partialExpand() } } },
                                     showPlaylist = showPlaylist,
-                                    onLyricsClick = {
-                                        showLyrics = true
-                                        showPlaylist = false
-                                    },
+                                    onLyricsClick = { showLyrics = true; showPlaylist = false },
                                     showLyrics = showLyrics,
                                     onSettingsClick = onNavigateToSettings,
                                     onSleepTimerClick = onNavigateToSleepTimer,
-                                    onTogglePlaylist = {
-                                        showPlaylist = it
-                                        if (it) showLyrics = false
-                                    }
+                                    onTogglePlaylist = { showPlaylist = it; if (it) showLyrics = false }
                                 )
                             }
                         }
-
                         if (expandProgress < 1f) {
-                            Box(
-                                modifier = Modifier
-                                    .layout { measurable, constraints ->
-                                        val screenW = exactScreenWidth.roundToPx()
-                                        val currentH = constraints.maxHeight
-                                        val pad = activeBottomPadding.roundToPx()
-                                        val sysPad = systemBottomPadding.roundToPx()
-                                        val miniH = 60.dp.roundToPx()
-
-                                        val placeable = measurable.measure(
-                                            androidx.compose.ui.unit.Constraints.fixed(screenW, miniH)
-                                        )
-
-                                        layout(constraints.maxWidth, currentH) {
-                                            // Pin it relative to screen bottom:
-                                            // The parent Box bottom is at screenH - pad.
-                                            // We want mini player bottom at screenH - sysPad.
-                                            // Offset from parent bottom = sysPad - pad.
-                                            // Offset from parent top = currentH - miniH - (sysPad - pad)
-                                            val yOffset = currentH - miniH - (sysPad - pad)
-                                            placeable.placeRelative(0, yOffset)
-                                        }
-                                    }
-                                    .alpha(1f - expandProgress)
-                            ) {
-                                MiniPlayerContent(
-                                    openPlayer = {
-                                        targetExpandProgress = 1f
-                                        scope.launch { sheetState.expand() }
-                                    }
-                                )
+                            Box(modifier = Modifier.layout { measurable, constraints ->
+                                val screenW = exactScreenWidth.roundToPx()
+                                val currentH = constraints.maxHeight
+                                val pad = activeBottomPadding.roundToPx()
+                                val sysPad = systemBottomPadding.roundToPx()
+                                val miniH = 60.dp.roundToPx()
+                                val placeable = measurable.measure(androidx.compose.ui.unit.Constraints.fixed(screenW, miniH))
+                                layout(constraints.maxWidth, currentH) {
+                                    val yOffset = currentH - miniH - (sysPad - pad)
+                                    placeable.placeRelative(0, yOffset)
+                                }
+                            }.alpha(1f - expandProgress)) {
+                                MiniPlayerContent(openPlayer = { targetExpandProgress = 1f; scope.launch { sheetState.expand() } })
                             }
                         }
-
-                        AnimatedVisibility(
-                            visible = !showPlaylist && !showLyrics,
-                            enter = fadeIn(tween(400)),
-                            exit = fadeOut(tween(400))
-                        ) {
-                            SharedThumbnail(
-                                expandProgress = expandProgress,
-                                isLandscape = isLandscape
-                            )
+                        AnimatedVisibility(visible = !showPlaylist && !showLyrics, enter = fadeIn(tween(400)), exit = fadeOut(tween(400))) {
+                            SharedThumbnail(expandProgress = expandProgress, isLandscape = isLandscape)
                         }
                     }
                 }

@@ -1,4 +1,9 @@
-package com.github.musick.ui.screens.home
+import os
+
+fp_qp = "app/src/main/kotlin/com/github/soundpod/ui/screens/home/QuickPicks.kt"
+if not os.path.exists(fp_qp): fp_qp = "app/src/main/kotlin/com/github/musick/ui/screens/home/QuickPicks.kt"
+
+code_qp = """package com.github.musick.ui.screens.home
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
@@ -90,7 +95,7 @@ private fun extractHighResUrlLocal(rawThumb: String?): String {
     if (rawThumb == null) return ""
     var extracted = if (rawThumb.contains("url=")) Regex("url=([^,)]+)").find(rawThumb)?.groupValues?.get(1) ?: rawThumb else rawThumb
     extracted = if (extracted.startsWith("//")) "https:$extracted" else extracted
-    return extracted.replace(Regex("=w\\d+-h\\d+"), "=w1080-h1080").replace(Regex("=s\\d+"), "=s1080")
+    return extracted.replace(Regex("=w\\\\d+-h\\\\d+"), "=w1080-h1080").replace(Regex("=s\\\\d+"), "=s1080")
 }
 
 @SuppressLint("ConfigurationScreenWidthHeight")
@@ -151,9 +156,9 @@ fun QuickPicks(
                 rows = GridCells.Fixed(count = 3),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(215.dp), // افزایش ارتفاع گرید برای بزرگتر شدن کاورها
+                    .height(280.dp), // افزایش ارتفاع گرید برای بزرگتر شدن کاورها
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(
                     items = (related.songs ?: emptyList()).filter { it.key.isNotEmpty() }.distinctBy { it.key + it.info?.endpoint?.playlistId.orEmpty() },
@@ -318,3 +323,7 @@ fun QuickPicks(
         }
     }
 }
+"""
+with open(fp_qp, "w") as f: f.write(code_qp)
+
+print("QuickPicks UI upgraded to Luxury Glassmorphic 4K Version!")

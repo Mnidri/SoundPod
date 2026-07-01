@@ -52,10 +52,14 @@ fun MainNavigation(
     onNavigateToSettings: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val prefs = context.getSharedPreferences("preferences", android.content.Context.MODE_PRIVATE)
+    val isOnboardingComplete = prefs.getBoolean("isOnboardingComplete", false)
+    val startDest = if (isOnboardingComplete) Routes.Home else Routes.Onboarding
 
     NavHost(
         navController = navController,
-        startDestination = Routes.Home,
+        startDestination = startDest,
         enterTransition = { Transitions.enter() },
         exitTransition = { Transitions.exit() },
         popEnterTransition = { Transitions.popEnter() },
@@ -95,6 +99,15 @@ fun MainNavigation(
             }
         }
 
+                composable(route = Routes.Onboarding::class) {
+            com.github.musick.ui.screens.onboarding.OnboardingScreen(
+                onComplete = {
+                    navController.navigate(Routes.Home) {
+                        popUpTo(Routes.Onboarding) { inclusive = true }
+                    }
+                }
+            )
+        }
         playerComposable(route = Routes.Home::class) {
             HomeScreen(
                 navController = navController,

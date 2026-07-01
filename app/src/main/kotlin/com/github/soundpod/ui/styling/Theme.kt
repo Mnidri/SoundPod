@@ -31,9 +31,9 @@ private val PureBlackColorScheme = darkColorScheme(
 private val OffsetWhiteColorScheme = lightColorScheme(
     primary = Color.Black,
     onPrimary = Color.White,
-    background = Color(0xFFF6F6F8),
+    background = Color.White,
     onBackground = Color.Black,
-    surface = Color(0xFFF6F6F8),
+    surface = Color.White,
     onSurface = Color.Black
 )
 

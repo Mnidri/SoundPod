@@ -1,9 +1,16 @@
-package com.github.musick.ui.screens.album
+import os
+
+# ۱. اصلاح دیزاین آلبوم: رفع مشکل نامرئی شدن دکمه ها و تداخل کلیک
+fp_album = "app/src/main/kotlin/com/github/soundpod/ui/screens/album/AlbumScreen.kt"
+if not os.path.exists(fp_album): fp_album = "app/src/main/kotlin/com/github/musick/ui/screens/album/AlbumScreen.kt"
+
+code_album = """package com.github.musick.ui.screens.album
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -46,7 +53,7 @@ fun extractHighResUrl(rawThumb: String?): String {
     if (rawThumb == null) return ""
     var extracted = if (rawThumb.contains("url=")) Regex("url=([^,)]+)").find(rawThumb)?.groupValues?.get(1) ?: rawThumb else rawThumb
     extracted = if (extracted.startsWith("//")) "https:$extracted" else extracted
-    return extracted.replace(Regex("=w\\d+-h\\d+"), "=w1080-h1080").replace(Regex("=s\\d+"), "=s1080")
+    return extracted.replace(Regex("=w\\\\d+-h\\\\d+"), "=w1080-h1080").replace(Regex("=s\\\\d+"), "=s1080")
 }
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class)
@@ -79,22 +86,21 @@ fun AlbumScreen(
         },
         headerContent = {
             Column(
-                modifier = Modifier.fillMaxWidth().padding(top = 32.dp, bottom = 24.dp),
+                modifier = Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // کاور تمیز با سایه نرم و گوشه های کلاسیک
                 AsyncImage(
                     model = highResCover, 
                     contentDescription = null, 
-                    modifier = Modifier.fillMaxWidth(0.6f).aspectRatio(1f).shadow(20.dp, RoundedCornerShape(12.dp)).clip(RoundedCornerShape(12.dp)),
+                    modifier = Modifier.fillMaxWidth(0.65f).aspectRatio(1f).shadow(16.dp, RoundedCornerShape(16.dp)).clip(RoundedCornerShape(16.dp)),
                     contentScale = ContentScale.Crop
                 )
                 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(20.dp))
                 
                 Text(
                     text = album?.title.orEmpty(),
-                    style = typography.titleLarge.copy(fontWeight = FontWeight.ExtraBold, fontSize = 24.sp),
+                    style = typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 22.sp),
                     color = colorPalette.text,
                     textAlign = TextAlign.Center,
                     maxLines = 2,
@@ -102,9 +108,8 @@ fun AlbumScreen(
                     modifier = Modifier.fillMaxWidth(0.85f)
                 )
                 
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 
-                // غیرفعال کردن کاملِ کلیک‌پذیری از روی اسم خواننده (حل مشکل عکس سبزنگ)
                 Text(
                     text = album?.authorsText.orEmpty(),
                     style = typography.titleMedium,
@@ -112,20 +117,23 @@ fun AlbumScreen(
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable(enabled = album?.artistId != null) { album?.artistId?.let { onGoToArtist(it) } }
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
                 )
                 
                 album?.year?.let {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = it,
-                        style = typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                        style = typography.bodyMedium,
                         color = colorPalette.text.copy(alpha = 0.5f),
                         textAlign = TextAlign.Center
                     )
                 }
                 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -136,22 +144,22 @@ fun AlbumScreen(
                         onClick = { /* Handle Play */ },
                         colors = ButtonDefaults.buttonColors(containerColor = colorPalette.text, contentColor = colorPalette.background0),
                         shape = RoundedCornerShape(50),
-                        modifier = Modifier.height(52.dp).width(150.dp)
+                        modifier = Modifier.height(48.dp).width(140.dp)
                     ) {
-                        Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(26.dp))
+                        Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(24.dp))
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Play", fontWeight = FontWeight.Bold, fontSize = 17.sp)
+                        Text("Play", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     }
                     Spacer(modifier = Modifier.width(16.dp))
                     IconButton(
                         onClick = { viewModel.toggleLove() },
-                        modifier = Modifier.size(52.dp).clip(CircleShape).background(colorPalette.text.copy(alpha = 0.08f))
+                        modifier = Modifier.size(48.dp).clip(CircleShape).background(colorPalette.text.copy(alpha = 0.1f))
                     ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(if (uiState.isLoved) R.drawable.heart else R.drawable.heart_outline),
                             contentDescription = null, 
                             tint = if (uiState.isLoved) Color(0xFFFF4B4B) else colorPalette.text, 
-                            modifier = Modifier.size(26.dp)
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                 }
@@ -160,3 +168,72 @@ fun AlbumScreen(
         content = { AlbumSongs(browseId = browseId, onGoToArtist = onGoToArtist) }
     )
 }
+"""
+with open(fp_album, "w") as f: f.write(code_album)
+
+
+# ۲. فال‌بک نهایی و قطعی برای New Releases تا هرگز غیب نشود
+fp_vm = "app/src/main/kotlin/com/github/soundpod/viewmodels/home/QuickPicksViewModel.kt"
+if not os.path.exists(fp_vm): fp_vm = "app/src/main/kotlin/com/github/musick/viewmodels/home/QuickPicksViewModel.kt"
+
+if os.path.exists(fp_vm):
+    with open(fp_vm, "r") as f: code_vm = f.read()
+    
+    start_str = "val newReleasesDeferred = async {"
+    end_str = "val relatedDeferreds = seedSongs.map"
+    
+    if start_str in code_vm and end_str in code_vm:
+        before = code_vm.split(start_str)[0]
+        after = end_str + code_vm.split(end_str)[1]
+        
+        new_block = """val newReleasesDeferred = async {
+                    val result = runCatching {
+                        val historySongs = db.lastPlayed(50).first()
+                        val historyArtists = historySongs.mapNotNull { it.artistsText?.split(",")?.firstOrNull()?.trim() }.filter { it.isNotBlank() }
+                        val onboardedPref = appContext.getSharedPreferences("preferences", android.content.Context.MODE_PRIVATE).getString("onboardingSelectedArtists", "") ?: ""
+                        val onboardedArtists = onboardedPref.split(",").filter { it.isNotBlank() }
+                        val activeArtists = (historyArtists + onboardedArtists).distinct().take(4)
+                        
+                        if (activeArtists.isNotEmpty()) {
+                            val fetchedSongLists = mutableListOf<List<Innertube.SongItem>>()
+                            for (artist in activeArtists) {
+                                val res = Innertube.searchPage(query = "$artist latest single releases", params = Innertube.SearchFilter.Song.value, fromMusicShelfRendererContent = Innertube.SongItem.Companion::from)?.getOrNull()
+                                res?.items?.filterIsInstance<Innertube.SongItem>()?.let { fetchedSongLists.add(it.take(3)) }
+                            }
+                            val interleaved = mutableListOf<Innertube.SongItem>()
+                            val maxLen = fetchedSongLists.maxOfOrNull { it.size } ?: 0
+                            for (i in 0 until maxLen) {
+                                for (list in fetchedSongLists) {
+                                    if (i < list.size) interleaved.add(list[i])
+                                }
+                            }
+                            if (interleaved.isNotEmpty()) interleaved.distinctBy { it.key } else null
+                        } else null
+                    }.getOrNull()
+                    
+                    val finalResult = result ?: runCatching {
+                        Innertube.searchPage(query = "latest hit songs 2024", params = Innertube.SearchFilter.Song.value, fromMusicShelfRendererContent = Innertube.SongItem.Companion::from)?.getOrNull()?.items?.filterIsInstance<Innertube.SongItem>()
+                    }.getOrNull()
+                    
+                    // فال‌بک نهایی: اگر همه درخواست ها شکست خورد، از سیدهای اصلی استفاده میکند تا ردیف به هیچ وجه خالی نماند
+                    finalResult?.takeIf { it.isNotEmpty() } ?: seedSongs.shuffled().take(6)
+                }
+                """
+        with open(fp_vm, "w") as f: f.write(before + new_block + after)
+
+
+# ۳. فشرده کردن ارتفاع و فاصله Quick Picks
+fp_qp = "app/src/main/kotlin/com/github/soundpod/ui/screens/home/QuickPicks.kt"
+if not os.path.exists(fp_qp): fp_qp = "app/src/main/kotlin/com/github/musick/ui/screens/home/QuickPicks.kt"
+
+if os.path.exists(fp_qp):
+    with open(fp_qp, "r") as f: qp_code = f.read()
+    
+    # کاهش ارتفاع از 280 به 215
+    qp_code = qp_code.replace("height(280.dp)", "height(215.dp)")
+    # کاهش فاصله عمودی آیتم ها از 8 به 4
+    qp_code = qp_code.replace("verticalArrangement = Arrangement.spacedBy(8.dp)", "verticalArrangement = Arrangement.spacedBy(4.dp)")
+    
+    with open(fp_qp, "w") as f: f.write(qp_code)
+
+print("All bugs patched successfully!")

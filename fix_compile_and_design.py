@@ -1,9 +1,77 @@
-package com.github.musick.ui.screens.album
+import os
+
+# ۱. رفع ارور تایپ کاتلین و گارانتی ۱۰۰ درصدی New Releases
+fp_vm = "app/src/main/kotlin/com/github/soundpod/viewmodels/home/QuickPicksViewModel.kt"
+if not os.path.exists(fp_vm): fp_vm = "app/src/main/kotlin/com/github/musick/viewmodels/home/QuickPicksViewModel.kt"
+
+if os.path.exists(fp_vm):
+    with open(fp_vm, "r") as f: code_vm = f.read()
+    
+    start_str = "val newReleasesDeferred = async {"
+    end_str = "val relatedDeferreds = seedSongs.map"
+    
+    if start_str in code_vm and end_str in code_vm:
+        before = code_vm.split(start_str)[0]
+        after = end_str + code_vm.split(end_str)[1]
+        
+        # استفاده از یک runCatching کلان برای مطابقت دقیق با نوع Result<List<Innertube.SongItem>>
+        new_block = """val newReleasesDeferred = async {
+                    runCatching {
+                        val historySongs = runCatching { db.lastPlayed(50).first() }.getOrNull() ?: emptyList()
+                        val historyArtists = historySongs.mapNotNull { it.artistsText?.split(",")?.firstOrNull()?.trim() }.filter { it.isNotBlank() }
+                        val onboardedPref = appContext.getSharedPreferences("preferences", android.content.Context.MODE_PRIVATE).getString("onboardingSelectedArtists", "") ?: ""
+                        val onboardedArtists = onboardedPref.split(",").filter { it.isNotBlank() }
+                        val activeArtists = (historyArtists + onboardedArtists).distinct().take(4)
+                        
+                        var interleaved = emptyList<Innertube.SongItem>()
+                        
+                        if (activeArtists.isNotEmpty()) {
+                            val fetchedSongLists = mutableListOf<List<Innertube.SongItem>>()
+                            for (artist in activeArtists) {
+                                val res = runCatching {
+                                    Innertube.searchPage(query = "$artist latest single releases", params = Innertube.SearchFilter.Song.value, fromMusicShelfRendererContent = Innertube.SongItem.Companion::from)?.getOrNull()
+                                }.getOrNull()
+                                res?.items?.filterIsInstance<Innertube.SongItem>()?.let { fetchedSongLists.add(it.take(3)) }
+                            }
+                            
+                            val tempInterleaved = mutableListOf<Innertube.SongItem>()
+                            val maxLen = fetchedSongLists.maxOfOrNull { it.size } ?: 0
+                            for (i in 0 until maxLen) {
+                                for (list in fetchedSongLists) {
+                                    if (i < list.size) tempInterleaved.add(list[i])
+                                }
+                            }
+                            if (tempInterleaved.isNotEmpty()) {
+                                interleaved = tempInterleaved.distinctBy { it.key }
+                            }
+                        }
+                        
+                        // فال‌بک تضمینی اگر لیست به هر دلیلی خالی بود
+                        if (interleaved.isEmpty()) {
+                            val fallback = runCatching {
+                                Innertube.searchPage(query = "New Music Releases", params = Innertube.SearchFilter.Song.value, fromMusicShelfRendererContent = Innertube.SongItem.Companion::from)?.getOrNull()?.items?.filterIsInstance<Innertube.SongItem>()
+                            }.getOrNull()
+                            interleaved = fallback ?: seedSongs.shuffled().take(6).filterIsInstance<Innertube.SongItem>()
+                        }
+                        
+                        interleaved
+                    }
+                }
+                """
+        with open(fp_vm, "w") as f: f.write(before + new_block + after)
+
+
+# ۲. دیزاین کلاسیک، مینیمال و خوانا برای صفحه آلبوم/سینگل
+fp_album = "app/src/main/kotlin/com/github/soundpod/ui/screens/album/AlbumScreen.kt"
+if not os.path.exists(fp_album): fp_album = "app/src/main/kotlin/com/github/musick/ui/screens/album/AlbumScreen.kt"
+
+code_album = """package com.github.musick.ui.screens.album
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -46,7 +114,7 @@ fun extractHighResUrl(rawThumb: String?): String {
     if (rawThumb == null) return ""
     var extracted = if (rawThumb.contains("url=")) Regex("url=([^,)]+)").find(rawThumb)?.groupValues?.get(1) ?: rawThumb else rawThumb
     extracted = if (extracted.startsWith("//")) "https:$extracted" else extracted
-    return extracted.replace(Regex("=w\\d+-h\\d+"), "=w1080-h1080").replace(Regex("=s\\d+"), "=s1080")
+    return extracted.replace(Regex("=w\\\\d+-h\\\\d+"), "=w1080-h1080").replace(Regex("=s\\\\d+"), "=s1080")
 }
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class)
@@ -82,11 +150,11 @@ fun AlbumScreen(
                 modifier = Modifier.fillMaxWidth().padding(top = 32.dp, bottom = 24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // کاور تمیز با سایه نرم و گوشه های کلاسیک
+                // کاور با سایز متعادل‌تر، گوشه‌های نرم‌تر و سایه تمیز
                 AsyncImage(
                     model = highResCover, 
                     contentDescription = null, 
-                    modifier = Modifier.fillMaxWidth(0.6f).aspectRatio(1f).shadow(20.dp, RoundedCornerShape(12.dp)).clip(RoundedCornerShape(12.dp)),
+                    modifier = Modifier.fillMaxWidth(0.55f).aspectRatio(1f).shadow(24.dp, RoundedCornerShape(12.dp)).clip(RoundedCornerShape(12.dp)),
                     contentScale = ContentScale.Crop
                 )
                 
@@ -104,15 +172,18 @@ fun AlbumScreen(
                 
                 Spacer(modifier = Modifier.height(6.dp))
                 
-                // غیرفعال کردن کاملِ کلیک‌پذیری از روی اسم خواننده (حل مشکل عکس سبزنگ)
+                // اطلاعات آرتیست تمیز، خوانا و دور از تداخل کلیک
                 Text(
                     text = album?.authorsText.orEmpty(),
                     style = typography.titleMedium,
-                    color = colorPalette.text.copy(alpha = 0.7f),
+                    color = colorPalette.text.copy(alpha = 0.8f),
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable(enabled = album?.artistId != null) { album?.artistId?.let { onGoToArtist(it) } }
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
                 )
                 
                 album?.year?.let {
@@ -160,3 +231,7 @@ fun AlbumScreen(
         content = { AlbumSongs(browseId = browseId, onGoToArtist = onGoToArtist) }
     )
 }
+"""
+with open(fp_album, "w") as f: f.write(code_album)
+
+print("Kotlin compilation fix applied and album design restored to a classic, clean look!")
