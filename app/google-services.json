@@ -1,0 +1,48 @@
+{
+    "project_info": {
+        "project_number": "1004660477819",
+        "project_id": "musick-92c96",
+        "storage_bucket": "musick-92c96.firebasestorage.app"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:1004660477819:android:e65e8621955d195452f7de",
+                "android_client_info": {
+                    "package_name": "com.github.musick"
+                }
+            },
+            "oauth_client": [],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyDvIdqNafGMCAnQixl2cPYXIxogLTM7lMQ"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": []
+                }
+            }
+        },
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:1004660477819:android:e65e8621955d195452f7de",
+                "android_client_info": {
+                    "package_name": "com.github.musick.debug"
+                }
+            },
+            "oauth_client": [],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyDvIdqNafGMCAnQixl2cPYXIxogLTM7lMQ"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": []
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}

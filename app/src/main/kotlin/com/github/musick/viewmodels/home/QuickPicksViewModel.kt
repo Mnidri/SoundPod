@@ -155,12 +155,21 @@ class QuickPicksViewModel : ViewModel() {
                                 val songTitle = song.asMediaItem.mediaMetadata.title?.toString()?.lowercase() ?: ""
                                 myLovedArtists.any { beloved -> songArtist.contains(beloved) || songTitle.contains(beloved) }
                             }
-                            if (filteredSongs.isNotEmpty()) filteredSongs.distinctBy { it.key } else globalNewReleases.take(8)
+                            if (filteredSongs.isNotEmpty()) filteredSongs.distinctBy { it.key } else { 
+                                if (globalNewReleases.isNotEmpty()) globalNewReleases.take(8) else {
+                                    // تلاش مجدد برای گرفتن چارت جهانی در صورت بن‌بست کامل
+                                    runCatching { Innertube.charts()?.getOrNull()?.filterIsInstance<Innertube.SongItem>()?.take(8) }.getOrNull() ?: emptyList()
+                                }
+                            }
                         } else {
                             globalNewReleases.take(8)
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
+                        // تله خطا: ارسال پیغام واقعی به یوزر برای عیب‌یابی راحت‌تر
+                        withContext(Dispatchers.Main) {
+                            android.widget.Toast.makeText(com.github.musick.appContext, "QuickPicks Error: ${e.localizedMessage}", android.widget.Toast.LENGTH_LONG).show()
+                        }
                         null
                     }
                 }

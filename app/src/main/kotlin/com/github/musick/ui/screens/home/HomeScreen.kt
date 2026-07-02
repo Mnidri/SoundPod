@@ -42,13 +42,15 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
     val bgColor = MaterialTheme.colorScheme.background
     val textColor = MaterialTheme.colorScheme.onBackground
     val context = LocalContext.current
+    val aiPrefs = context.getSharedPreferences("ai_settings", android.content.Context.MODE_PRIVATE)
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
 
     var showProfileOverlay by remember { mutableStateOf(false) }
     var showAuthScreen by remember { mutableStateOf(false) }
     var expandedSection by remember { mutableStateOf<String?>(null) }
+    var showAiLoginPrompt by remember { mutableStateOf(false) }
     var aiTranslationEnabled by remember { mutableStateOf(false) }
-    var apiToken by remember { mutableStateOf("") }
+    var apiToken by remember { mutableStateOf(aiPrefs.getString("api_key", "") ?: "") }
 
     AnimatedContent(targetState = showAuthScreen, transitionSpec = { fadeIn() with fadeOut() }) { isAuth ->
         if (isAuth) {
@@ -144,8 +146,8 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                                         }
                                         Spacer(modifier = Modifier.width(14.dp))
                                         Column(modifier = Modifier.weight(1f)) {
-                                            Text("Sign in to Musick", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp), color = innerTextColor)
-                                            Text("Set up local sync profile", style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 11.sp), color = innerTextColor.copy(alpha = 0.6f))
+                                            Text(if (com.google.firebase.auth.FirebaseAuth.getInstance().currentUser != null) "Manage Account" else "Log In / Sign Up", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp), color = innerTextColor)
+                                            Text(if (com.google.firebase.auth.FirebaseAuth.getInstance().currentUser != null) com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.email ?: "Premium Account Active" else "Log in to unlock AI features", style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 11.sp), color = innerTextColor.copy(alpha = 0.6f))
                                         }
                                         Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = innerTextColor.copy(alpha = 0.5f))
                                     }
@@ -164,13 +166,19 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                                             }
                                         }
                                         AnimatedVisibility(visible = expandedSection == "premium") {
-                                            Text("Unlock ad-free streaming, maximum audio bitrate, and elite adaptive designs.", style = TextStyle(fontSize = 13.sp, lineHeight = 18.sp), color = innerTextColor.copy(alpha = 0.8f), modifier = Modifier.padding(top = 10.dp, start = 6.dp, end = 6.dp))
+                                            Text(if (com.google.firebase.auth.FirebaseAuth.getInstance().currentUser != null) "Early-bird Premium is active for your account. Enjoy exclusive features!" else "Log in now to unlock premium features and AI translation for free!", style = TextStyle(fontSize = 13.sp, lineHeight = 18.sp), color = innerTextColor.copy(alpha = 0.8f), modifier = Modifier.padding(top = 10.dp, start = 6.dp, end = 6.dp))
                                         }
                                     }
                                 }
                                 Spacer(modifier = Modifier.height(14.dp))
                                 Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = innerGlassColor), border = BorderStroke(1.dp, innerBorderColor), elevation = CardDefaults.cardElevation(defaultElevation = if (isDark) 0.dp else 2.dp)) {
-                                    Column(modifier = Modifier.fillMaxWidth().clickable { expandedSection = if (expandedSection == "ai") null else "ai" }.padding(12.dp)) {
+                                    Column(modifier = Modifier.fillMaxWidth().clickable { 
+                                        if (com.google.firebase.auth.FirebaseAuth.getInstance().currentUser == null) {
+                                            showAiLoginPrompt = true
+                                        } else {
+                                            expandedSection = if (expandedSection == "ai") null else "ai" 
+                                        }
+                                    }.padding(12.dp)) {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             Box(modifier = Modifier.size(42.dp).clip(CircleShape).background(iconBgColor), contentAlignment = Alignment.Center) {
                                                 Icon(Icons.Rounded.Translate, contentDescription = null, tint = innerTextColor, modifier = Modifier.size(22.dp))
@@ -189,7 +197,7 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                                                 }
                                                 Spacer(modifier = Modifier.height(8.dp))
                                                 OutlinedTextField(
-                                                    value = apiToken, onValueChange = { apiToken = it },
+                                                    value = apiToken, onValueChange = { apiToken = it; aiPrefs.edit().putString("api_key", it).apply() },
                                                     label = { Text("API Token", fontSize = 12.sp, color = innerTextColor.copy(alpha = 0.6f)) },
                                                     placeholder = { Text("Enter token key") },
                                                     modifier = Modifier.fillMaxWidth(), singleLine = true, shape = RoundedCornerShape(10.dp),
@@ -216,4 +224,23 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
             }
         }
     }
+
+    if (showAiLoginPrompt) {
+        AlertDialog(
+            onDismissRequest = { showAiLoginPrompt = false },
+            title = { Text("Account Required", fontWeight = FontWeight.Bold) },
+            text = { Text("An account is required to use the free AI Lyrics Translation and activate Premium features. Would you like to log in or create an account now?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showAiLoginPrompt = false
+                    showProfileOverlay = false
+                    showAuthScreen = true
+                }) { Text("Log In / Sign Up", fontWeight = FontWeight.Bold) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showAiLoginPrompt = false }) { Text("Later") }
+            }
+        )
+    }
+
 }

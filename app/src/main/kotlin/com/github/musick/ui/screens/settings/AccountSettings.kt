@@ -1,4 +1,17 @@
 package com.github.musick.ui.screens.settings
+import androidx.compose.ui.platform.LocalContext
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+
 
 import android.annotation.SuppressLint
 import android.webkit.CookieManager
@@ -145,6 +158,78 @@ fun LoginSettingsContent(onBack: () -> Unit) {
         
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        }
+    }
+}
+
+
+@Composable
+fun MusickAccountSection() {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var firebaseUser by remember { mutableStateOf(FirebaseAuth.getInstance().currentUser) }
+    androidx.compose.runtime.DisposableEffect(Unit) {
+        val listener = com.google.firebase.auth.FirebaseAuth.AuthStateListener { auth ->
+            firebaseUser = auth.currentUser
+        }
+        com.google.firebase.auth.FirebaseAuth.getInstance().addAuthStateListener(listener)
+        onDispose { com.google.firebase.auth.FirebaseAuth.getInstance().removeAuthStateListener(listener) }
+    }
+    
+    val gso = remember {
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("1004660477819-oe8p4nmjbcq1ss1754nl6usu5re706i9.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+    }
+    val googleSignInClient = remember { GoogleSignIn.getClient(context, gso) }
+    
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val account = task.getResult(Exception::class.java)
+            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+            FirebaseAuth.getInstance().signInWithCredential(credential)
+                .addOnCompleteListener { authResult ->
+                    if (authResult.isSuccessful) {
+                        firebaseUser = FirebaseAuth.getInstance().currentUser
+                    }
+                }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    SettingsGroup(title = "حساب کاربری Musick (امکانات ویژه)") {
+        if (firebaseUser == null) {
+            SettingsColumn(
+                title = "ورود با حساب گوگل",
+                description = "جهت فعال‌سازی پریموم، لیریک هوشمند و ترجمه خودکار هوش مصنوعی",
+                icon = IconSource.Vector(Icons.AutoMirrored.Filled.Login),
+                onClick = {
+                    googleSignInClient.signOut().addOnCompleteListener {
+                        launcher.launch(googleSignInClient.signInIntent)
+                    }
+                },
+            )
+        } else {
+            SettingsColumn(
+                title = "کاربر پریموم: ${firebaseUser?.displayName ?: "کاربر Musick"}",
+                description = "ایمیل: ${firebaseUser?.email}\nوضعیت اشتراک: پریموم آزمایشی (Early-bird فعال)",
+                icon = IconSource.Vector(Icons.Default.AccountCircle),
+            )
+            SettingsColumn(
+                title = "خروج از حساب Musick",
+                description = "غیرفعال‌سازی موقت دسترسی به ویژگی‌های هوش مصنوعی",
+                icon = IconSource.Vector(Icons.AutoMirrored.Filled.Logout),
+                onClick = {
+                    FirebaseAuth.getInstance().signOut()
+                    googleSignInClient.signOut()
+                    firebaseUser = null
+                }
+            )
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.github.soundpod.lyrics
+package com.github.musick.lyrics
 
 import java.net.HttpURLConnection
 import java.net.URL

@@ -1,6 +1,16 @@
 package com.github.musick.ui.screens.player
-
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.text.font.FontWeight
 import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
+
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
@@ -9,23 +19,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Translate
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Language
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -63,6 +70,7 @@ fun LyricsOverlay(
     playbackPositionProvider: () -> Long,
     onSeekToPosition: (Long) -> Unit
 ) {
+    var showPremiumPromoDialog by remember { mutableStateOf(false) }
     var lyricLines by remember { mutableStateOf<List<LyricLine>>(emptyList()) }
     var currentPositionMs by remember { mutableStateOf(0L) }
     var isLoading by remember { mutableStateOf(true) }
@@ -305,13 +313,37 @@ fun LyricsOverlay(
             
             IconButton(
                 onClick = {
-                    if (geminiApiKey.isBlank()) {
-                        showApiDialog = true
-                    } else if (!isTranslating) {
+                    if (com.google.firebase.auth.FirebaseAuth.getInstance().currentUser == null) {
+                        showPremiumPromoDialog = true
+                        return@IconButton
+                    }
+                    if (!isTranslating) {
                         isTranslating = true
                         coroutineScope.launch(Dispatchers.IO) {
                             try {
-                                val url = URL("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${geminiApiKey.trim()}")
+                                val sharedPrefs = context.getSharedPreferences("ai_settings", android.content.Context.MODE_PRIVATE)
+                                var activeKey = sharedPrefs.getString("api_key", "")?.trim() ?: ""
+                                
+                                // اگر کلید شخصی خالی بود، اپلیکیشن به صورت نامرئی کلید عمومی را از فایربیس می‌کشد
+                                if (activeKey.isBlank()) {
+                                    val remoteConfig = com.google.firebase.remoteconfig.FirebaseRemoteConfig.getInstance()
+                                    try {
+                                        // توقف لحظه‌ای در بک‌گراند برای دانلود قطعی کلید از سرور
+                                        com.google.android.gms.tasks.Tasks.await(remoteConfig.fetchAndActivate())
+                                    } catch (e: Exception) { 
+                                        e.printStackTrace() 
+                                    }
+                                    activeKey = remoteConfig.getString("public_gemini_api_key").trim()
+                                }
+                                
+                                if (activeKey.isBlank()) {
+                                    withContext(Dispatchers.Main) { 
+                                        android.widget.Toast.makeText(context, "Connecting to AI Server... Please try again.", android.widget.Toast.LENGTH_SHORT).show() 
+                                    }
+                                    return@launch
+                                }
+                                
+                                val url = URL("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=$activeKey")
                                 val conn = url.openConnection() as HttpURLConnection
                                 conn.requestMethod = "POST"
                                 conn.setRequestProperty("Content-Type", "application/json")
@@ -381,7 +413,7 @@ fun LyricsOverlay(
                     CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White.copy(alpha = 0.6f), strokeWidth = 2.dp)
                 } else {
                     Icon(
-                        imageVector = Icons.Default.Language,
+                        imageVector = Icons.Rounded.Translate,
                         contentDescription = "Translate Lyrics",
                         tint = Color.White.copy(alpha = 0.6f)
                     )
@@ -435,4 +467,22 @@ fun LyricsOverlay(
             }
         )
     }
+
+    if (showPremiumPromoDialog) {
+        AlertDialog(
+            onDismissRequest = { showPremiumPromoDialog = false },
+            title = { Text("Premium Feature", fontWeight = FontWeight.Bold) },
+            text = { Text("This feature is unlocked with Premium. Log in now to get temporary Premium for free and enjoy AI translation!") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showPremiumPromoDialog = false
+                    // Todo: هدایت کاربر به صفحه AuthScreen 
+                }) { Text("Log In", fontWeight = FontWeight.Bold) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showPremiumPromoDialog = false }) { Text("Later") }
+            }
+        )
+    }
+
 }

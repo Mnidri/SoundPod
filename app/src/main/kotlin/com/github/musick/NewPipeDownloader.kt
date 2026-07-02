@@ -1,4 +1,4 @@
-package com.github.soundpod
+package com.github.musick
 
 import com.github.innertube.models.PlayerResponse
 import java.util.concurrent.ConcurrentHashMap

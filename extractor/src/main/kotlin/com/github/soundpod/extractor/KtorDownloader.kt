@@ -1,4 +1,4 @@
-package com.github.soundpod.extractor
+package com.github.musick.extractor
 
 import com.github.innertube.Innertube
 import io.ktor.client.request.*

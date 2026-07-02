@@ -2,6 +2,7 @@ import com.android.build.api.dsl.ApplicationExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
+    id("com.google.gms.google-services")
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
@@ -20,6 +21,9 @@ extensions.configure<ApplicationExtension>("android") {
     compileSdk = 37
 
     defaultConfig {
+        ndk {
+            abiFilters.add("arm64-v8a")
+        }
         applicationId = "com.github.musick"
         minSdk = 23
         targetSdk = 37
@@ -114,6 +118,15 @@ ksp {
 }
 
 dependencies {
+    implementation("com.google.firebase:firebase-config-ktx")
+    // ساختار احراز هویت و دیتابیس انحصاری فایربیس
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore") {
+        exclude(group = "com.google.firebase", module = "protolite-well-known-types")
+    }
+    implementation("com.google.android.gms:play-services-auth:21.1.1")
+
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.activity)
     implementation(libs.coil.compose)
@@ -174,4 +187,10 @@ tasks.configureEach {
     if (name == "shrinkFdroidReleaseRes") {
         enabled = false
     }
+}
+
+// قانون سراسری برای حذف تداخل کلاس‌های تکراری پروتوباف در تمام ماژول‌ها
+configurations.all {
+    exclude(group = "com.google.protobuf", module = "protobuf-javalite")
+    exclude(group = "com.google.firebase", module = "protolite-well-known-types")
 }

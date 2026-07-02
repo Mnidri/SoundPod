@@ -77,58 +77,6 @@ fun SettingsMainContent(
     viewModel: SettingsViewModel = viewModel()
 ) {
     val sections by viewModel.sections.collectAsStateWithLifecycle()
-    
-    // متغیرهای مدیریت دیالوگ‌های اختصاصی بدون تداخل در ناوبری
-    var showPremiumDialog by remember { mutableStateOf(false) }
-    var showAiDialog by remember { mutableStateOf(false) }
-    var apiKey by remember { mutableStateOf("") }
-
-    if (showPremiumDialog) {
-        AlertDialog(
-            onDismissRequest = { showPremiumDialog = false },
-            title = { Text("Musick Premium", fontWeight = FontWeight.Bold, color = androidx.compose.ui.graphics.Color(0xFFFFD700)) },
-            text = { Text("Coming soon...", fontSize = 22.sp, fontWeight = FontWeight.Bold) },
-            confirmButton = { TextButton(onClick = { showPremiumDialog = false }) { Text("OK") } }
-        )
-    }
-
-    if (showAiDialog) {
-        AlertDialog(
-            onDismissRequest = { showAiDialog = false },
-            title = { Text("AI Translation Settings", fontWeight = FontWeight.Bold) },
-            text = {
-                Column {
-                    Text("Enter your AI API Key for smart lyrics translation:")
-                    Spacer(modifier = Modifier.height(12.dp))
-                    OutlinedTextField(
-                        value = apiKey,
-                        onValueChange = { apiKey = it },
-                        label = { Text("API Key") },
-                        singleLine = true
-                    )
-                }
-            },
-            confirmButton = { TextButton(onClick = { showAiDialog = false }) { Text("Save") } },
-            dismissButton = { TextButton(onClick = { showAiDialog = false }) { Text("Cancel") } }
-        )
-    }
-
-    Spacer(modifier = Modifier.height(8.dp))
-    
-    // رندر کارت اختصاصی شما با آیکون‌های حرفه‌ای جدید
-    SettingsCard {
-        SettingRow(
-            title = "Musick Premium",
-            icon = IconSource.Icon(painterResource(id = R.drawable.ic_premium_custom)),
-            onClick = { showPremiumDialog = true }
-        )
-        SettingRow(
-            title = "AI Translation",
-            icon = IconSource.Icon(painterResource(id = R.drawable.ic_translate_custom)),
-            onClick = { showAiDialog = true }
-        )
-    }
-    Spacer(modifier = Modifier.height(8.dp))
 
     // رندر بقیه تنظیمات
     sections.forEach { section ->
