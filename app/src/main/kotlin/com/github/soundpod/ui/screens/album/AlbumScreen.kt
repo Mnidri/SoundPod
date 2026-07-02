@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -79,54 +81,72 @@ fun AlbumScreen(
         },
         headerContent = {
             Column(
-                modifier = Modifier.fillMaxWidth().padding(top = 32.dp, bottom = 24.dp),
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // کاور تمیز با سایه نرم و گوشه های کلاسیک
-                AsyncImage(
-                    model = highResCover, 
-                    contentDescription = null, 
-                    modifier = Modifier.fillMaxWidth(0.6f).aspectRatio(1f).shadow(20.dp, RoundedCornerShape(12.dp)).clip(RoundedCornerShape(12.dp)),
-                    contentScale = ContentScale.Crop
-                )
-                
-                Spacer(modifier = Modifier.height(24.dp))
-                
-                Text(
-                    text = album?.title.orEmpty(),
-                    style = typography.titleLarge.copy(fontWeight = FontWeight.ExtraBold, fontSize = 24.sp),
-                    color = colorPalette.text,
-                    textAlign = TextAlign.Center,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.fillMaxWidth(0.85f)
-                )
-                
-                Spacer(modifier = Modifier.height(6.dp))
-                
-                // غیرفعال کردن کاملِ کلیک‌پذیری از روی اسم خواننده (حل مشکل عکس سبزنگ)
-                Text(
-                    text = album?.authorsText.orEmpty(),
-                    style = typography.titleMedium,
-                    color = colorPalette.text.copy(alpha = 0.7f),
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                )
-                
-                album?.year?.let {
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = it,
-                        style = typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                        color = colorPalette.text.copy(alpha = 0.5f),
-                        textAlign = TextAlign.Center
+                // کاور بزرگ و عریض در مرکز
+                Box(
+                    modifier = Modifier
+                        .size(280.dp)
+                        .shadow(24.dp, RoundedCornerShape(24.dp))
+                        .clip(RoundedCornerShape(24.dp))
+                ) {
+                    AsyncImage(
+                        model = highResCover, 
+                        contentDescription = null, 
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
                     )
+                    
+                    // گرادیانت مشکی-شیشه‌ای برای ایجاد کنتراست عالی زیر متن
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.9f)),
+                                    startY = 350f
+                                )
+                            )
+                    )
+                    
+                    // متن‌ها که مستقیماً روی کاور و بخش تیره سوار شدند
+                    Column(
+                        modifier = Modifier.fillMaxSize().padding(16.dp),
+                        verticalArrangement = Arrangement.Bottom,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = album?.title.orEmpty(),
+                            style = typography.titleLarge.copy(fontWeight = FontWeight.ExtraBold, fontSize = 24.sp),
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.fillMaxWidth(0.9f)
+                        )
+                        
+                        Spacer(modifier = Modifier.height(6.dp))
+                        
+                        // اسم آرتیست: کاملاً کلیکی و شیک زیر عنوان اصلی
+                        Text(
+                            text = album?.authorsText.orEmpty(),
+                            style = typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 14.sp),
+                            color = Color.White.copy(alpha = 0.8f),
+                            textAlign = TextAlign.Center,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(8.dp))
+                                .clickable(enabled = album?.artistId != null) { album?.artistId?.let { onGoToArtist(it) } }
+                                .padding(horizontal = 12.dp, vertical = 6.dp)
+                        )
+                    }
                 }
                 
                 Spacer(modifier = Modifier.height(24.dp))
                 
+                // دکمه‌های کنترل (دکمه قلب به زیبایی در کنار دکمه پلی بازگشت)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
@@ -136,11 +156,11 @@ fun AlbumScreen(
                         onClick = { /* Handle Play */ },
                         colors = ButtonDefaults.buttonColors(containerColor = colorPalette.text, contentColor = colorPalette.background0),
                         shape = RoundedCornerShape(50),
-                        modifier = Modifier.height(52.dp).width(150.dp)
+                        modifier = Modifier.height(52.dp).width(140.dp)
                     ) {
-                        Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(26.dp))
+                        Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(24.dp))
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Play", fontWeight = FontWeight.Bold, fontSize = 17.sp)
+                        Text("Play", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     }
                     Spacer(modifier = Modifier.width(16.dp))
                     IconButton(
@@ -151,7 +171,7 @@ fun AlbumScreen(
                             imageVector = ImageVector.vectorResource(if (uiState.isLoved) R.drawable.heart else R.drawable.heart_outline),
                             contentDescription = null, 
                             tint = if (uiState.isLoved) Color(0xFFFF4B4B) else colorPalette.text, 
-                            modifier = Modifier.size(26.dp)
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                 }

@@ -1,5 +1,11 @@
-@file:OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class, androidx.compose.animation.ExperimentalAnimationApi::class, androidx.compose.material3.ExperimentalMaterial3Api::class)
-package com.github.musick.ui.screens.home
+import os
+import re
+
+# ۱. جایگذاری کد HomeScreen با رفع کامل فاصله‌ها و دیالوگ شیشه‌ای لوکس
+home_file = "app/src/main/kotlin/com/github/soundpod/ui/screens/home/HomeScreen.kt"
+
+code_home = """@file:OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class, androidx.compose.animation.ExperimentalAnimationApi::class, androidx.compose.material3.ExperimentalMaterial3Api::class)
+package com.github.soundpod.ui.screens.home
 
 import android.widget.Toast
 import androidx.compose.animation.*
@@ -17,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.*
@@ -25,12 +30,12 @@ import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-import com.github.musick.ui.components.*
-import com.github.musick.enums.*
-import com.github.musick.ui.navigation.*
-import com.github.musick.ui.screens.favorites.*
-import com.github.musick.ui.screens.auth.*
-import com.github.musick.viewmodels.home.HomeViewModel
+import com.github.soundpod.ui.components.*
+import com.github.soundpod.enums.*
+import com.github.soundpod.ui.navigation.*
+import com.github.soundpod.ui.screens.favorites.*
+import com.github.soundpod.ui.screens.auth.*
+import com.github.soundpod.viewmodels.home.HomeViewModel
 
 @Composable
 fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
@@ -42,7 +47,7 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
     val bgColor = MaterialTheme.colorScheme.background
     val textColor = MaterialTheme.colorScheme.onBackground
     val context = LocalContext.current
-    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val isDark = isSystemInDarkTheme()
 
     var showProfileOverlay by remember { mutableStateOf(false) }
     var showAuthScreen by remember { mutableStateOf(false) }
@@ -62,7 +67,7 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                             title = {
                                 Text(
                                     text = "Musick",
-                                    fontSize = 72.sp,
+                                    fontSize = 44.sp,
                                     fontWeight = FontWeight.ExtraBold,
                                     fontFamily = FontFamily.Serif,
                                     letterSpacing = (-1.5).sp,
@@ -82,6 +87,7 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                         )
                     }
                 ) { paddingValues ->
+                    // حفظ دقیق فاصله‌های اورجینال بدون هیچ پدینگ اضافه‌ای بین لیست‌ها
                     Column(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
                         HorizontalTabs(pagerState = pagerState, tabs = homeViewModel.tabs)
                         HorizontalPager(state = pagerState, beyondViewportPageCount = 4, modifier = Modifier.weight(1f)) { page ->
@@ -97,6 +103,7 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                     }
                 }
 
+                // دیالوگ شیشه‌ای پیشرفته و بهینه‌شده برای دارک/لایت مود
                 AnimatedVisibility(
                     visible = showProfileOverlay,
                     enter = fadeIn(tween(300)) + scaleIn(tween(300), transformOrigin = TransformOrigin(0.9f, 0.05f)),
@@ -110,9 +117,11 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                             .clickable { showProfileOverlay = false },
                         contentAlignment = Alignment.Center
                     ) {
-                        val outerGlassColor = if (isDark) Color.Black.copy(alpha = 0.75f) else Color.White.copy(alpha = 0.75f)
+                        // منطق رنگ‌های هوشمند
+                        val outerGlassColor = if (isDark) Color.Black.copy(alpha = 0.75f) else Color.White.copy(alpha = 0.85f)
                         val outerBorderColor = if (isDark) Color.White.copy(alpha = 0.08f) else Color.Black.copy(alpha = 0.1f)
-                        val innerGlassColor = if (isDark) Color.Black.copy(alpha = 0.90f) else Color.White.copy(alpha = 0.90f)
+                        
+                        val innerGlassColor = if (isDark) Color.Black.copy(alpha = 0.90f) else Color.White
                         val innerTextColor = if (isDark) Color.White else Color.Black
                         val innerBorderColor = if (isDark) Color.White.copy(alpha = 0.12f) else Color.Black.copy(alpha = 0.08f)
                         val iconBgColor = if (isDark) Color.White.copy(alpha = 0.1f) else Color.Black.copy(alpha = 0.05f)
@@ -131,6 +140,7 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                                     .padding(horizontal = 24.dp, vertical = 28.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
+                                // لاگین
                                 Card(
                                     modifier = Modifier.fillMaxWidth().clickable { showProfileOverlay = false; showAuthScreen = true },
                                     shape = RoundedCornerShape(18.dp),
@@ -150,7 +160,10 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                                         Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = innerTextColor.copy(alpha = 0.5f))
                                     }
                                 }
+
                                 Spacer(modifier = Modifier.height(14.dp))
+
+                                // پریمیوم
                                 Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = innerGlassColor), border = BorderStroke(1.5.dp, Color(0xFFFFD700).copy(alpha = 0.7f)), elevation = CardDefaults.cardElevation(defaultElevation = if (isDark) 0.dp else 2.dp)) {
                                     Column(modifier = Modifier.fillMaxWidth().clickable { expandedSection = if (expandedSection == "premium") null else "premium" }.padding(12.dp)) {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -168,7 +181,10 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                                         }
                                     }
                                 }
+
                                 Spacer(modifier = Modifier.height(14.dp))
+
+                                // ترجمه
                                 Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = innerGlassColor), border = BorderStroke(1.dp, innerBorderColor), elevation = CardDefaults.cardElevation(defaultElevation = if (isDark) 0.dp else 2.dp)) {
                                     Column(modifier = Modifier.fillMaxWidth().clickable { expandedSection = if (expandedSection == "ai") null else "ai" }.padding(12.dp)) {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -199,7 +215,10 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                                         }
                                     }
                                 }
+
                                 Spacer(modifier = Modifier.height(14.dp))
+
+                                // تنظیمات
                                 Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = innerGlassColor), border = BorderStroke(1.dp, innerBorderColor), elevation = CardDefaults.cardElevation(defaultElevation = if (isDark) 0.dp else 2.dp)) {
                                     Row(modifier = Modifier.fillMaxWidth().clickable { showProfileOverlay = false; onSettingsClick() }.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
                                         Box(modifier = Modifier.size(42.dp).clip(CircleShape).background(iconBgColor), contentAlignment = Alignment.Center) {
@@ -217,3 +236,30 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
         }
     }
 }
+"""
+if os.path.exists(home_file):
+    with open(home_file, "w") as f: f.write(code_home)
+    print("HomeScreen overlays updated beautifully.")
+
+# ۲. تزریق هوشمندی به تب‌ها برای لایت مود
+tab_files = [
+    "app/src/main/kotlin/com/github/soundpod/ui/components/HorizontalTabs.kt",
+    "app/src/main/kotlin/com/github/soundpod/ui/screens/artist/ArtistScreen.kt"
+]
+
+for fp in tab_files:
+    if os.path.exists(fp):
+        with open(fp, "r") as f: content = f.read()
+        
+        # اطمینان از ایمپورت شدن ابزار تشخیص دارک مود
+        if "isSystemInDarkTheme" not in content:
+            content = content.replace("import androidx.compose.runtime.*", "import androidx.compose.runtime.*\nimport androidx.compose.foundation.isSystemInDarkTheme")
+
+        # جایگزینی کپسول مشکیِ خشن در لایت مود با یک خاکستری ملایم و خوانا
+        content = re.sub(r'(?<!\))Color\.Black(?!\.copy)', 'if (isSystemInDarkTheme()) Color.Black else Color.Black.copy(alpha = 0.06f)', content)
+        # جایگزینی متن سفید نامرئی در لایت مود با متن مشکی
+        content = re.sub(r'(?<!\))Color\.White(?!\.copy)', 'if (isSystemInDarkTheme()) Color.White else Color.Black', content)
+        
+        with open(fp, "w") as f: f.write(content)
+        print(f"Tabs patched for Light Mode in: {os.path.basename(fp)}")
+

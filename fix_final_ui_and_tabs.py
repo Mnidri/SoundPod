@@ -1,4 +1,11 @@
-@file:OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class, androidx.compose.animation.ExperimentalAnimationApi::class, androidx.compose.material3.ExperimentalMaterial3Api::class)
+import os
+import re
+
+# پیدا کردن مسیر درست فایل HomeScreen
+home_file = "app/src/main/kotlin/com/github/soundpod/ui/screens/home/HomeScreen.kt"
+
+# ۱. جایگذاری کد HomeScreen با رفع فاصله‌ها، دیالوگ شیشه‌ای جدید و ایمپورت‌های تضمینی (Musick)
+code_home = """@file:OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class, androidx.compose.animation.ExperimentalAnimationApi::class, androidx.compose.material3.ExperimentalMaterial3Api::class)
 package com.github.musick.ui.screens.home
 
 import android.widget.Toast
@@ -17,14 +24,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+// ایمپورت‌های جامع برای جلوگیری از هرگونه خطای Unresolved Reference
+import com.github.musick.R
 import com.github.musick.ui.components.*
 import com.github.musick.enums.*
 import com.github.musick.ui.navigation.*
@@ -42,7 +52,7 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
     val bgColor = MaterialTheme.colorScheme.background
     val textColor = MaterialTheme.colorScheme.onBackground
     val context = LocalContext.current
-    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val isDark = isSystemInDarkTheme()
 
     var showProfileOverlay by remember { mutableStateOf(false) }
     var showAuthScreen by remember { mutableStateOf(false) }
@@ -62,7 +72,7 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                             title = {
                                 Text(
                                     text = "Musick",
-                                    fontSize = 72.sp,
+                                    fontSize = 44.sp,
                                     fontWeight = FontWeight.ExtraBold,
                                     fontFamily = FontFamily.Serif,
                                     letterSpacing = (-1.5).sp,
@@ -82,21 +92,25 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                         )
                     }
                 ) { paddingValues ->
-                    Column(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
-                        HorizontalTabs(pagerState = pagerState, tabs = homeViewModel.tabs)
-                        HorizontalPager(state = pagerState, beyondViewportPageCount = 4, modifier = Modifier.weight(1f)) { page ->
-                            when (page) {
-                                0 -> QuickPicks(onAlbumClick = navigateToAlbum, onArtistClick = navigateToArtist, onPlaylistClick = { browseId -> navController.navigate(route = Routes.Playlist(id = browseId)) }, onOfflinePlaylistClick = { navController.navigate(route = Routes.BuiltInPlaylist(index = 1)) })
-                                1 -> FavoritesScreen(onFavoriteTracksClick = { navController.navigate(route = Routes.FavoriteTracks) }, onGoToAlbum = navigateToAlbum, onGoToArtist = navigateToArtist, isEmbedded = true)
-                                2 -> HomeSongs(onGoToAlbum = navigateToAlbum, onGoToArtist = navigateToArtist)
-                                3 -> HomeArtistList(onArtistClick = { artist -> navigateToArtist(artist.id) })
-                                4 -> HomeAlbums(onAlbumClick = { album -> navigateToAlbum(album.id) })
-                                5 -> HomePlaylists(onBuiltInPlaylist = { playlistIndex -> if (playlistIndex == BuiltInPlaylist.Favorites.ordinal) navController.navigate(route = Routes.Favorites) else navController.navigate(route = Routes.BuiltInPlaylist(index = playlistIndex)) }, onPlaylistClick = { playlist -> navController.navigate(route = Routes.LocalPlaylist(id = playlist.id)) })
+                    // حفظ فشردگی صفحه اصلی بدون پدینگ اضافی
+                    Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+                        Column(modifier = Modifier.fillMaxSize()) {
+                            HorizontalTabs(pagerState = pagerState, tabs = homeViewModel.tabs)
+                            HorizontalPager(state = pagerState, beyondViewportPageCount = 4, modifier = Modifier.weight(1f).background(Color.Transparent)) { page ->
+                                when (page) {
+                                    0 -> QuickPicks(onAlbumClick = navigateToAlbum, onArtistClick = navigateToArtist, onPlaylistClick = { browseId -> navController.navigate(route = Routes.Playlist(id = browseId)) }, onOfflinePlaylistClick = { navController.navigate(route = Routes.BuiltInPlaylist(index = 1)) })
+                                    1 -> FavoritesScreen(onFavoriteTracksClick = { navController.navigate(route = Routes.FavoriteTracks) }, onGoToAlbum = navigateToAlbum, onGoToArtist = navigateToArtist, isEmbedded = true)
+                                    2 -> HomeSongs(onGoToAlbum = navigateToAlbum, onGoToArtist = navigateToArtist)
+                                    3 -> HomeArtistList(onArtistClick = { artist -> navigateToArtist(artist.id) })
+                                    4 -> HomeAlbums(onAlbumClick = { album -> navigateToAlbum(album.id) })
+                                    5 -> HomePlaylists(onBuiltInPlaylist = { playlistIndex -> if (playlistIndex == BuiltInPlaylist.Favorites.ordinal) navController.navigate(route = Routes.Favorites) else navController.navigate(route = Routes.BuiltInPlaylist(index = playlistIndex)) }, onPlaylistClick = { playlist -> navController.navigate(route = Routes.LocalPlaylist(id = playlist.id)) })
+                                }
                             }
                         }
                     }
                 }
 
+                // دیالوگ پروفایل
                 AnimatedVisibility(
                     visible = showProfileOverlay,
                     enter = fadeIn(tween(300)) + scaleIn(tween(300), transformOrigin = TransformOrigin(0.9f, 0.05f)),
@@ -110,19 +124,18 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                             .clickable { showProfileOverlay = false },
                         contentAlignment = Alignment.Center
                     ) {
-                        val outerGlassColor = if (isDark) Color.Black.copy(alpha = 0.75f) else Color.White.copy(alpha = 0.75f)
-                        val outerBorderColor = if (isDark) Color.White.copy(alpha = 0.08f) else Color.Black.copy(alpha = 0.1f)
-                        val innerGlassColor = if (isDark) Color.Black.copy(alpha = 0.90f) else Color.White.copy(alpha = 0.90f)
-                        val innerTextColor = if (isDark) Color.White else Color.Black
-                        val innerBorderColor = if (isDark) Color.White.copy(alpha = 0.12f) else Color.Black.copy(alpha = 0.08f)
-                        val iconBgColor = if (isDark) Color.White.copy(alpha = 0.1f) else Color.Black.copy(alpha = 0.05f)
-                        val shadowElev = if (isDark) 0.dp else 16.dp
+                        // لایه بنفش (کادر اصلی): شفاف‌تر و هماهنگ با تم
+                        val outerGlassColor = if (isDark) Color.Black.copy(alpha = 0.35f) else Color.White.copy(alpha = 0.75f)
+                        
+                        // لایه زرد (کادرهای داخلی): شیشه‌ای مشکی غلیظ برای خوانایی کامل
+                        val innerGlassColor = Color.Black.copy(alpha = 0.85f)
+                        val innerTextColor = Color.White
+                        val itemBorderColor = Color.White.copy(alpha = 0.15f)
 
                         Card(
-                            shape = RoundedCornerShape(32.dp),
+                            shape = RoundedCornerShape(28.dp),
                             colors = CardDefaults.cardColors(containerColor = outerGlassColor),
-                            border = BorderStroke(1.dp, outerBorderColor),
-                            elevation = CardDefaults.cardElevation(defaultElevation = shadowElev),
+                            border = BorderStroke(1.dp, textColor.copy(alpha = 0.15f)),
                             modifier = Modifier.fillMaxWidth(0.92f).clickable(enabled = false) {}
                         ) {
                             Column(
@@ -135,8 +148,7 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                                     modifier = Modifier.fillMaxWidth().clickable { showProfileOverlay = false; showAuthScreen = true },
                                     shape = RoundedCornerShape(18.dp),
                                     colors = CardDefaults.cardColors(containerColor = innerGlassColor),
-                                    border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)),
-                                    elevation = CardDefaults.cardElevation(defaultElevation = if (isDark) 0.dp else 2.dp)
+                                    border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.8f))
                                 ) {
                                     Row(modifier = Modifier.fillMaxWidth().padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
                                         Box(modifier = Modifier.size(46.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)), contentAlignment = Alignment.Center) {
@@ -150,8 +162,10 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                                         Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = innerTextColor.copy(alpha = 0.5f))
                                     }
                                 }
+
                                 Spacer(modifier = Modifier.height(14.dp))
-                                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = innerGlassColor), border = BorderStroke(1.5.dp, Color(0xFFFFD700).copy(alpha = 0.7f)), elevation = CardDefaults.cardElevation(defaultElevation = if (isDark) 0.dp else 2.dp)) {
+
+                                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = innerGlassColor), border = BorderStroke(1.5.dp, Color(0xFFFFD700).copy(alpha = 0.8f))) {
                                     Column(modifier = Modifier.fillMaxWidth().clickable { expandedSection = if (expandedSection == "premium") null else "premium" }.padding(12.dp)) {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             Box(modifier = Modifier.size(42.dp).clip(CircleShape).background(Color(0xFFFFD700).copy(alpha = 0.15f)), contentAlignment = Alignment.Center) {
@@ -168,11 +182,13 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                                         }
                                     }
                                 }
+
                                 Spacer(modifier = Modifier.height(14.dp))
-                                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = innerGlassColor), border = BorderStroke(1.dp, innerBorderColor), elevation = CardDefaults.cardElevation(defaultElevation = if (isDark) 0.dp else 2.dp)) {
+
+                                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = innerGlassColor), border = BorderStroke(1.2.dp, itemBorderColor)) {
                                     Column(modifier = Modifier.fillMaxWidth().clickable { expandedSection = if (expandedSection == "ai") null else "ai" }.padding(12.dp)) {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Box(modifier = Modifier.size(42.dp).clip(CircleShape).background(iconBgColor), contentAlignment = Alignment.Center) {
+                                            Box(modifier = Modifier.size(42.dp).clip(CircleShape).background(innerTextColor.copy(alpha = 0.08f)), contentAlignment = Alignment.Center) {
                                                 Icon(Icons.Rounded.Translate, contentDescription = null, tint = innerTextColor, modifier = Modifier.size(22.dp))
                                             }
                                             Spacer(modifier = Modifier.width(14.dp))
@@ -199,10 +215,12 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
                                         }
                                     }
                                 }
+
                                 Spacer(modifier = Modifier.height(14.dp))
-                                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = innerGlassColor), border = BorderStroke(1.dp, innerBorderColor), elevation = CardDefaults.cardElevation(defaultElevation = if (isDark) 0.dp else 2.dp)) {
+
+                                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = innerGlassColor), border = BorderStroke(1.2.dp, itemBorderColor)) {
                                     Row(modifier = Modifier.fillMaxWidth().clickable { showProfileOverlay = false; onSettingsClick() }.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-                                        Box(modifier = Modifier.size(42.dp).clip(CircleShape).background(iconBgColor), contentAlignment = Alignment.Center) {
+                                        Box(modifier = Modifier.size(42.dp).clip(CircleShape).background(innerTextColor.copy(alpha = 0.08f)), contentAlignment = Alignment.Center) {
                                             Icon(Icons.Rounded.Settings, contentDescription = null, tint = innerTextColor, modifier = Modifier.size(22.dp))
                                         }
                                         Spacer(modifier = Modifier.width(14.dp))
@@ -217,3 +235,29 @@ fun HomeScreen(navController: NavController, onSettingsClick: () -> Unit) {
         }
     }
 }
+"""
+
+if os.path.exists(home_file):
+    with open(home_file, "w") as f:
+        f.write(code_home)
+    print("HomeScreen fixed successfully!")
+
+# ۲. اصلاح رنگ‌های تب‌ها در حالت لایت‌مود (Overview, Albums و نوار افقی)
+files_to_patch = [
+    "app/src/main/kotlin/com/github/soundpod/ui/components/HorizontalTabs.kt",
+    "app/src/main/kotlin/com/github/soundpod/ui/screens/artist/ArtistScreen.kt"
+]
+
+for fp in files_to_patch:
+    if os.path.exists(fp):
+        with open(fp, "r") as f:
+            content = f.read()
+        
+        # جایگزینی رنگ سفید هاردکد شده با رنگ داینامیک OnBackground
+        content = re.sub(r'Color\.White(?!\.copy)', 'MaterialTheme.colorScheme.onBackground', content)
+        
+        with open(fp, "w") as f:
+            f.write(content)
+        print(f"Patched LightMode colors in: {os.path.basename(fp)}")
+
+print("Process Complete!")

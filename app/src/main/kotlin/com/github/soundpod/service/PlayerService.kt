@@ -294,7 +294,19 @@ class PlayerService : InvincibleService(), Player.Listener,
         super.onConfigurationChanged(newConfig)
     }
 
-    override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+    override fun onMediaItemTransition(mediaItem: androidx.media3.common.MediaItem?, reason: Int) {
+            // ثبت آنی آهنگ در دیتابیس برای بیدار کردن اسپید دایل
+            mediaItem?.let { item ->
+                kotlinx.coroutines.GlobalScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+                    com.github.musick.db.insert(com.github.musick.models.Song(
+                        id = item.mediaId,
+                        title = item.mediaMetadata.title.toString(),
+                        artistsText = item.mediaMetadata.artist.toString(),
+                        durationText = null,
+                        thumbnailUrl = item.mediaMetadata.artworkUri?.toString()
+                    ))
+                }
+            }
         mediaItemState.update { mediaItem }
 
         maybeRecoverPlaybackError()

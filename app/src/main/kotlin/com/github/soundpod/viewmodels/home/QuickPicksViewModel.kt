@@ -1,4 +1,5 @@
 package com.github.musick.viewmodels.home
+
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,8 +31,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class QuickPicksViewModel : ViewModel() {
+    val recentHistoryFlow = com.github.musick.db.lastPlayed(24)
     var relatedPageResult: Result<Innertube.RelatedPage?>? by mutableStateOf(null)
     var newReleasesResult: Result<List<Innertube.SongItem>>? by mutableStateOf(null)
+    var dailyDiscoverResult: Result<Innertube.SongItem>? by mutableStateOf(null)
     private var job: Job? = null
 
     companion object {
@@ -70,9 +73,9 @@ class QuickPicksViewModel : ViewModel() {
     fun loadQuickPicks(quickPicksSource: QuickPicksSource, forceRefresh: Boolean = false) {
         val isScreenCacheEnabled = appContext.preferences.getBoolean(isScreenCacheEnabledKey, true)
         val cached = if (isScreenCacheEnabled) getCached(quickPicksSource) else null
+        
         if (cached != null) relatedPageResult = Result.success(cached)
-        if (!forceRefresh && cached != null && !ScreenCache.isExpired(PERSISTENT_CACHE_PREFIX + quickPicksSource.name, CACHE_EXPIRATION)) return
-
+        
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             val seedSongs = runCatching {
@@ -95,7 +98,6 @@ class QuickPicksViewModel : ViewModel() {
                     else -> {
                         val onboardedStr = appContext.getSharedPreferences("preferences", android.content.Context.MODE_PRIVATE).getString("onboardingSelectedArtists", "") ?: ""
                         val userHistory = getSeedSongsFlow(com.github.musick.enums.QuickPicksSource.LastPlayed, 5).first()
-                        
                         if (userHistory.isNotEmpty()) {
                             userHistory
                         } else if (onboardedStr.isNotEmpty()) {
@@ -120,47 +122,55 @@ class QuickPicksViewModel : ViewModel() {
 
             coroutineScope {
                 val chartsDeferred = async { runCatching { Innertube.charts()?.getOrNull() }.getOrNull() }
+                
                 val newReleasesDeferred = async<List<Innertube.SongItem>?> {
-                    var interleaved: List<Innertube.SongItem>? = null
                     try {
-                        val historySongs = runCatching { db.lastPlayed(50).first() }.getOrNull() ?: emptyList()
-                        val historyArtists = historySongs.mapNotNull { it.artistsText?.split(",")?.firstOrNull()?.trim() }.filter { it.isNotBlank() }
+                        val historySongs = runCatching { db.lastPlayed(100).first() }.getOrNull() ?: emptyList()
+                        val favSongs = runCatching { db.favorites().first() }.getOrNull() ?: emptyList()
+                        val searchQueries = runCatching { db.queries("").first() }.getOrNull() ?: emptyList()
+
+                        val historyArtists = historySongs.mapNotNull { it.artistsText }.flatMap { it.split(Regex(" & |, | x | • ")) }
+                        val favArtists = favSongs.mapNotNull { it.artistsText }.flatMap { it.split(Regex(" & |, | x | • ")) }
+                        val searchTexts = searchQueries.map { it.toString() }.flatMap { it.split(" ") }
+
                         val onboardedPref = appContext.getSharedPreferences("preferences", android.content.Context.MODE_PRIVATE).getString("onboardingSelectedArtists", "") ?: ""
-                        val onboardedArtists = onboardedPref.split(",").filter { it.isNotBlank() }
-                        val activeArtists = (historyArtists + onboardedArtists).distinct().take(4)
+                        val onboardedArtists = onboardedPref.split(",")
+
+                        val myLovedArtists = (historyArtists + favArtists + onboardedArtists + searchTexts)
+                            .map { it.trim().lowercase() }
+                            .filter { it.length > 2 }
+                            .toSet()
+
+                        // جستجوی واقعی و تضمینی برای آهنگ‌های جدید
+                        var globalNewReleases = runCatching { Innertube.searchPage(query = "latest single releases", params = Innertube.SearchFilter.Song.value, fromMusicShelfRendererContent = Innertube.SongItem.Companion::from)?.getOrNull()?.items?.filterIsInstance<Innertube.SongItem>() }.getOrNull() ?: emptyList()
                         
-                        if (activeArtists.isNotEmpty()) {
-                            val fetchedSongLists = mutableListOf<List<Innertube.SongItem>>()
-                            for (artist in activeArtists) {
-                                val res = runCatching { Innertube.searchPage(query = "$artist latest single releases", params = Innertube.SearchFilter.Song.value, fromMusicShelfRendererContent = Innertube.SongItem.Companion::from)?.getOrNull() }.getOrNull()
-                                res?.items?.filterIsInstance<Innertube.SongItem>()?.let { fetchedSongLists.add(it.take(3)) }
+                        // سپر دفاعی: اگر سرچ خالی بود، از چارت جهانی بردار تا صفحه خالی نماند
+                        if (globalNewReleases.isEmpty()) {
+                            globalNewReleases = runCatching { Innertube.charts()?.getOrNull()?.filterIsInstance<Innertube.SongItem>() }.getOrNull() ?: emptyList()
+                        }
+
+                        if (myLovedArtists.isNotEmpty() && globalNewReleases.isNotEmpty()) {
+                            val filteredSongs = globalNewReleases.filter { song ->
+                                val songArtist = song.asMediaItem.mediaMetadata.artist?.toString()?.lowercase() ?: ""
+                                val songTitle = song.asMediaItem.mediaMetadata.title?.toString()?.lowercase() ?: ""
+                                myLovedArtists.any { beloved -> songArtist.contains(beloved) || songTitle.contains(beloved) }
                             }
-                            
-                            val tempInterleaved = mutableListOf<Innertube.SongItem>()
-                            val maxLen = fetchedSongLists.maxOfOrNull { it.size } ?: 0
-                            for (i in 0 until maxLen) {
-                                for (list in fetchedSongLists) {
-                                    if (i < list.size) tempInterleaved.add(list[i])
-                                }
-                            }
-                            if (tempInterleaved.isNotEmpty()) {
-                                interleaved = tempInterleaved.distinctBy { it.key }
-                            }
+                            if (filteredSongs.isNotEmpty()) filteredSongs.distinctBy { it.key } else globalNewReleases.take(8)
+                        } else {
+                            globalNewReleases.take(8)
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
+                        null
                     }
-                    
-                    if (interleaved.isNullOrEmpty()) {
-                        val fallbackRes = runCatching { Innertube.searchPage(query = "New Music Releases", params = Innertube.SearchFilter.Song.value, fromMusicShelfRendererContent = Innertube.SongItem.Companion::from)?.getOrNull() }.getOrNull()
-                        interleaved = fallbackRes?.items?.filterIsInstance<Innertube.SongItem>() ?: seedSongs.shuffled().take(6).filterIsInstance<Innertube.SongItem>()
-                    }
-                    
-                    interleaved // برگرداندن لیست خالص بدون جعبه‌های اضافه!
                 }
-                
-                val relatedDeferreds = seedSongs.map { song -> async { Innertube.relatedPage(videoId = song.id)?.getOrNull() } }
+
+                // بازگردانی کدهای پاک شده برای لود کردن میکس‌ها
+                val relatedDeferreds = seedSongs.map { song ->
+                    async { Innertube.relatedPage(videoId = song.id)?.getOrNull() }
+                }
                 val relatedResults = relatedDeferreds.mapNotNull { it.await() }
+
                 var mergedPage = if (relatedResults.isNotEmpty()) {
                     Innertube.RelatedPage(
                         songs = interleave(relatedResults.map { it.songs ?: emptyList() }).take(40),
@@ -179,9 +189,10 @@ class QuickPicksViewModel : ViewModel() {
                         }
                     }
                 }
+
                 val finalResult = mergedPage?.let { Result.success(it) } ?: Result.failure(Exception("Failed to load Quick Picks"))
                 finalResult.getOrNull()?.let { if (isScreenCacheEnabled) saveToCache(quickPicksSource, it) }
-                
+
                 withContext(Dispatchers.Main) {
                     relatedPageResult = finalResult
                     newReleasesResult = newReleasesDeferred.await()?.let { Result.success(it) }

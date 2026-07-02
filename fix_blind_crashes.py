@@ -1,4 +1,7 @@
-@file:OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class, androidx.compose.animation.ExperimentalAnimationApi::class)
+import os
+
+path = "app/src/main/kotlin/com/github/soundpod/ui/screens/home/QuickPicks.kt"
+content = """@file:OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class, androidx.compose.animation.ExperimentalAnimationApi::class)
 package com.github.musick.ui.screens.home
 
 import android.annotation.SuppressLint
@@ -84,7 +87,7 @@ private fun extractHighResUrlLocal(rawThumb: String?): String {
     if (rawThumb == null) return ""
     var extracted = if (rawThumb.contains("url=")) Regex("url=([^,)]+)").find(rawThumb)?.groupValues?.get(1) ?: rawThumb else rawThumb
     extracted = if (extracted.startsWith("//")) "https:$extracted" else extracted
-    return extracted.replace(Regex("=w\\d+-h\\d+"), "=w1080-h1080").replace(Regex("=s\\d+"), "=s1080")
+    return extracted.replace(Regex("=w\\\\d+-h\\\\d+"), "=w1080-h1080").replace(Regex("=s\\\\d+"), "=s1080")
 }
 
 @SuppressLint("ConfigurationScreenWidthHeight")
@@ -126,8 +129,7 @@ fun QuickPicks(
     val quickPicksLazyGridItemWidthFactor = if (isLandscape && screenWidth * 0.475f >= 320.dp) 0.475f else 0.9f
     val itemInHorizontalGridWidth = screenWidth * quickPicksLazyGridItemWidthFactor
 
-    // تغییر ذخیره سازی میکس از حالت ماکت (Mock) به دیتای واقعی آهنگ (MediaItem)
-    var mixToShow by remember { mutableStateOf<Pair<String, List<androidx.media3.common.MediaItem>>?>(null) }
+    var mixToShow by remember { mutableStateOf<Pair<String, List<FeedItemMock>>?>(null) }
 
     Column(
         modifier = Modifier
@@ -142,12 +144,23 @@ fun QuickPicks(
 
         if (related != null) {
             val recentHistory by viewModel.recentHistoryFlow.collectAsState(initial = emptyList())
-            
-            // معماری بی‌نقص برای شیفت خوردن اسپید دایل
-            val speedDialItems = remember(recentHistory, related.songs) {
+            val speedDialItems = remember(recentHistory, related.songs, currentPlayingMediaItem) {
                 val historyMocks = recentHistory.map { song -> FeedItemMock(id = song.id, title = song.title, subtitle = song.artistsText ?: "", thumbnailUrl = extractHighResUrlLocal(song.thumbnailUrl)) }
                 val recommendedMocks = related.songs?.mapNotNull { song -> song.info?.endpoint?.videoId?.let { videoId -> FeedItemMock(id = videoId, title = song.info?.name.orEmpty(), subtitle = song.authors?.firstOrNull()?.name.orEmpty(), thumbnailUrl = extractHighResUrlLocal(song.thumbnail?.url)) } } ?: emptyList()
-                (historyMocks + recommendedMocks).distinctBy { it.id }.take(24)
+                val combined = (historyMocks + recommendedMocks).distinctBy { it.id }.toMutableList()
+                
+                currentPlayingMediaItem?.let { currentItem ->
+                     val playingId = currentItem.mediaId
+                     val index = combined.indexOfFirst { it.id == playingId }
+                     if (index != -1) {
+                         val item = combined.removeAt(index)
+                         combined.add(0, item)
+                     } else {
+                         val newItem = FeedItemMock(id = playingId, title = currentItem.mediaMetadata.title.toString(), subtitle = currentItem.mediaMetadata.artist.toString(), thumbnailUrl = extractHighResUrlLocal(currentItem.mediaMetadata.artworkUri?.toString()))
+                         combined.add(0, newItem)
+                     }
+                }
+                combined.take(24)
             }
 
             if (speedDialItems.isNotEmpty()) {
@@ -155,17 +168,17 @@ fun QuickPicks(
                     items = speedDialItems, 
                     onItemClick = { browseId -> 
                         try {
-                            // پیدا کردن DNA واقعی آهنگ به جای استفاده از ماکتِ خراب
-                            val songFromDb = recentHistory.firstOrNull { it.id == browseId }?.asMediaItem
-                            val songFromApi = related.songs?.firstOrNull { it.info?.endpoint?.videoId == browseId }?.asMediaItem
-                            val finalMediaItem = songFromDb ?: songFromApi ?: if (currentPlayingMediaItem?.mediaId == browseId) currentPlayingMediaItem else null
-                            
-                            if (finalMediaItem != null) {
+                            val itemToPlay = speedDialItems.firstOrNull { it.id == browseId }
+                            if (itemToPlay != null) {
+                                val mediaItem = androidx.media3.common.MediaItem.Builder()
+                                    .setMediaId(itemToPlay.id)
+                                    .setMediaMetadata(androidx.media3.common.MediaMetadata.Builder().setTitle(itemToPlay.title).setArtist(itemToPlay.subtitle).setArtworkUri(android.net.Uri.parse(itemToPlay.thumbnailUrl)).build())
+                                    .build()
                                 binder?.stopRadio()
-                                binder?.player?.forcePlay(finalMediaItem)
-                                binder?.setupRadio(NavigationEndpoint.Endpoint.Watch(videoId = finalMediaItem.mediaId))
+                                binder?.player?.forcePlay(mediaItem)
+                                binder?.setupRadio(NavigationEndpoint.Endpoint.Watch(videoId = mediaItem.mediaId))
                             }
-                        } catch (e: Exception) { e.printStackTrace() }
+                        } catch (e: Exception) { e.printStackTrace() } // دفاع کور در برابر کرش
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -182,19 +195,8 @@ fun QuickPicks(
                 }
             }
 
-            val newReleasesRaw = viewModel.newReleasesResult?.getOrNull()
-            val personalizedNewReleases = remember(newReleasesRaw, recentHistory) {
-                if (newReleasesRaw.isNullOrEmpty()) emptyList()
-                else {
-                    val myArtists = recentHistory.mapNotNull { it.artistsText }.flatMap { it.split(Regex(" & |, | x | • ")) }.map { it.trim().lowercase() }.toSet()
-                    val matched = newReleasesRaw.filter { song ->
-                        val songArtist = song.asMediaItem.mediaMetadata.artist?.toString()?.lowercase() ?: ""
-                        myArtists.any { songArtist.contains(it) }
-                    }
-                    if (matched.isNotEmpty()) matched else newReleasesRaw.take(8)
-                }
-            }
-            if (personalizedNewReleases.isNotEmpty()) {
+            val newReleases = viewModel.newReleasesResult?.getOrNull()
+            if (!newReleases.isNullOrEmpty()) {
                 Spacer(modifier = Modifier.height(36.dp))
                 Row(modifier = sectionTextModifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                     Text(text = "New releases", style = MaterialTheme.typography.titleLarge.copy(fontSize = 24.sp, fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.onBackground))
@@ -204,7 +206,7 @@ fun QuickPicks(
                     rows = GridCells.Fixed(2), modifier = Modifier.fillMaxWidth().height(160.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(items = personalizedNewReleases.filter { it.key.isNotEmpty() }.distinctBy { it.key }, key = { it.key }) { song ->
+                    items(items = newReleases.filter { it.key.isNotEmpty() }.distinctBy { it.key }, key = { it.key }) { song ->
                         Row(modifier = Modifier.width(300.dp).clickable { try { val mediaItem = song.asMediaItem; binder?.stopRadio(); binder?.player?.forcePlay(mediaItem); binder?.setupRadio(NavigationEndpoint.Endpoint.Watch(videoId = mediaItem.mediaId)) } catch(e:Exception){} }, verticalAlignment = Alignment.CenterVertically) {
                             AsyncImage(model = extractHighResUrlLocal(song.asMediaItem.mediaMetadata.artworkUri?.toString()), contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.size(68.dp).clip(RoundedCornerShape(8.dp)))
                             Spacer(modifier = Modifier.width(12.dp))
@@ -225,9 +227,9 @@ fun QuickPicks(
                 val fallbackImage = "https://picsum.photos/800/800?random="
                 listOf(
                     Triple("Your Heavy Rotation", "The tracks you can't get enough of", recentHistory.firstOrNull()?.thumbnailUrl ?: fallbackImage+"1"),
-                    Triple("Search Radar", "Mix based on your recent searches", related.songs?.randomOrNull()?.thumbnail?.url ?: fallbackImage+"2"),
+                    Triple("Search Radar", "Mix based on your recent searches", related.songs?.randomOrNull()?.info?.thumbnail?.url ?: fallbackImage+"2"),
                     Triple("Favorites Mix", "Your most loved tracks in one place", recentHistory.getOrNull(2)?.thumbnailUrl ?: fallbackImage+"3"),
-                    Triple(timeMood, "Perfect sounds for right now", related.songs?.randomOrNull()?.thumbnail?.url ?: fallbackImage+"4"),
+                    Triple(timeMood, "Perfect sounds for right now", related.songs?.randomOrNull()?.info?.thumbnail?.url ?: fallbackImage+"4"),
                     Triple("Discovery Mix", "Fresh finds based on your taste", recentHistory.getOrNull(4)?.thumbnailUrl ?: fallbackImage+"5")
                 )
             }
@@ -238,10 +240,9 @@ fun QuickPicks(
             }
             
             val infiniteTransition = rememberInfiniteTransition()
-            // سرعت زوم سریع‌تر شد (۴ ثانیه)
             val breathScale by infiniteTransition.animateFloat(
                 initialValue = 1f, targetValue = 1.08f,
-                animationSpec = infiniteRepeatable(animation = tween(4000, easing = LinearEasing), repeatMode = RepeatMode.Reverse)
+                animationSpec = infiniteRepeatable(animation = tween(7000, easing = LinearEasing), repeatMode = RepeatMode.Reverse)
             )
 
             HorizontalPager(
@@ -281,11 +282,11 @@ fun QuickPicks(
                     
                     Row(modifier = Modifier.align(Alignment.BottomEnd).padding(20.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         Box(modifier = Modifier.size(38.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.2f)).clickable { 
-                            // دیتای واقعی میکس‌ها برای پاپ‌آپ
+                            // دکمه نمایش لیست میکس
                             val mixItems = when(page) {
-                                0 -> recentHistory.take(20).map { it.asMediaItem }
-                                2 -> recentHistory.shuffled().take(20).map { it.asMediaItem }
-                                else -> related.songs?.take(20)?.map { it.asMediaItem } ?: emptyList()
+                                0 -> recentHistory.take(20).map { FeedItemMock(it.id, it.title, it.artistsText ?: "", extractHighResUrlLocal(it.thumbnailUrl)) }
+                                2 -> recentHistory.shuffled().take(20).map { FeedItemMock(it.id, it.title, it.artistsText ?: "", extractHighResUrlLocal(it.thumbnailUrl)) }
+                                else -> related.songs?.take(20)?.mapNotNull { it.info?.endpoint?.videoId?.let { id -> FeedItemMock(id, it.info?.name.orEmpty(), it.authors?.firstOrNull()?.name.orEmpty(), extractHighResUrlLocal(it.thumbnail?.url)) } } ?: emptyList()
                             }
                             mixToShow = cardData.first to mixItems
                         }, contentAlignment = Alignment.Center) {
@@ -340,7 +341,7 @@ fun QuickPicks(
         }
     }
 
-    // پاپ‌آپِ زنده و قابل پخشِ میکس‌ها
+    // پاپ‌آپ نمایش لیست میکس (View Mix Dialog)
     mixToShow?.let { (title, mixItems) ->
         Dialog(onDismissRequest = { mixToShow = null }) {
             Card(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.7f).clip(RoundedCornerShape(24.dp)), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)) {
@@ -353,16 +354,17 @@ fun QuickPicks(
                             Row(modifier = Modifier.fillMaxWidth().clickable { 
                                 mixToShow = null
                                 try {
+                                    val mediaItem = androidx.media3.common.MediaItem.Builder().setMediaId(item.id).setMediaMetadata(androidx.media3.common.MediaMetadata.Builder().setTitle(item.title).setArtist(item.subtitle).setArtworkUri(android.net.Uri.parse(item.thumbnailUrl)).build()).build()
                                     binder?.stopRadio()
-                                    binder?.player?.forcePlay(item)
-                                    binder?.setupRadio(NavigationEndpoint.Endpoint.Watch(videoId = item.mediaId))
+                                    binder?.player?.forcePlay(mediaItem)
+                                    binder?.setupRadio(NavigationEndpoint.Endpoint.Watch(videoId = mediaItem.mediaId))
                                 } catch(e:Exception){}
                             }.padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                                AsyncImage(model = extractHighResUrlLocal(item.mediaMetadata.artworkUri?.toString()), contentDescription = null, modifier = Modifier.size(54.dp).clip(RoundedCornerShape(12.dp)), contentScale = ContentScale.Crop)
+                                AsyncImage(model = item.thumbnailUrl, contentDescription = null, modifier = Modifier.size(54.dp).clip(RoundedCornerShape(12.dp)), contentScale = ContentScale.Crop)
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Column(modifier = Modifier.weight(1f)) {
-                                    Text(text = item.mediaMetadata.title.toString(), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                    Text(text = item.mediaMetadata.artist.toString(), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground.copy(alpha=0.6f), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    Text(text = item.title, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    Text(text = item.subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground.copy(alpha=0.6f), maxLines = 1, overflow = TextOverflow.Ellipsis)
                                 }
                             }
                         }
@@ -372,3 +374,7 @@ fun QuickPicks(
         }
     }
 }
+"""
+with open(path, "w") as f:
+    f.write(content)
+print("Blind defenses deployed and View Mix dialog implemented!")

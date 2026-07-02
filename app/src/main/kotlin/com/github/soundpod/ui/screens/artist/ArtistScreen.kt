@@ -1,5 +1,4 @@
 package com.github.musick.ui.screens.artist
-
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -31,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -76,9 +76,7 @@ fun ArtistScreen(
     val artist = viewModel.artist
     val artistPage = viewModel.artistPage
     BackHandler { onBack() }
-    
     LaunchedEffect(browseId) { viewModel.loadArtist(browseId, 0) }
-    
     val tabs = remember(artistPage) {
         listOfNotNull(
             ArtistTab.Overview to R.string.overview,
@@ -90,7 +88,7 @@ fun ArtistScreen(
     val pagerState = rememberPagerState { tabs.size }
     val coroutineScope = rememberCoroutineScope()
     val highResCover = extractHighResUrl(artist?.thumbnailUrl)
-    
+
     PlaylistScreenLayout(
         title = { },
         onBackClick = onBack,
@@ -98,11 +96,11 @@ fun ArtistScreen(
             IconButton(onClick = { viewModel.toggleBookmark() }) {
                 Icon(
                     imageVector = ImageVector.vectorResource(if (artist?.bookmarkedAt != null) R.drawable.heart else R.drawable.heart_outline),
-                    contentDescription = null, tint = Color.White, modifier = Modifier.size(26.dp)
+                    contentDescription = null, tint = if (androidx.compose.material3.MaterialTheme.colorScheme.background.luminance() < 0.5f) Color.White else Color.Black, modifier = Modifier.size(26.dp)
                 )
             }
             IconButton(onClick = onSearchClick) {
-                Icon(imageVector = Icons.Default.Search, contentDescription = null, tint = Color.White, modifier = Modifier.size(28.dp))
+                Icon(imageVector = Icons.Default.Search, contentDescription = null, tint = if (androidx.compose.material3.MaterialTheme.colorScheme.background.luminance() < 0.5f) Color.White else Color.Black, modifier = Modifier.size(28.dp))
             }
         },
         dropDownMenuContent = { dismissMenu ->
@@ -110,26 +108,21 @@ fun ArtistScreen(
         },
         headerContent = {
             Box(modifier = Modifier.fillMaxWidth().height(360.dp)) {
-                // بک گراند به شدت تار و اتمسفریک
                 AsyncImage(model = highResCover, contentDescription = null, modifier = Modifier.fillMaxSize().blur(60.dp), contentScale = ContentScale.Crop)
-                Box(modifier = Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Black.copy(alpha = 0.2f), Color.Black))))
-                
+                Box(modifier = Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Black.copy(alpha = 0.2f), if (androidx.compose.material3.MaterialTheme.colorScheme.background.luminance() < 0.5f) Color.Black else Color.Black.copy(alpha = 0.06f)))))
                 Column(
                     modifier = Modifier.fillMaxSize().padding(bottom = 24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Bottom
                 ) {
-                    // آواتار آرتیست: گرد، با حاشیه شیشه ای و سایه
                     AsyncImage(
-                        model = highResCover, 
-                        contentDescription = null, 
+                        model = highResCover,
+                        contentDescription = null,
                         modifier = Modifier.size(170.dp).shadow(24.dp, CircleShape).clip(CircleShape).border(3.dp, Color.White.copy(alpha = 0.3f), CircleShape),
                         contentScale = ContentScale.Crop
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = artist?.name.orEmpty(), style = typography.headlineLarge.copy(fontWeight = FontWeight.Black, fontSize = 34.sp), color = Color.White, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    
-                    // بازگرداندن اطلاعات اضافه با استایل ظریف
+                    Text(text = artist?.name.orEmpty(), style = typography.headlineLarge.copy(fontWeight = FontWeight.Black, fontSize = 34.sp), color = if (androidx.compose.material3.MaterialTheme.colorScheme.background.luminance() < 0.5f) Color.White else Color.Black, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     Text(text = "Verified Artist", style = typography.labelLarge.copy(fontWeight = FontWeight.Medium, letterSpacing = 2.sp), color = Color.White.copy(alpha = 0.6f), modifier = Modifier.padding(top = 4.dp))
                 }
             }
@@ -142,14 +135,28 @@ fun ArtistScreen(
                 ) {
                     tabs.forEachIndexed { index, (_, titleRes) ->
                         val selected = pagerState.currentPage == index
+                        val isDark = androidx.compose.material3.MaterialTheme.colorScheme.background.luminance() < 0.5f
+                        
+                        // FIX: رنگ‌بندی تب‌ها برای خوانایی عالی در لایت‌مود و دارک‌مود
+                        val tabBg = if (selected) {
+                            if (isDark) Color.White else Color.Black
+                        } else {
+                            if (isDark) Color.White.copy(alpha = 0.1f) else Color.Black.copy(alpha = 0.05f)
+                        }
+                        val tabTextColor = if (selected) {
+                            if (isDark) Color.Black else Color.White
+                        } else {
+                            if (isDark) Color.White else Color.Black.copy(alpha = 0.7f)
+                        }
+
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(50))
-                                .background(if (selected) Color.White else Color.White.copy(alpha = 0.1f))
+                                .background(tabBg)
                                 .clickable { coroutineScope.launch { pagerState.animateScrollToPage(index) } }
                                 .padding(horizontal = 20.dp, vertical = 10.dp)
                         ) {
-                            Text(text = stringResource(titleRes), style = typography.titleSmall.copy(fontWeight = FontWeight.Bold), color = if (selected) Color.Black else Color.White)
+                            Text(text = stringResource(titleRes), style = typography.titleSmall.copy(fontWeight = FontWeight.Bold), color = tabTextColor)
                         }
                     }
                 }

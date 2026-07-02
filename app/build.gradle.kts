@@ -23,8 +23,8 @@ extensions.configure<ApplicationExtension>("android") {
         applicationId = "com.github.musick"
         minSdk = 23
         targetSdk = 37
-        versionCode = 28
-        versionName = "1.3.3"
+        versionCode = 1
+        versionName = "1.0.0"
     }
 
     flavorDimensions += "store"
